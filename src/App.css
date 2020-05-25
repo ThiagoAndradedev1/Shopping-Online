@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+/* .login-margin {
+  margin-left: 320px;
+  
+} */
+
+.flex-end {
+  align-items: flex-end;
+}

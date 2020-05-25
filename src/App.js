@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Fragment } from 'react';
+import 'semantic-ui-css/semantic.min.css';
+import Home from '../src/pages/Home';
+import Navbar from '../src/layout/Navbar';
+import Login from '../src/pages/Login';
+import Cart from '../src/pages/Cart';
+import Menuu from './pages/Menuu';
+import Signup from '../src/pages/Signup';
+import AnimationState from './context/animation/AnimationState';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <AnimationState>
+        <Router>
+          <Navbar />
+          <Switch>
+            <Route exact path='/'>
+              <Redirect to='/home' />
+            </Route>
+            <Route exact path='/menu' component={Menuu} />
+            <Route exact path='/home' component={Home} />
+            <Route exact path='/cart' component={Cart} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/signup' component={Signup} />
+          </Switch>
+        </Router>
+      </AnimationState>
+    </Fragment>
   );
-}
+};
 
 export default App;
