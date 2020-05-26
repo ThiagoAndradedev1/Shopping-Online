@@ -9,14 +9,15 @@ import {
   Header,
   Image,
   Input,
-  Reveal,
+  Modal,
+  Checkbox,
 } from 'semantic-ui-react';
 import { firestore } from '../firebase';
 
-const Menuu = () => {
+const Cardapio = () => {
   const [menuInfo, setMenuInfo] = useState([]);
   const [info, setInfo] = useState([]);
-  const [activeItem, setActiveItem] = useState('');
+  const [activeItem, setActiveItem] = useState('bio');
 
   useEffect(() => {
     firestore.collection('menuinfo').onSnapshot((snapshot) => {
@@ -42,6 +43,17 @@ const Menuu = () => {
     });
     setInfo(filtered);
     console.log(menuInfo);
+  };
+
+  const alterarPreco = (produto, tamanho) => {
+    const resultado = info.findIndex(
+      (produtoArray) => produtoArray.id === produto.id
+    );
+
+    if (resultado !== -1) {
+      info[resultado].price = '50';
+      setInfo([...info]);
+    }
   };
 
   return (
@@ -101,16 +113,65 @@ const Menuu = () => {
           </Menu>
 
           <Segment attached='bottom'>
-            <Grid columns={3}>
+            <Grid stackable columns={3}>
               <Grid.Row>
                 {info.map((info) => (
                   <Grid.Column key={info.id}>
-                    <Image circular size='big' src={info.img} />{' '}
-                    <Header as='h2' icon>
-                      {info.name}
-                      <Header.Subheader>{info.description}</Header.Subheader>
-                      {info.price}
-                    </Header>
+                    <Segment textAlign='center'>
+                      <Button onClick={() => alterarPreco(info)} color='green'>
+                        Media
+                      </Button>
+                      <Button onClick={() => alterarPreco(info)} color='green'>
+                        Grande
+                      </Button>
+                    </Segment>
+                    <Segment>
+                      <Image circular size='big' src={info.img} />{' '}
+                      <Header as='h2' icon>
+                        {info.name}
+                        <Header.Subheader>{info.description}</Header.Subheader>
+                        <span>${info.price} </span>
+                      </Header>
+                    </Segment>
+                    <Segment textAlign='center'>
+                      <Modal trigger={<Button color='green'>Comprar</Button>}>
+                        <Modal.Header>Hambúrger</Modal.Header>
+                        <Modal.Content image>
+                          <Image
+                            wrapped
+                            size='medium'
+                            src='https://react.semantic-ui.com/images/avatar/large/rachel.png'
+                          />
+
+                          <Modal.Description>
+                            <Header>Cheese Burger</Header>
+                            <h3>Ingredientes:</h3>
+                            <Checkbox label='Alface' defaultChecked />
+                            <Checkbox
+                              label='This checkbox comes pre-checked'
+                              defaultChecked
+                            />
+                            <Checkbox
+                              label='This checkbox comes pre-checked'
+                              defaultChecked
+                            />
+                            <Checkbox
+                              label='This checkbox comes pre-checked'
+                              defaultChecked
+                            />
+                            <Checkbox
+                              label='This checkbox comes pre-checked'
+                              defaultChecked
+                            />
+                            <Checkbox
+                              label='This checkbox comes pre-checked'
+                              defaultChecked
+                            />
+                          </Modal.Description>
+                        </Modal.Content>
+                      </Modal>
+                      {/* <Button color='green'>Comprar</Button> */}
+                    </Segment>
                   </Grid.Column>
                 ))}
               </Grid.Row>
@@ -123,4 +184,4 @@ const Menuu = () => {
   );
 };
 
-export default Menuu;
+export default Cardapio;

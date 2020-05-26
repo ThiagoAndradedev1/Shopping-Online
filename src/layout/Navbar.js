@@ -43,7 +43,7 @@ const Navbar = () => {
         <Container text>
           <Menu.Menu position='right'>
             <Menu.Item>
-              <Dropdown.Item>
+              {/* <Dropdown.Item>
                 <Icon name='user' />{' '}
                 <Dropdown text='Olá, entre ou cadastre-se' floating>
                   <Dropdown.Menu>
@@ -64,7 +64,7 @@ const Navbar = () => {
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-              </Dropdown.Item>
+              </Dropdown.Item> */}
             </Menu.Item>
           </Menu.Menu>
         </Container>
