@@ -45,3 +45,15 @@
 .flex-end {
   align-items: flex-end;
 }
+
+.modal-btn-margin {
+  margin-top: 15px;
+}
+
+.checkbox-margin-left {
+  margin-left: 15px;
+}
+
+.checkbox-margin-top {
+  margin-top: 20px;
+}

@@ -13,8 +13,6 @@ import { Link } from 'react-router-dom';
 import AnimationState from '../context/animation/AnimationState';
 
 const Navbar = () => {
-  const { setShowLogin } = useContext(AnimationContext);
-
   return (
     <Fragment>
       <Menu borderless fixed='top' size='tiny' color='black' inverted>
