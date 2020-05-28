@@ -15,10 +15,11 @@ import {
 import { firestore } from '../firebase';
 
 const Cardapio = () => {
-  const [menuInfo, setMenuInfo] = useState([]);
+  const [firebaseInfo, setFirebaseInfo] = useState([]);
+  const [infoFilter, setInfoFilter] = useState([]);
   const [infoModal, setInfoModal] = useState('');
-  const [info, setInfo] = useState([]);
   const [activeItem, setActiveItem] = useState('bio');
+  const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
 
   useEffect(() => {
     firestore.collection('menuinfo').onSnapshot((snapshot) => {
@@ -26,34 +27,50 @@ const Cardapio = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      setMenuInfo(newInformation);
-      setInfo(newInformation);
+      const filtered = newInformation.filter((info) => {
+        return info.tag.match('hamburger');
+      });
+      setFirebaseInfo(newInformation);
+      setInfoFilter(filtered);
+      setIngredientesSelecionados(firebaseInfo.igredients);
     });
-  }, []);
+  }, [firebaseInfo.igredients]);
 
   const orderBy = (text) => {
-    let filtered = menuInfo.filter((menu) => {
-      return menu.tag.match(text);
+    let filtered = firebaseInfo.filter((info) => {
+      return info.tag.match(text);
     });
-    setInfo(filtered);
+    setInfoFilter(filtered);
   };
 
   const searchBy = (search) => {
-    let filtered = menuInfo.filter((menu) => {
-      return menu.name.toLowerCase().match(search.toLowerCase());
+    let filtered = firebaseInfo.filter((info) => {
+      return info.name.toLowerCase().match(search.toLowerCase());
     });
-    setInfo(filtered);
-    console.log(menuInfo);
+    setInfoFilter(filtered);
   };
 
-  const alterarPreco = (produto, tamanho) => {
-    const resultado = info.findIndex(
+  const changePrice = (produto, tamanho) => {
+    const resultado = infoFilter.findIndex(
       (produtoArray) => produtoArray.id === produto.id
     );
 
     if (resultado !== -1) {
-      info[resultado].price = '50';
-      setInfo([...info]);
+      infoFilter[resultado].price = '50';
+      setInfoFilter([...infoFilter]);
+    }
+  };
+
+  const addOrRemoveIngrediente = (ingrediente) => {
+    const resultado = ingredientesSelecionados.findIndex(
+      (ingredienteSelecionado) => ingredienteSelecionado.id === ingrediente.id
+    );
+
+    if (resultado !== -1) {
+      delete ingredientesSelecionados[resultado];
+      setIngredientesSelecionados([...ingredientesSelecionados]);
+    } else {
+      setIngredientesSelecionados([...ingredientesSelecionados, ingrediente]);
     }
   };
 
@@ -116,17 +133,17 @@ const Cardapio = () => {
           <Segment attached='bottom'>
             <Grid stackable columns={3}>
               <Grid.Row>
-                {info.map((infoItem) => (
+                {infoFilter.map((infoItem) => (
                   <Grid.Column key={infoItem.id}>
                     <Segment textAlign='center'>
                       <Button
-                        onClick={() => alterarPreco(infoItem)}
+                        onClick={() => changePrice(infoItem)}
                         color='green'
                       >
                         Media
                       </Button>
                       <Button
-                        onClick={() => alterarPreco(infoItem)}
+                        onClick={() => changePrice(infoItem)}
                         color='green'
                       >
                         Grande
@@ -160,90 +177,31 @@ const Cardapio = () => {
                         >
                           Pizza
                         </Segment>
-
-                        {/* <Grid columns={2} padded>
-                          <Grid.Column>
-                            <Modal.Content image>
-                              <Image
-                                wrapped
-                                size='medium'
-                                src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fd149940ba70c191927875f0c68825c42.png?alt=media&token=70b10df5-4aca-40e9-a4a0-e630ab4083c2'
-                              />
-
-                              <Modal.Description>
-                                <Header color='red'>{infoModal.name}</Header>
-                                <Grid columns={3}>
-                                  <Grid.Row>
-                                    <Grid.Column>
-                                      <Checkbox label='Alface' defaultChecked />
-                                      <Checkbox
-                                        label='Barbecue'
-                                        defaultChecked
-                                      />
-                                      <Checkbox
-                                        label='Cheddar'
-                                        defaultChecked
-                                      />
-                                      <Checkbox label='Picles' defaultChecked />
-                                      <Checkbox
-                                        label='Maionese'
-                                        defaultChecked
-                                      />
-                                      <Checkbox label='Bacon' defaultChecked />
-                                    </Grid.Column>
-                                  </Grid.Row>
-                                </Grid>
-                                <div className='modal-btn-margin'>
-                                  <Button color='green'>Comprar</Button>
-                                </div>
-                              </Modal.Description>
-                            </Modal.Content>
-                          </Grid.Column>
-                          <Grid.Column>
-                            <Header color='red'>Igredientes:</Header>
-                            <Image.Group size='small'>
-                              <Image
-                                size='small'
-                                circular
-                                src='https://png.pngtree.com/png-clipart/20190118/ourmid/pngtree-green-vegetables-vegetable-illustration-hand-drawn-vegetables-hand-drawn-lettuce-png-image_453446.jpg'
-                              />
-                              <Image
-                                size='small'
-                                circular
-                                src='https://png.pngtree.com/png-clipart/20190118/ourmid/pngtree-green-vegetables-vegetable-illustration-hand-drawn-vegetables-hand-drawn-lettuce-png-image_453446.jpg'
-                              />
-                              <Image
-                                size='small'
-                                circular
-                                src='https://png.pngtree.com/png-clipart/20190118/ourmid/pngtree-green-vegetables-vegetable-illustration-hand-drawn-vegetables-hand-drawn-lettuce-png-image_453446.jpg'
-                              />
-                              <Image
-                                size='small'
-                                circular
-                                src='https://png.pngtree.com/png-clipart/20190118/ourmid/pngtree-green-vegetables-vegetable-illustration-hand-drawn-vegetables-hand-drawn-lettuce-png-image_453446.jpg'
-                              />
-                            </Image.Group>
-                          </Grid.Column>
-                        </Grid> */}
-
                         <Modal.Content image>
-                          <Image
-                            wrapped
-                            size='medium'
-                            src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fd149940ba70c191927875f0c68825c42.png?alt=media&token=70b10df5-4aca-40e9-a4a0-e630ab4083c2'
-                          />
+                          <Image wrapped size='medium' src={infoModal.img} />
 
                           <Modal.Description>
                             <Header color='red'>{infoModal.name}</Header>
                             <Grid columns={3}>
                               <Grid.Row>
                                 <Grid.Column>
-                                  <Checkbox label='Alface' defaultChecked />
-                                  <Checkbox label='Bacon' defaultChecked />
-                                  <Checkbox label='Barbecue' defaultChecked />
-                                  <Checkbox label='Cheddar' defaultChecked />
-                                  <Checkbox label='Picles' defaultChecked />
-                                  <Checkbox label='Maionese' defaultChecked />
+                                  {infoModal &&
+                                    infoModal.igredientes.map(
+                                      (igrediente, index) => {
+                                        return (
+                                          <Checkbox
+                                            onChange={() =>
+                                              addOrRemoveIngrediente(
+                                                ingredientesSelecionados
+                                              )
+                                            }
+                                            key={index}
+                                            label={igrediente.name}
+                                            defaultChecked
+                                          />
+                                        );
+                                      }
+                                    )}
                                 </Grid.Column>
                               </Grid.Row>
                             </Grid>
@@ -253,81 +211,58 @@ const Cardapio = () => {
                           </Modal.Description>
                           <Grid>
                             <Header color='red'>Igredientes:</Header>
-                            <Grid.Row columns={3}>
-                              <Grid.Column>
-                                <Image
-                                  circular
-                                  size='tiny'
-                                  src='https://i.pinimg.com/originals/8f/c8/78/8fc8782ce11aaf088065593ad1c47f75.jpg'
-                                />
-                              </Grid.Column>
-                              <Grid.Column>
-                                <Image
-                                  circular
-                                  size='tiny'
-                                  src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS8mTq9H6KmgY1YahUnLxh1F6QxVvEvgeI_d83V_bM5GeaX61eb&usqp=CAU'
-                                />
-                              </Grid.Column>
-                              <Grid.Column>
-                                <Image
-                                  circular
-                                  size='tiny'
-                                  src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS8mTq9H6KmgY1YahUnLxh1F6QxVvEvgeI_d83V_bM5GeaX61eb&usqp=CAU'
-                                />
-                              </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={3}>
-                              <Grid.Column>
-                                <Image
-                                  circular
-                                  size='tiny'
-                                  src='https://vistapointe.net/images/bacon-10.jpg'
-                                />
-                              </Grid.Column>
-                              <Grid.Column>
-                                <Image
-                                  circular
-                                  size='tiny'
-                                  src='https://3.bp.blogspot.com/-cwDD6MrtIF4/WYh2Rr8LKJI/AAAAAAAAK1s/fD32DF2fKLY2eMHAlYi9hyCz0dLz1wyZwCLcBGAs/s640/molho-barbecue-545x306.png'
-                                />
-                              </Grid.Column>
-                              <Grid.Column>
-                                <Image
-                                  circular
-                                  size='tiny'
-                                  src='https://3.bp.blogspot.com/-cwDD6MrtIF4/WYh2Rr8LKJI/AAAAAAAAK1s/fD32DF2fKLY2eMHAlYi9hyCz0dLz1wyZwCLcBGAs/s640/molho-barbecue-545x306.png'
-                                />
-                              </Grid.Column>
-                            </Grid.Row>
-                          </Grid>
-                        </Modal.Content>
-
-                        {/* <Modal.Content image>
-                          <Image
-                            wrapped
-                            size='medium'
-                            src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fd149940ba70c191927875f0c68825c42.png?alt=media&token=70b10df5-4aca-40e9-a4a0-e630ab4083c2'
-                          />
-
-                          <Modal.Description>
-                            <Header color='red'>{infoModal.name}</Header>
-                            <Grid columns={3}>
-                              <Grid.Row>
+                            {infoModal && (
+                              <Grid.Row columns={3}>
                                 <Grid.Column>
-                                  <Checkbox label='Alface' defaultChecked />
-                                  <Checkbox label='Bacon' defaultChecked />
-                                  <Checkbox label='Barbecue' defaultChecked />
-                                  <Checkbox label='Cheddar' defaultChecked />
-                                  <Checkbox label='Picles' defaultChecked />
-                                  <Checkbox label='Maionese' defaultChecked />
+                                  <Image
+                                    circular
+                                    size='tiny'
+                                    src={infoModal.igredientes[0].image}
+                                  />
+                                </Grid.Column>
+                                <Grid.Column>
+                                  <Image
+                                    circular
+                                    size='tiny'
+                                    src={infoModal.igredientes[1].image}
+                                  />
+                                </Grid.Column>
+                                <Grid.Column>
+                                  <Image
+                                    circular
+                                    size='tiny'
+                                    src={infoModal.igredientes[2].image}
+                                  />
                                 </Grid.Column>
                               </Grid.Row>
-                            </Grid>
-                            <div className='modal-btn-margin'>
-                              <Button color='green'>Comprar</Button>
-                            </div>
-                          </Modal.Description>
-                        </Modal.Content> */}
+                            )}
+                            {infoModal && (
+                              <Grid.Row columns={3}>
+                                <Grid.Column>
+                                  <Image
+                                    circular
+                                    size='tiny'
+                                    src={infoModal.igredientes[3].image}
+                                  />
+                                </Grid.Column>
+                                <Grid.Column>
+                                  <Image
+                                    circular
+                                    size='tiny'
+                                    src={infoModal.igredientes[4].image}
+                                  />
+                                </Grid.Column>
+                                <Grid.Column>
+                                  <Image
+                                    circular
+                                    size='tiny'
+                                    src={infoModal.igredientes[5].image}
+                                  />
+                                </Grid.Column>
+                              </Grid.Row>
+                            )}
+                          </Grid>
+                        </Modal.Content>
                       </Modal>
                     </Segment>
                   </Grid.Column>
