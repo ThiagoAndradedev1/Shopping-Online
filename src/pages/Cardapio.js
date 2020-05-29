@@ -18,6 +18,7 @@ const Cardapio = () => {
   const [firebaseInfo, setFirebaseInfo] = useState([]);
   const [infoFilter, setInfoFilter] = useState([]);
   const [infoModal, setInfoModal] = useState('');
+  const [buttonActive, setButtonActive] = useState(false);
   const [activeItem, setActiveItem] = useState('bio');
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
 
@@ -51,28 +52,32 @@ const Cardapio = () => {
   };
 
   const changePrice = (produto, tamanho) => {
+    // setButtonActive((prevState) => ({ active: !prevState.active }));
     const resultado = infoFilter.findIndex(
       (produtoArray) => produtoArray.id === produto.id
     );
 
-    if (resultado !== -1) {
+    if (resultado !== -1 && tamanho === 'grande') {
       infoFilter[resultado].price = '50';
+      setInfoFilter([...infoFilter]);
+    } else if (resultado !== -1 && tamanho === 'media') {
+      infoFilter[resultado].price = '19.90';
       setInfoFilter([...infoFilter]);
     }
   };
 
-  const addOrRemoveIngrediente = (ingrediente) => {
-    const resultado = ingredientesSelecionados.findIndex(
-      (ingredienteSelecionado) => ingredienteSelecionado.id === ingrediente.id
-    );
+  // const addOrRemoveIngrediente = (ingrediente) => {
+  //   const resultado = ingredientesSelecionados.findIndex(
+  //     (ingredienteSelecionado) => ingredienteSelecionado.id === ingrediente.id
+  //   );
 
-    if (resultado !== -1) {
-      delete ingredientesSelecionados[resultado];
-      setIngredientesSelecionados([...ingredientesSelecionados]);
-    } else {
-      setIngredientesSelecionados([...ingredientesSelecionados, ingrediente]);
-    }
-  };
+  //   if (resultado !== -1) {
+  //     delete ingredientesSelecionados[resultado];
+  //     setIngredientesSelecionados([...ingredientesSelecionados]);
+  //   } else {
+  //     setIngredientesSelecionados([...ingredientesSelecionados, ingrediente]);
+  //   }
+  // };
 
   return (
     <div style={{ marginTop: '150px' }}>
@@ -110,7 +115,7 @@ const Cardapio = () => {
         <GridColumn width={4}></GridColumn>
         <GridColumn width={8}>
           <Menu attached='top' tabular>
-            <Menu.Item
+            {/* <Menu.Item
               name='bio'
               onClick={() => setActiveItem('bio')}
               active={activeItem === 'bio'}
@@ -119,7 +124,7 @@ const Cardapio = () => {
               name='photos'
               onClick={() => setActiveItem('photos')}
               active={activeItem === 'photos'}
-            />
+            /> */}
             <Menu.Menu position='right'>
               <Menu.Item>
                 <Input
@@ -136,18 +141,21 @@ const Cardapio = () => {
                 {infoFilter.map((infoItem) => (
                   <Grid.Column key={infoItem.id}>
                     <Segment textAlign='center'>
-                      <Button
-                        onClick={() => changePrice(infoItem)}
-                        color='green'
-                      >
-                        Media
-                      </Button>
-                      <Button
-                        onClick={() => changePrice(infoItem)}
-                        color='green'
-                      >
-                        Grande
-                      </Button>
+                      {infoItem &&
+                        infoItem.medidas.map((medida) => {
+                          return (
+                            <Button
+                              toggle
+                              active={buttonActive}
+                              onClick={() =>
+                                changePrice(infoItem, medida.opção)
+                              }
+                              color='green'
+                            >
+                              {medida.size}
+                            </Button>
+                          );
+                        })}
                     </Segment>
                     <Segment>
                       <Image circular size='big' src={infoItem.img} />{' '}
@@ -190,11 +198,11 @@ const Cardapio = () => {
                                       (igrediente, index) => {
                                         return (
                                           <Checkbox
-                                            onChange={() =>
-                                              addOrRemoveIngrediente(
-                                                ingredientesSelecionados
-                                              )
-                                            }
+                                            // onChange={() =>
+                                            //   addOrRemoveIngrediente(
+                                            //     ingredientesSelecionados
+                                            //   )
+                                            // }
                                             key={index}
                                             label={igrediente.name}
                                             defaultChecked
