@@ -23,19 +23,23 @@ const Cardapio = () => {
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
 
   useEffect(() => {
-    firestore.collection('menuinfo').onSnapshot((snapshot) => {
-      const newInformation = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const filtered = newInformation.filter((info) => {
-        return info.tag.match('hamburger');
+    firestore
+      .collection('menuinfo')
+      .orderBy('name', 'asc')
+      .onSnapshot((snapshot) => {
+        const newInformation = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const filtered = newInformation.filter((info) => {
+          return info.tag.match('hamburger');
+        });
+        setFirebaseInfo(newInformation);
+        setInfoFilter(filtered);
+        setIngredientesSelecionados(newInformation);
+        console.log(newInformation);
       });
-      setFirebaseInfo(newInformation);
-      setInfoFilter(filtered);
-      setIngredientesSelecionados(firebaseInfo.igredients);
-    });
-  }, [firebaseInfo.igredients]);
+  }, []);
 
   const orderBy = (text) => {
     let filtered = firebaseInfo.filter((info) => {
@@ -51,33 +55,33 @@ const Cardapio = () => {
     setInfoFilter(filtered);
   };
 
-  const changePrice = (produto, tamanho) => {
-    // setButtonActive((prevState) => ({ active: !prevState.active }));
+  const changePrice = (produto, tamanho, price) => {
+    // setButtonActive(true);
     const resultado = infoFilter.findIndex(
       (produtoArray) => produtoArray.id === produto.id
     );
 
     if (resultado !== -1 && tamanho === 'grande') {
-      infoFilter[resultado].price = '50';
+      infoFilter[resultado].price = price;
       setInfoFilter([...infoFilter]);
     } else if (resultado !== -1 && tamanho === 'media') {
-      infoFilter[resultado].price = '19.90';
+      infoFilter[resultado].price = price;
       setInfoFilter([...infoFilter]);
     }
   };
 
-  // const addOrRemoveIngrediente = (ingrediente) => {
-  //   const resultado = ingredientesSelecionados.findIndex(
-  //     (ingredienteSelecionado) => ingredienteSelecionado.id === ingrediente.id
-  //   );
+  const addOrRemoveIngrediente = (ingrediente) => {
+    const resultado = infoModal.findIndex(
+      (ingredienteSelecionado) => ingredienteSelecionado.id === ingrediente
+    );
 
-  //   if (resultado !== -1) {
-  //     delete ingredientesSelecionados[resultado];
-  //     setIngredientesSelecionados([...ingredientesSelecionados]);
-  //   } else {
-  //     setIngredientesSelecionados([...ingredientesSelecionados, ingrediente]);
-  //   }
-  // };
+    if (resultado !== -1) {
+      delete ingredientesSelecionados[resultado];
+      setIngredientesSelecionados([...ingredientesSelecionados]);
+    } else {
+      setIngredientesSelecionados([...ingredientesSelecionados, ingrediente]);
+    }
+  };
 
   return (
     <div style={{ marginTop: '150px' }}>
@@ -101,8 +105,8 @@ const Cardapio = () => {
                 Pizzas
               </Button>
               <Button color='red'>Pizza Doce</Button>
-              <Button color='red'>Porções</Button>
               <Button color='red'>Bebidas</Button>
+              <Button color='red'>Porções</Button>
               <Button color='red'>Condimentos</Button>
               <Button color='red'>Combos</Button>
               <Button color='red'>Exibir Todas Opções</Button>
@@ -140,19 +144,19 @@ const Cardapio = () => {
               <Grid.Row>
                 {infoFilter.map((infoItem) => (
                   <Grid.Column key={infoItem.id}>
-                    <Segment textAlign='center'>
+                    <Segment style={{ marginTop: '10px' }} textAlign='center'>
                       {infoItem &&
                         infoItem.medidas.map((medida) => {
                           return (
                             <Button
-                              toggle
-                              active={buttonActive}
+                              // toggle
+                              // active={buttonActive}
                               onClick={() =>
-                                changePrice(infoItem, medida.opção)
+                                changePrice(infoItem, medida.size, medida.price)
                               }
                               color='green'
                             >
-                              {medida.size}
+                              {medida.btnName}
                             </Button>
                           );
                         })}
@@ -194,17 +198,17 @@ const Cardapio = () => {
                               <Grid.Row>
                                 <Grid.Column>
                                   {infoModal &&
-                                    infoModal.igredientes.map(
-                                      (igrediente, index) => {
+                                    infoModal.ingredientes.map(
+                                      (ingrediente, index) => {
                                         return (
                                           <Checkbox
-                                            // onChange={() =>
-                                            //   addOrRemoveIngrediente(
-                                            //     ingredientesSelecionados
-                                            //   )
-                                            // }
+                                            onChange={() =>
+                                              addOrRemoveIngrediente(
+                                                infoModal.ingredientes.id
+                                              )
+                                            }
                                             key={index}
-                                            label={igrediente.name}
+                                            label={ingrediente.name}
                                             defaultChecked
                                           />
                                         );
@@ -218,28 +222,28 @@ const Cardapio = () => {
                             </div>
                           </Modal.Description>
                           <Grid>
-                            <Header color='red'>Igredientes:</Header>
+                            <Header color='red'>Ingredientes:</Header>
                             {infoModal && (
                               <Grid.Row columns={3}>
                                 <Grid.Column>
                                   <Image
                                     circular
                                     size='tiny'
-                                    src={infoModal.igredientes[0].image}
+                                    src={infoModal.ingredientes[0].image}
                                   />
                                 </Grid.Column>
                                 <Grid.Column>
                                   <Image
                                     circular
                                     size='tiny'
-                                    src={infoModal.igredientes[1].image}
+                                    src={infoModal.ingredientes[1].image}
                                   />
                                 </Grid.Column>
                                 <Grid.Column>
                                   <Image
                                     circular
                                     size='tiny'
-                                    src={infoModal.igredientes[2].image}
+                                    src={infoModal.ingredientes[2].image}
                                   />
                                 </Grid.Column>
                               </Grid.Row>
@@ -250,21 +254,21 @@ const Cardapio = () => {
                                   <Image
                                     circular
                                     size='tiny'
-                                    src={infoModal.igredientes[3].image}
+                                    src={infoModal.ingredientes[3].image}
                                   />
                                 </Grid.Column>
                                 <Grid.Column>
                                   <Image
                                     circular
                                     size='tiny'
-                                    src={infoModal.igredientes[4].image}
+                                    src={infoModal.ingredientes[4].image}
                                   />
                                 </Grid.Column>
                                 <Grid.Column>
                                   <Image
                                     circular
                                     size='tiny'
-                                    src={infoModal.igredientes[5].image}
+                                    src={infoModal.ingredientes[5].image}
                                   />
                                 </Grid.Column>
                               </Grid.Row>
