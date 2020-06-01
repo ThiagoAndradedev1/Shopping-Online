@@ -11,6 +11,7 @@ import {
   Input,
   Modal,
   Checkbox,
+  GridRow,
 } from 'semantic-ui-react';
 import { firestore } from '../firebase';
 
@@ -18,8 +19,8 @@ const Cardapio = () => {
   const [firebaseInfo, setFirebaseInfo] = useState([]);
   const [infoFilter, setInfoFilter] = useState([]);
   const [infoModal, setInfoModal] = useState('');
+  const [modalState, setModalState] = useState(false);
   const [buttonActive, setButtonActive] = useState(false);
-  const [activeItem, setActiveItem] = useState('bio');
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
 
   useEffect(() => {
@@ -36,8 +37,8 @@ const Cardapio = () => {
         });
         setFirebaseInfo(newInformation);
         setInfoFilter(filtered);
-        setIngredientesSelecionados(newInformation);
-        console.log(newInformation);
+        // setIngredientesSelecionados(newInformation);
+        // console.log(newInformation);
       });
   }, []);
 
@@ -55,8 +56,8 @@ const Cardapio = () => {
     setInfoFilter(filtered);
   };
 
-  const changePrice = (produto, tamanho, price) => {
-    // setButtonActive(true);
+  const changePrice = (produto, tamanho, price, buttonActive) => {
+    setButtonActive(true);
     const resultado = infoFilter.findIndex(
       (produtoArray) => produtoArray.id === produto.id
     );
@@ -70,16 +71,30 @@ const Cardapio = () => {
     }
   };
 
-  const addOrRemoveIngrediente = (ingrediente) => {
-    const resultado = infoModal.findIndex(
-      (ingredienteSelecionado) => ingredienteSelecionado.id === ingrediente
+  const removeElement = (igr) => {
+    console.log(ingredientesSelecionados);
+    console.log(igr);
+    const retorno = ingredientesSelecionados.findIndex(
+      (ingrediente) => ingrediente.id === igr.id
     );
 
-    if (resultado !== -1) {
-      delete ingredientesSelecionados[resultado];
-      setIngredientesSelecionados([...ingredientesSelecionados]);
+    if (retorno !== -1) {
+      const copiaIngredientes = [...ingredientesSelecionados];
+      copiaIngredientes.splice(retorno, 1);
+      setIngredientesSelecionados([...copiaIngredientes]);
     } else {
-      setIngredientesSelecionados([...ingredientesSelecionados, ingrediente]);
+      setIngredientesSelecionados([...ingredientesSelecionados, igr]);
+    }
+  };
+
+  const openModal = (infoItem) => {
+    if (infoItem.tag === 'porções') {
+      setModalState(false);
+    } else {
+      console.log(infoItem);
+      setModalState(true);
+      setInfoModal(infoItem);
+      setIngredientesSelecionados(infoItem.ingredientes);
     }
   };
 
@@ -106,7 +121,9 @@ const Cardapio = () => {
               </Button>
               <Button color='red'>Pizza Doce</Button>
               <Button color='red'>Bebidas</Button>
-              <Button color='red'>Porções</Button>
+              <Button onClick={() => orderBy('porções')} color='red'>
+                Porções
+              </Button>
               <Button color='red'>Condimentos</Button>
               <Button color='red'>Combos</Button>
               <Button color='red'>Exibir Todas Opções</Button>
@@ -146,13 +163,17 @@ const Cardapio = () => {
                   <Grid.Column key={infoItem.id}>
                     <Segment style={{ marginTop: '10px' }} textAlign='center'>
                       {infoItem &&
-                        infoItem.medidas.map((medida) => {
+                        infoItem.medidas.map((medida, index) => {
                           return (
                             <Button
-                              // toggle
-                              // active={buttonActive}
+                              key={index}
                               onClick={() =>
-                                changePrice(infoItem, medida.size, medida.price)
+                                changePrice(
+                                  infoItem,
+                                  medida.size,
+                                  medida.price,
+                                  buttonActive
+                                )
                               }
                               color='green'
                             >
@@ -175,12 +196,14 @@ const Cardapio = () => {
                       <Modal
                         trigger={
                           <Button
-                            onClick={() => setInfoModal(infoItem)}
+                            onClick={() => openModal(infoItem)}
                             color='green'
                           >
                             Comprar
                           </Button>
                         }
+                        open={modalState}
+                        onClose={() => setModalState(false)}
                       >
                         <Segment
                           style={{ fontSize: '1.33em' }}
@@ -190,9 +213,84 @@ const Cardapio = () => {
                           Pizza
                         </Segment>
                         <Modal.Content image>
-                          <Image wrapped size='medium' src={infoModal.img} />
+                          <Grid>
+                            <Grid.Column width={4}>
+                              <Image
+                                spaced='left'
+                                wrapped
+                                size='medium'
+                                src={infoModal.img}
+                              />
+                              {infoModal &&
+                                infoModal.ingredientes.map(
+                                  (ingrediente, index) => {
+                                    return (
+                                      <Checkbox
+                                        onChange={() =>
+                                          removeElement(ingrediente)
+                                        }
+                                        key={index}
+                                        label={ingrediente.name}
+                                        defaultChecked
+                                      />
+                                    );
+                                  }
+                                )}
+                              <div className='modal-btn-margin'>
+                                <Button color='green'>Comprar</Button>
+                              </div>
+                            </Grid.Column>
+                            <Grid.Column width={6}></Grid.Column>
+                            <Grid.Column width={6}>
+                              {ingredientesSelecionados.map((x) => {
+                                return <h3 key={x.id}>{x.name}</h3>;
+                              })}
+                            </Grid.Column>
+                          </Grid>
 
-                          <Modal.Description>
+                          {/* <Grid columns={2} centered>
+                            <GridRow>
+                              <Grid.Column verticalAlign='middle'>
+                                <Image
+                                  wrapped
+                                  size='medium'
+                                  src={infoModal.img}
+                                />
+                                {infoModal &&
+                                  infoModal.ingredientes.map(
+                                    (ingrediente, index) => {
+                                      return (
+                                        <Checkbox
+                                          onChange={() =>
+                                            removeElement(ingrediente)
+                                          }
+                                          key={index}
+                                          label={ingrediente.name}
+                                          defaultChecked
+                                        />
+                                      );
+                                    }
+                                  )}
+                                <div className='modal-btn-margin'>
+                                  <Button color='green'>Comprar</Button>
+                                </div>
+                              </Grid.Column>
+                            </GridRow>
+                            <Grid.Column>
+                              <GridRow>
+                                <Menu fluid vertical>
+                                  <Menu.Item className='header'>
+                                    {ingredientesSelecionados.map((x) => {
+                                      return <h3 key={x.id}>{x.name}</h3>;
+                                    })}
+                                  </Menu.Item>
+                                </Menu.Item>
+                              </GridRow>
+                            </Grid.Column>
+                          </Grid> */}
+                          {/* <Image wrapped size='medium' src={infoModal.img} /> */}
+
+                          {/* <Modal.Description>
                             <Header color='red'>{infoModal.name}</Header>
                             <Grid columns={3}>
                               <Grid.Row>
@@ -203,9 +301,7 @@ const Cardapio = () => {
                                         return (
                                           <Checkbox
                                             onChange={() =>
-                                              addOrRemoveIngrediente(
-                                                infoModal.ingredientes.id
-                                              )
+                                              removeElement(ingrediente)
                                             }
                                             key={index}
                                             label={ingrediente.name}
@@ -214,14 +310,19 @@ const Cardapio = () => {
                                         );
                                       }
                                     )}
+                                  <div className='modal-btn-margin'>
+                                    <Button color='green'>Comprar</Button>
+                                  </div>
                                 </Grid.Column>
                               </Grid.Row>
                             </Grid>
-                            <div className='modal-btn-margin'>
-                              <Button color='green'>Comprar</Button>
-                            </div>
-                          </Modal.Description>
-                          <Grid>
+                          </Modal.Description> */}
+
+                          {/* {ingredientesSelecionados.map((x) => {
+                            return <h3 key={x.id}>{x.name}</h3>;
+                          })} */}
+
+                          {/* <Grid>
                             <Header color='red'>Ingredientes:</Header>
                             {infoModal && (
                               <Grid.Row columns={3}>
@@ -273,7 +374,7 @@ const Cardapio = () => {
                                 </Grid.Column>
                               </Grid.Row>
                             )}
-                          </Grid>
+                          </Grid> */}
                         </Modal.Content>
                       </Modal>
                     </Segment>
