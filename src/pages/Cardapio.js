@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Menu,
@@ -20,13 +20,18 @@ const Cardapio = () => {
   const [infoFilter, setInfoFilter] = useState([]);
   const [infoModal, setInfoModal] = useState('');
   const [modalState, setModalState] = useState(false);
-  const [buttonActive, setButtonActive] = useState(false);
+  // const [buttonActive, setButtonActive] = useState(false);
+  const [activeItem, setActiveItem] = useState('refrigerante');
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
+  const [showMenu, setShowMenu] = useState(false);
+  const [btnActive, setbtnActive] = useState(false);
+
+  const [tamanhoProduto, setTamanhoProduto] = useState(false);
 
   useEffect(() => {
     firestore
       .collection('menuinfo')
-      .orderBy('name', 'asc')
+      .orderBy('tag')
       .onSnapshot((snapshot) => {
         const newInformation = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -43,10 +48,20 @@ const Cardapio = () => {
   }, []);
 
   const orderBy = (text) => {
-    let filtered = firebaseInfo.filter((info) => {
-      return info.tag.match(text);
-    });
-    setInfoFilter(filtered);
+    if (text === 'refrigerante' || text === 'agua' || text === 'cerveja') {
+      setShowMenu(true);
+      setActiveItem(text);
+      let filtered = firebaseInfo.filter((info) => {
+        return info.tag.match(text);
+      });
+      setInfoFilter(filtered);
+    } else {
+      setShowMenu(false);
+      let filtered = firebaseInfo.filter((info) => {
+        return info.tag.match(text);
+      });
+      setInfoFilter(filtered);
+    }
   };
 
   const searchBy = (search) => {
@@ -56,8 +71,9 @@ const Cardapio = () => {
     setInfoFilter(filtered);
   };
 
-  const changePrice = (produto, tamanho, price, buttonActive) => {
-    setButtonActive(true);
+  const changePrice = (produto, tamanho, price) => {
+    setTamanhoProduto(!tamanhoProduto);
+    // setbtnActive((prevState) => !prevState.active);
     const resultado = infoFilter.findIndex(
       (produtoArray) => produtoArray.id === produto.id
     );
@@ -88,7 +104,12 @@ const Cardapio = () => {
   };
 
   const openModal = (infoItem) => {
-    if (infoItem.tag === 'porções') {
+    if (
+      infoItem.tag === 'porções' ||
+      infoItem.tag === 'refrigerante' ||
+      infoItem.tag === 'agua' ||
+      infoItem.tag === 'cerveja'
+    ) {
       setModalState(false);
     } else {
       console.log(infoItem);
@@ -116,17 +137,23 @@ const Cardapio = () => {
               <Button onClick={() => orderBy('hamburger')} color='red'>
                 Hambúrger
               </Button>
-              <Button onClick={() => orderBy('pizza')} color='red'>
+              <Button onClick={() => orderBy('Pizza')} color='red'>
                 Pizzas
               </Button>
-              <Button color='red'>Pizza Doce</Button>
-              <Button color='red'>Bebidas</Button>
+              <Button onClick={() => orderBy('pizzadoce')} color='red'>
+                Pizza Doce
+              </Button>
+              <Button onClick={() => orderBy('refrigerante')} color='red'>
+                Bebidas
+              </Button>
               <Button onClick={() => orderBy('porções')} color='red'>
                 Porções
               </Button>
               <Button color='red'>Condimentos</Button>
               <Button color='red'>Combos</Button>
-              <Button color='red'>Exibir Todas Opções</Button>
+              <Button onClick={() => orderBy('porções')} color='red'>
+                Exibir Todas Opções
+              </Button>
             </div>
           </Segment>
         </GridColumn>
@@ -136,16 +163,27 @@ const Cardapio = () => {
         <GridColumn width={4}></GridColumn>
         <GridColumn width={8}>
           <Menu attached='top' tabular>
-            {/* <Menu.Item
-              name='bio'
-              onClick={() => setActiveItem('bio')}
-              active={activeItem === 'bio'}
-            />
-            <Menu.Item
-              name='photos'
-              onClick={() => setActiveItem('photos')}
-              active={activeItem === 'photos'}
-            /> */}
+            {showMenu && (
+              <Menu.Item
+                name='refrigerante'
+                onClick={() => orderBy('refrigerante')}
+                active={activeItem === 'refrigerante'}
+              />
+            )}
+            {showMenu && (
+              <Menu.Item
+                name='cerveja'
+                onClick={() => orderBy('cerveja')}
+                active={activeItem === 'cerveja'}
+              />
+            )}
+            {showMenu && (
+              <Menu.Item
+                name='agua'
+                onClick={() => orderBy('agua')}
+                active={activeItem === 'agua'}
+              />
+            )}
             <Menu.Menu position='right'>
               <Menu.Item>
                 <Input
@@ -162,29 +200,52 @@ const Cardapio = () => {
                 {infoFilter.map((infoItem) => (
                   <Grid.Column key={infoItem.id}>
                     <Segment style={{ marginTop: '10px' }} textAlign='center'>
-                      {infoItem &&
+                      <Button
+                        onClick={() =>
+                          changePrice(
+                            infoItem,
+                            infoItem.medidas[0].size,
+                            infoItem.medidas[0].price
+                          )
+                        }
+                        color={tamanhoProduto ? 'green' : 'red'}
+                      >
+                        {infoItem.medidas[0].btnName}
+                      </Button>
+
+                      <Button
+                        onClick={() =>
+                          changePrice(
+                            infoItem,
+                            infoItem.medidas[1].size,
+                            infoItem.medidas[1].price
+                          )
+                        }
+                        color={!tamanhoProduto ? 'green' : 'red'}
+                      >
+                        {infoItem.medidas[1].btnName}
+                      </Button>
+
+                      {/* {infoItem &&
                         infoItem.medidas.map((medida, index) => {
                           return (
                             <Button
+                              // toggle
+                              // active={btnActive}
                               key={index}
                               onClick={() =>
-                                changePrice(
-                                  infoItem,
-                                  medida.size,
-                                  medida.price,
-                                  buttonActive
-                                )
+                                changePrice(infoItem, medida.size, medida.price)
                               }
-                              color='green'
+                              color={tamanhoProduto ? 'green' : 'red'}
                             >
                               {medida.btnName}
                             </Button>
                           );
-                        })}
+                        })} */}
                     </Segment>
                     <Segment>
                       <Image circular size='big' src={infoItem.img} />{' '}
-                      <Header as='h2' icon>
+                      <Header textAlign='center' as='h2' icon>
                         {infoItem.name}
                         <Header.Subheader>
                           {infoItem.description}
@@ -215,12 +276,22 @@ const Cardapio = () => {
                         <Modal.Content image>
                           <Grid>
                             <Grid.Column width={4}>
-                              <Image
-                                spaced='left'
-                                wrapped
-                                size='medium'
-                                src={infoModal.img}
-                              />
+                              <div className='image-modal'>
+                                {/* <Image
+                                  spaced='left'
+                                  wrapped
+                                  size='medium'
+                                  src={infoModal.img}
+                                /> */}
+                                <img
+                                  src={infoModal.img}
+                                  alt='abc'
+                                  height='150'
+                                  width='150'
+                                />
+                              </div>
+                            </Grid.Column>
+                            <GridColumn width={3}>
                               {infoModal &&
                                 infoModal.ingredientes.map(
                                   (ingrediente, index) => {
@@ -239,9 +310,9 @@ const Cardapio = () => {
                               <div className='modal-btn-margin'>
                                 <Button color='green'>Comprar</Button>
                               </div>
-                            </Grid.Column>
-                            <Grid.Column width={6}></Grid.Column>
-                            <Grid.Column width={6}>
+                            </GridColumn>
+                            {/* <Grid.Column width={4}></Grid.Column> */}
+                            <Grid.Column width={9}>
                               {ingredientesSelecionados.map((x) => {
                                 return <h3 key={x.id}>{x.name}</h3>;
                               })}
