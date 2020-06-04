@@ -28,8 +28,8 @@ const Cardapio = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [btnActive, setbtnActive] = useState(false);
   const [labelCount, setLabelCount] = useState(1);
-
   const [tamanhoProduto, setTamanhoProduto] = useState(false);
+  const [showMensagem, setShowMensagem] = useState(false);
 
   useEffect(() => {
     firestore
@@ -49,6 +49,14 @@ const Cardapio = () => {
         // console.log(newInformation);
       });
   }, []);
+
+  // if (labelCount < 1) {
+  //   setLabelCount(1);
+  // }
+
+  // if (ingredientesSelecionados.length === 0) {
+  //   setShowMensagem(true);
+  // }
 
   const orderBy = (text) => {
     if (text === 'refrigerante' || text === 'agua' || text === 'cerveja') {
@@ -90,8 +98,6 @@ const Cardapio = () => {
   };
 
   const removeorAddElement = (igr) => {
-    console.log(ingredientesSelecionados);
-    console.log(igr);
     const retorno = ingredientesSelecionados.findIndex(
       (ingrediente) => ingrediente.id === igr.id
     );
@@ -119,6 +125,24 @@ const Cardapio = () => {
       setInfoModal(infoItem);
       setIngredientesSelecionados(infoItem.ingredientes);
     }
+  };
+
+  const closeModal = () => {
+    setModalState(false);
+    setLabelCount(1);
+  };
+
+  const addOrRemoveProduct = (number) => {
+    let soma = labelCount;
+    if (number === 0) {
+      soma += 1;
+    } else if (number === 1) {
+      soma -= 1;
+      if (soma < 1) {
+        soma = 1;
+      }
+    }
+    setLabelCount(soma);
   };
 
   return (
@@ -196,12 +220,16 @@ const Cardapio = () => {
             </Menu.Menu>
           </Menu>
 
-          <Segment attached='bottom'>
+          <Segment raised attached='bottom'>
             <Grid stackable columns={3}>
               <Grid.Row>
                 {infoFilter.map((infoItem) => (
                   <Grid.Column key={infoItem.id}>
-                    <Segment style={{ marginTop: '10px' }} textAlign='center'>
+                    <Segment
+                      raised
+                      style={{ marginTop: '10px' }}
+                      textAlign='center'
+                    >
                       <Button
                         onClick={() =>
                           changePrice(
@@ -245,9 +273,9 @@ const Cardapio = () => {
                           );
                         })} */}
                     </Segment>
-                    <Segment>
+                    <Segment raised>
                       <Image circular size='big' src={infoItem.img} />{' '}
-                      {/* <img src={infoItem.img} alt='' /> */}
+                      {/* <img src={infoItem.img}  alt='' /> */}
                       <Header textAlign='center' as='h2' icon>
                         {infoItem.name}
                         <Header.Subheader>
@@ -256,7 +284,7 @@ const Cardapio = () => {
                         <span>${infoItem.price} </span>
                       </Header>
                     </Segment>
-                    <Segment textAlign='center'>
+                    <Segment raised textAlign='center'>
                       <Modal
                         trigger={
                           <Button
@@ -267,7 +295,7 @@ const Cardapio = () => {
                           </Button>
                         }
                         open={modalState}
-                        onClose={() => setModalState(false)}
+                        onClose={() => closeModal()}
                       >
                         <Segment
                           style={{ fontSize: '1.33em' }}
@@ -382,7 +410,12 @@ const Cardapio = () => {
                           <Grid stackable>
                             <Grid.Row>
                               <Grid.Column width={4}>
-                                <Segment padded size='mini' textAlign='center'>
+                                <Segment
+                                  raised
+                                  padded
+                                  size='mini'
+                                  textAlign='center'
+                                >
                                   <Image
                                     centered
                                     circular
@@ -398,39 +431,50 @@ const Cardapio = () => {
                                   >
                                     {labelCount}
                                   </Label>
+                                  <h3>{infoModal.name}</h3>
+                                  <h3>${infoModal.price}</h3>
                                   <h3>Quantidade</h3>
                                   <Button
-                                    onClick={() =>
-                                      setLabelCount(labelCount + 1)
-                                    }
-                                    size='mini'
-                                    circular
-                                    icon='plus'
-                                  ></Button>
-
-                                  <Button
-                                    onClick={() =>
-                                      setLabelCount(labelCount - 1)
-                                    }
+                                    onClick={() => addOrRemoveProduct(1)}
                                     size='mini'
                                     circular
                                     icon='minus'
                                   ></Button>
+                                  <Button
+                                    onClick={() => addOrRemoveProduct(0)}
+                                    size='mini'
+                                    circular
+                                    icon='plus'
+                                  ></Button>
                                 </Segment>
                               </Grid.Column>
                               <Grid.Column width={10}>
-                                <Segment padded textAlign='center'>
-                                  Ingredientes:
-                                  {ingredientesSelecionados.map((x) => {
-                                    return (
-                                      <Image
-                                        centered
-                                        size='tiny'
-                                        src={x.image}
-                                        key={x.id}
-                                      ></Image>
-                                    );
-                                  })}
+                                <Segment raised padded textAlign='center'>
+                                  <p style={{ fontSize: '1.33em' }}>
+                                    Ingredientes:
+                                  </p>
+                                  {ingredientesSelecionados.length === 0 && (
+                                    <h1>Sem Ingredientes</h1>
+                                  )}
+                                  {showMensagem && (
+                                    <h1>
+                                      Não existe nenhum ingrediente selecionado
+                                    </h1>
+                                  )}
+                                  <Grid columns={3}>
+                                    {ingredientesSelecionados.map((x) => {
+                                      return (
+                                        <Grid.Column key={x.id}>
+                                          <Image
+                                            centered
+                                            size='tiny'
+                                            src={x.image}
+                                            key={x.id}
+                                          ></Image>
+                                        </Grid.Column>
+                                      );
+                                    })}
+                                  </Grid>
                                 </Segment>
                               </Grid.Column>
                               <Grid.Column width={2}>
