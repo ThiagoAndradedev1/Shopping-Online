@@ -12,6 +12,8 @@ import {
   Modal,
   Checkbox,
   GridRow,
+  Label,
+  ButtonGroup,
 } from 'semantic-ui-react';
 import { firestore } from '../firebase';
 
@@ -25,6 +27,7 @@ const Cardapio = () => {
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
   const [btnActive, setbtnActive] = useState(false);
+  const [labelCount, setLabelCount] = useState(1);
 
   const [tamanhoProduto, setTamanhoProduto] = useState(false);
 
@@ -73,7 +76,6 @@ const Cardapio = () => {
 
   const changePrice = (produto, tamanho, price) => {
     setTamanhoProduto(!tamanhoProduto);
-    // setbtnActive((prevState) => !prevState.active);
     const resultado = infoFilter.findIndex(
       (produtoArray) => produtoArray.id === produto.id
     );
@@ -87,7 +89,7 @@ const Cardapio = () => {
     }
   };
 
-  const removeElement = (igr) => {
+  const removeorAddElement = (igr) => {
     console.log(ingredientesSelecionados);
     console.log(igr);
     const retorno = ingredientesSelecionados.findIndex(
@@ -245,6 +247,7 @@ const Cardapio = () => {
                     </Segment>
                     <Segment>
                       <Image circular size='big' src={infoItem.img} />{' '}
+                      {/* <img src={infoItem.img} alt='' /> */}
                       <Header textAlign='center' as='h2' icon>
                         {infoItem.name}
                         <Header.Subheader>
@@ -274,31 +277,21 @@ const Cardapio = () => {
                           Pizza
                         </Segment>
                         <Modal.Content image>
-                          <Grid>
-                            <Grid.Column width={4}>
-                              <div className='image-modal'>
-                                {/* <Image
-                                  spaced='left'
-                                  wrapped
-                                  size='medium'
-                                  src={infoModal.img}
-                                /> */}
-                                <img
-                                  src={infoModal.img}
-                                  alt='abc'
-                                  height='150'
-                                  width='150'
-                                />
-                              </div>
-                            </Grid.Column>
-                            <GridColumn width={3}>
+                          {/* <Grid columns={2} padded>
+                            <Grid.Column>
+                              <img
+                                src={infoModal.img}
+                                alt='abc'
+                                height='150'
+                                width='150'
+                              />
                               {infoModal &&
                                 infoModal.ingredientes.map(
                                   (ingrediente, index) => {
                                     return (
                                       <Checkbox
                                         onChange={() =>
-                                          removeElement(ingrediente)
+                                          removeorAddElement(ingrediente)
                                         }
                                         key={index}
                                         label={ingrediente.name}
@@ -310,13 +303,157 @@ const Cardapio = () => {
                               <div className='modal-btn-margin'>
                                 <Button color='green'>Comprar</Button>
                               </div>
-                            </GridColumn>
-                            {/* <Grid.Column width={4}></Grid.Column> */}
-                            <Grid.Column width={9}>
-                              {ingredientesSelecionados.map((x) => {
-                                return <h3 key={x.id}>{x.name}</h3>;
-                              })}
                             </Grid.Column>
+                            <Grid.Column>
+                              <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
+                            </Grid.Column>
+                          </Grid> */}
+                          {/* <Grid stackable>
+                            <Grid.Column width={4}>
+                              <Image
+                                spaced='left'
+                                wrapped
+                                size='medium'
+                                src={infoModal.img}
+                              />
+                              <img
+                                src={infoModal.img}
+                                alt='abc'
+                                height='150'
+                                width='150'
+                              />
+                              <Segment size='mini' textAlign='center'>
+                                <h3>Quantidade:</h3>
+                                <Button
+                                  color='blue'
+                                  size='mini'
+                                  circular
+                                  icon='minus'
+                                ></Button>
+                                <Label size='large' circular color='red'>
+                                  2
+                                </Label>
+                                <Button
+                                  color='blue'
+                                  size='mini'
+                                  circular
+                                  icon='plus'
+                                ></Button>
+                              </Segment>
+                            </Grid.Column>
+                            <GridColumn width={3}>
+                              <Segment>
+                                {infoModal &&
+                                  infoModal.ingredientes.map(
+                                    (ingrediente, index) => {
+                                      return (
+                                        <Checkbox
+                                          onChange={() =>
+                                            removeorAddElement(ingrediente)
+                                          }
+                                          key={index}
+                                          label={ingrediente.name}
+                                          defaultChecked
+                                        />
+                                      );
+                                    }
+                                  )}
+                                <div className='modal-btn-margin'>
+                                  <Button color='green'>Comprar</Button>
+                                </div>
+                              </Segment>
+                            </GridColumn>
+                            <Grid.Column width={4}></Grid.Column>
+                            <Grid.Column width={9}>
+                              <Segment textAlign='center'>
+                                <h1>hello</h1>
+                                {ingredientesSelecionados.map((x) => {
+                                  return (
+                                    <Image
+                                      size='tiny'
+                                      src={x.image}
+                                      key={x.id}
+                                    ></Image>
+                                  );
+                                })}
+                              </Segment>
+                            </Grid.Column>
+                          </Grid> */}
+                          <Grid stackable>
+                            <Grid.Row>
+                              <Grid.Column width={4}>
+                                <Segment padded size='mini' textAlign='center'>
+                                  <Image
+                                    centered
+                                    circular
+                                    wrapped
+                                    size='medium'
+                                    src={infoModal.img}
+                                  />
+                                  <Label
+                                    size='massive'
+                                    circular
+                                    color='red'
+                                    floating
+                                  >
+                                    {labelCount}
+                                  </Label>
+                                  <h3>Quantidade</h3>
+                                  <Button
+                                    onClick={() =>
+                                      setLabelCount(labelCount + 1)
+                                    }
+                                    size='mini'
+                                    circular
+                                    icon='plus'
+                                  ></Button>
+
+                                  <Button
+                                    onClick={() =>
+                                      setLabelCount(labelCount - 1)
+                                    }
+                                    size='mini'
+                                    circular
+                                    icon='minus'
+                                  ></Button>
+                                </Segment>
+                              </Grid.Column>
+                              <Grid.Column width={10}>
+                                <Segment padded textAlign='center'>
+                                  Ingredientes:
+                                  {ingredientesSelecionados.map((x) => {
+                                    return (
+                                      <Image
+                                        centered
+                                        size='tiny'
+                                        src={x.image}
+                                        key={x.id}
+                                      ></Image>
+                                    );
+                                  })}
+                                </Segment>
+                              </Grid.Column>
+                              <Grid.Column width={2}>
+                                {infoModal &&
+                                  infoModal.ingredientes.map(
+                                    (ingrediente, index) => {
+                                      return (
+                                        <Checkbox
+                                          onChange={() =>
+                                            removeorAddElement(ingrediente)
+                                          }
+                                          key={index}
+                                          label={ingrediente.name}
+                                          defaultChecked
+                                        />
+                                      );
+                                    }
+                                  )}
+                                <div className='modal-btn-margin'>
+                                  <Button color='green'>Comprar</Button>
+                                </div>
+                              </Grid.Column>
+                            </Grid.Row>
                           </Grid>
 
                           {/* <Grid columns={2} centered>
