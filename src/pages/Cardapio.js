@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import {
   Button,
   Menu,
@@ -13,7 +13,10 @@ import {
   Checkbox,
   GridRow,
   Label,
+  Icon,
+  Responsive,
   ButtonGroup,
+  Sidebar,
 } from 'semantic-ui-react';
 import { firestore } from '../firebase';
 
@@ -29,6 +32,7 @@ const Cardapio = () => {
   const [btnActive, setbtnActive] = useState(false);
   const [labelCount, setLabelCount] = useState(1);
   const [tamanhoProduto, setTamanhoProduto] = useState(false);
+  const [sideBarVisible, setSideBarVisible] = useState(false);
   const [showMensagem, setShowMensagem] = useState(false);
 
   useEffect(() => {
@@ -145,49 +149,94 @@ const Cardapio = () => {
     setLabelCount(soma);
   };
 
+  let id0 = 0;
+  let id1 = 1;
+
   return (
     <div style={{ marginTop: '150px' }}>
       <Grid columns={3}>
+        <Responsive as={Fragment} {...Responsive.onlyMobile}>
+          <Sidebar
+            as={Menu}
+            color='black'
+            direction='right'
+            animation='overlay'
+            icon='labeled'
+            inverted
+            vertical
+            onHide={() => setSideBarVisible(false)}
+            visible={sideBarVisible}
+            width='thin'
+          >
+            <Menu.Item>
+              <Fragment>
+                <Header inverted as='h2' icon textAlign='center'>
+                  <Icon name='users' circular />
+                  <Header.Content>Friends</Header.Content>
+                </Header>
+              </Fragment>
+            </Menu.Item>
+          </Sidebar>
+        </Responsive>
         <GridColumn width={4}></GridColumn>
         <GridColumn width={8}>
-          <Segment secondary>
-            <Header as='h2' icon textAlign='center'>
-              <Image
-                size='massive'
-                src='https://media.giphy.com/media/l1J9OJBbfEFY6YCK4/giphy.gif'
-              />
-              <Header.Content>Nosso Cardápio</Header.Content>
-            </Header>
-            <Divider />
-            <div>
-              <Button onClick={() => orderBy('hamburger')} color='red'>
-                Hambúrger
-              </Button>
-              <Button onClick={() => orderBy('Pizza')} color='red'>
-                Pizzas
-              </Button>
-              <Button onClick={() => orderBy('pizzadoce')} color='red'>
-                Pizza Doce
-              </Button>
-              <Button onClick={() => orderBy('refrigerante')} color='red'>
-                Bebidas
-              </Button>
-              <Button onClick={() => orderBy('porções')} color='red'>
-                Porções
-              </Button>
-              <Button color='red'>Condimentos</Button>
-              <Button color='red'>Combos</Button>
-              <Button onClick={() => orderBy('porções')} color='red'>
-                Exibir Todas Opções
-              </Button>
-            </div>
-          </Segment>
+          <Responsive as={Fragment} {...Responsive.onlyMobile}>
+            <Segment raised textAlign='center' secondary>
+              <Header as='h2' icon textAlign='center'>
+                <Image
+                  size='massive'
+                  src='https://media.giphy.com/media/l1J9OJBbfEFY6YCK4/giphy.gif'
+                />
+                <Header.Content>Nosso Cardápio</Header.Content>
+              </Header>
+              <Divider />
+              <div>
+                <Button onClick={() => setSideBarVisible(true)} color='red'>
+                  Ver Cardapio...
+                </Button>
+              </div>
+            </Segment>
+          </Responsive>
+          <Responsive as={Fragment} {...Responsive.onlyComputer}>
+            <Segment secondary>
+              <Header as='h2' icon textAlign='center'>
+                <Image
+                  size='massive'
+                  src='https://media.giphy.com/media/l1J9OJBbfEFY6YCK4/giphy.gif'
+                />
+                <Header.Content>Nosso Cardápio</Header.Content>
+              </Header>
+              <Divider />
+              <div>
+                <Button onClick={() => orderBy('hamburger')} color='red'>
+                  Hambúrger
+                </Button>
+                <Button onClick={() => orderBy('Pizza')} color='red'>
+                  Pizzas
+                </Button>
+                <Button onClick={() => orderBy('pizzadoce')} color='red'>
+                  Pizza Doce
+                </Button>
+                <Button onClick={() => orderBy('refrigerante')} color='red'>
+                  Bebidas
+                </Button>
+                <Button onClick={() => orderBy('porções')} color='red'>
+                  Porções
+                </Button>
+                <Button color='red'>Condimentos</Button>
+                <Button color='red'>Combos</Button>
+                <Button onClick={() => orderBy('porções')} color='red'>
+                  Exibir Todas Opções
+                </Button>
+              </div>
+            </Segment>
+          </Responsive>
         </GridColumn>
         <GridColumn width={4}></GridColumn>
       </Grid>
       <Grid columns={3}>
         <GridColumn width={4}></GridColumn>
-        <GridColumn width={8}>
+        <GridColumn mobile={16} computer={8}>
           <Menu attached='top' tabular>
             {showMenu && (
               <Menu.Item
@@ -305,108 +354,6 @@ const Cardapio = () => {
                           Pizza
                         </Segment>
                         <Modal.Content image>
-                          {/* <Grid columns={2} padded>
-                            <Grid.Column>
-                              <img
-                                src={infoModal.img}
-                                alt='abc'
-                                height='150'
-                                width='150'
-                              />
-                              {infoModal &&
-                                infoModal.ingredientes.map(
-                                  (ingrediente, index) => {
-                                    return (
-                                      <Checkbox
-                                        onChange={() =>
-                                          removeorAddElement(ingrediente)
-                                        }
-                                        key={index}
-                                        label={ingrediente.name}
-                                        defaultChecked
-                                      />
-                                    );
-                                  }
-                                )}
-                              <div className='modal-btn-margin'>
-                                <Button color='green'>Comprar</Button>
-                              </div>
-                            </Grid.Column>
-                            <Grid.Column>
-                              <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
-                            </Grid.Column>
-                          </Grid> */}
-                          {/* <Grid stackable>
-                            <Grid.Column width={4}>
-                              <Image
-                                spaced='left'
-                                wrapped
-                                size='medium'
-                                src={infoModal.img}
-                              />
-                              <img
-                                src={infoModal.img}
-                                alt='abc'
-                                height='150'
-                                width='150'
-                              />
-                              <Segment size='mini' textAlign='center'>
-                                <h3>Quantidade:</h3>
-                                <Button
-                                  color='blue'
-                                  size='mini'
-                                  circular
-                                  icon='minus'
-                                ></Button>
-                                <Label size='large' circular color='red'>
-                                  2
-                                </Label>
-                                <Button
-                                  color='blue'
-                                  size='mini'
-                                  circular
-                                  icon='plus'
-                                ></Button>
-                              </Segment>
-                            </Grid.Column>
-                            <GridColumn width={3}>
-                              <Segment>
-                                {infoModal &&
-                                  infoModal.ingredientes.map(
-                                    (ingrediente, index) => {
-                                      return (
-                                        <Checkbox
-                                          onChange={() =>
-                                            removeorAddElement(ingrediente)
-                                          }
-                                          key={index}
-                                          label={ingrediente.name}
-                                          defaultChecked
-                                        />
-                                      );
-                                    }
-                                  )}
-                                <div className='modal-btn-margin'>
-                                  <Button color='green'>Comprar</Button>
-                                </div>
-                              </Segment>
-                            </GridColumn>
-                            <Grid.Column width={4}></Grid.Column>
-                            <Grid.Column width={9}>
-                              <Segment textAlign='center'>
-                                <h1>hello</h1>
-                                {ingredientesSelecionados.map((x) => {
-                                  return (
-                                    <Image
-                                      size='tiny'
-                                      src={x.image}
-                                      key={x.id}
-                                    ></Image>
-                                  );
-                                })}
-                              </Segment>
-                            </Grid.Column>
-                          </Grid> */}
                           <Grid stackable>
                             <Grid.Row>
                               <Grid.Column width={4}>
@@ -450,9 +397,10 @@ const Cardapio = () => {
                               </Grid.Column>
                               <Grid.Column width={10}>
                                 <Segment raised padded textAlign='center'>
-                                  <p style={{ fontSize: '1.33em' }}>
+                                  <h3>Ingredientes</h3>
+                                  {/* <p style={{ fontSize: '1.33em' }}>
                                     Ingredientes:
-                                  </p>
+                                  </p> */}
                                   {ingredientesSelecionados.length === 0 && (
                                     <h1>Sem Ingredientes</h1>
                                   )}
@@ -478,82 +426,17 @@ const Cardapio = () => {
                                 </Segment>
                               </Grid.Column>
                               <Grid.Column width={2}>
-                                {infoModal &&
-                                  infoModal.ingredientes.map(
-                                    (ingrediente, index) => {
-                                      return (
-                                        <Checkbox
-                                          onChange={() =>
-                                            removeorAddElement(ingrediente)
-                                          }
-                                          key={index}
-                                          label={ingrediente.name}
-                                          defaultChecked
-                                        />
-                                      );
-                                    }
-                                  )}
-                                <div className='modal-btn-margin'>
-                                  <Button color='green'>Comprar</Button>
-                                </div>
-                              </Grid.Column>
-                            </Grid.Row>
-                          </Grid>
-
-                          {/* <Grid columns={2} centered>
-                            <GridRow>
-                              <Grid.Column verticalAlign='middle'>
-                                <Image
-                                  wrapped
-                                  size='medium'
-                                  src={infoModal.img}
-                                />
-                                {infoModal &&
-                                  infoModal.ingredientes.map(
-                                    (ingrediente, index) => {
-                                      return (
-                                        <Checkbox
-                                          onChange={() =>
-                                            removeElement(ingrediente)
-                                          }
-                                          key={index}
-                                          label={ingrediente.name}
-                                          defaultChecked
-                                        />
-                                      );
-                                    }
-                                  )}
-                                <div className='modal-btn-margin'>
-                                  <Button color='green'>Comprar</Button>
-                                </div>
-                              </Grid.Column>
-                            </GridRow>
-                            <Grid.Column>
-                              <GridRow>
-                                <Menu fluid vertical>
-                                  <Menu.Item className='header'>
-                                    {ingredientesSelecionados.map((x) => {
-                                      return <h3 key={x.id}>{x.name}</h3>;
-                                    })}
-                                  </Menu.Item>
-                                </Menu.Item>
-                              </GridRow>
-                            </Grid.Column>
-                          </Grid> */}
-                          {/* <Image wrapped size='medium' src={infoModal.img} /> */}
-
-                          {/* <Modal.Description>
-                            <Header color='red'>{infoModal.name}</Header>
-                            <Grid columns={3}>
-                              <Grid.Row>
-                                <Grid.Column>
+                                <Responsive
+                                  as={Fragment}
+                                  {...Responsive.onlyComputer}
+                                >
                                   {infoModal &&
                                     infoModal.ingredientes.map(
                                       (ingrediente, index) => {
                                         return (
                                           <Checkbox
                                             onChange={() =>
-                                              removeElement(ingrediente)
+                                              removeorAddElement(ingrediente)
                                             }
                                             key={index}
                                             label={ingrediente.name}
@@ -562,71 +445,53 @@ const Cardapio = () => {
                                         );
                                       }
                                     )}
+                                </Responsive>
+
+                                <Responsive
+                                  as={Fragment}
+                                  {...Responsive.onlyMobile}
+                                >
+                                  <Segment raised textAlign='center'>
+                                    {infoModal &&
+                                      infoModal.ingredientes.map(
+                                        (ingrediente, index) => {
+                                          return (
+                                            <Checkbox
+                                              style={{ margin: '10px' }}
+                                              onChange={() =>
+                                                removeorAddElement(ingrediente)
+                                              }
+                                              key={index}
+                                              label={ingrediente.name}
+                                              defaultChecked
+                                            />
+                                          );
+                                        }
+                                      )}
+                                  </Segment>
+                                </Responsive>
+
+                                <Responsive
+                                  as={Fragment}
+                                  {...Responsive.onlyComputer}
+                                >
                                   <div className='modal-btn-margin'>
                                     <Button color='green'>Comprar</Button>
                                   </div>
-                                </Grid.Column>
-                              </Grid.Row>
-                            </Grid>
-                          </Modal.Description> */}
-
-                          {/* {ingredientesSelecionados.map((x) => {
-                            return <h3 key={x.id}>{x.name}</h3>;
-                          })} */}
-
-                          {/* <Grid>
-                            <Header color='red'>Ingredientes:</Header>
-                            {infoModal && (
-                              <Grid.Row columns={3}>
-                                <Grid.Column>
-                                  <Image
-                                    circular
-                                    size='tiny'
-                                    src={infoModal.ingredientes[0].image}
-                                  />
-                                </Grid.Column>
-                                <Grid.Column>
-                                  <Image
-                                    circular
-                                    size='tiny'
-                                    src={infoModal.ingredientes[1].image}
-                                  />
-                                </Grid.Column>
-                                <Grid.Column>
-                                  <Image
-                                    circular
-                                    size='tiny'
-                                    src={infoModal.ingredientes[2].image}
-                                  />
-                                </Grid.Column>
-                              </Grid.Row>
-                            )}
-                            {infoModal && (
-                              <Grid.Row columns={3}>
-                                <Grid.Column>
-                                  <Image
-                                    circular
-                                    size='tiny'
-                                    src={infoModal.ingredientes[3].image}
-                                  />
-                                </Grid.Column>
-                                <Grid.Column>
-                                  <Image
-                                    circular
-                                    size='tiny'
-                                    src={infoModal.ingredientes[4].image}
-                                  />
-                                </Grid.Column>
-                                <Grid.Column>
-                                  <Image
-                                    circular
-                                    size='tiny'
-                                    src={infoModal.ingredientes[5].image}
-                                  />
-                                </Grid.Column>
-                              </Grid.Row>
-                            )}
-                          </Grid> */}
+                                </Responsive>
+                                <Responsive
+                                  as={Fragment}
+                                  {...Responsive.onlyMobile}
+                                >
+                                  <div className='modal-btn-margin'>
+                                    <Button fluid color='green'>
+                                      Comprar
+                                    </Button>
+                                  </div>
+                                </Responsive>
+                              </Grid.Column>
+                            </Grid.Row>
+                          </Grid>
                         </Modal.Content>
                       </Modal>
                     </Segment>
