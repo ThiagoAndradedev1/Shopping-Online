@@ -18,7 +18,7 @@ const Cart = () => {
       <Container>
         <Grid columns={3}>
           <GridColumn width={3}></GridColumn>
-          <GridColumn width={10}>
+          <GridColumn mobile={16} computer={10}>
             <Segment color='black' style={{ marginTop: '150px' }} placeholder>
               <Header as='h2' icon textAlign='center'>
                 <Icon name='users' circular />
