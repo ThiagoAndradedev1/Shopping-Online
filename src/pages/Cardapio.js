@@ -280,6 +280,7 @@ const Cardapio = () => {
                       textAlign='center'
                     >
                       <Button
+                        animated='fade'
                         onClick={() =>
                           changePrice(
                             infoItem,
@@ -287,12 +288,19 @@ const Cardapio = () => {
                             infoItem.medidas[0].price
                           )
                         }
-                        color={tamanhoProduto ? 'green' : 'red'}
+                        // color={tamanhoProduto ? 'green' : 'red'}
+                        color='red'
                       >
-                        {infoItem.medidas[0].btnName}
+                        <Button.Content visible>
+                          {infoItem.medidas[0].btnName}
+                        </Button.Content>
+                        <Button.Content hidden>
+                          {infoItem.medidas[0].btnName}
+                        </Button.Content>
                       </Button>
 
                       <Button
+                        animated='fade'
                         onClick={() =>
                           changePrice(
                             infoItem,
@@ -300,9 +308,15 @@ const Cardapio = () => {
                             infoItem.medidas[1].price
                           )
                         }
-                        color={!tamanhoProduto ? 'green' : 'red'}
+                        color='green'
+                        // color={!tamanhoProduto ? 'green' : 'red'}
                       >
-                        {infoItem.medidas[1].btnName}
+                        <Button.Content visible>
+                          {infoItem.medidas[1].btnName}
+                        </Button.Content>
+                        <Button.Content hidden>
+                          {infoItem.medidas[1].btnName}
+                        </Button.Content>
                       </Button>
 
                       {/* {infoItem &&
@@ -323,7 +337,11 @@ const Cardapio = () => {
                         })} */}
                     </Segment>
                     <Segment raised>
-                      <Image circular size='big' src={infoItem.img} />{' '}
+                      <Image
+                        style={{ minHeight: '250px' }}
+                        size='big'
+                        src={infoItem.img}
+                      />{' '}
                       {/* <img src={infoItem.img}  alt='' /> */}
                       <Header textAlign='center' as='h2' icon>
                         {infoItem.name}
@@ -337,10 +355,12 @@ const Cardapio = () => {
                       <Modal
                         trigger={
                           <Button
+                            animated='fade'
                             onClick={() => openModal(infoItem)}
                             color='green'
                           >
-                            Comprar
+                            <Button.Content visible>Comprar</Button.Content>
+                            <Button.Content hidden>Comprar</Button.Content>
                           </Button>
                         }
                         open={modalState}
