@@ -1,5 +1,5 @@
 import React, { useState, useContext, Fragment } from 'react';
-import AnimationContext from '../context/animation/animationContext';
+
 import { auth, firestore } from '../firebase';
 import {
   Button,
@@ -20,7 +20,6 @@ import {
 
 const Signup = () => {
   // const transition = 'fly left';
-  const { setShowLogin, showLogin } = useContext(AnimationContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -103,11 +102,7 @@ const Signup = () => {
                 {/* <Form.Field>
                   <Checkbox label='Eu concordo com os termos e condições' />
                 </Form.Field> */}
-                <Button
-                  onClick={() => setShowLogin(false)}
-                  secondary
-                  type='submit'
-                >
+                <Button secondary type='submit'>
                   Confirmar
                 </Button>
               </Form>

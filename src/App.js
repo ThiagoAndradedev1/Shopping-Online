@@ -2,13 +2,14 @@ import React, { Fragment } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import CalculationState from './context/CalculationState';
 import Home from '../src/pages/Home';
 import Navbar from '../src/layout/Navbar';
 import Login from '../src/pages/Login';
 import Cart from '../src/pages/Cart';
 import Cardapio from './pages/Cardapio';
 import Signup from '../src/pages/Signup';
-import AnimationState from './context/animation/AnimationState';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,7 +21,7 @@ import './App.css';
 const App = () => {
   return (
     <Fragment>
-      <AnimationState>
+      <CalculationState>
         <Router>
           <Navbar />
           <Switch>
@@ -34,7 +35,7 @@ const App = () => {
             <Route exact path='/signup' component={Signup} />
           </Switch>
         </Router>
-      </AnimationState>
+      </CalculationState>
     </Fragment>
   );
 };

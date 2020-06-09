@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react';
-import AnimationContext from '../context/animation/animationContext';
+
 import {
   Button,
   Container,
@@ -10,7 +10,6 @@ import {
   Label,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import AnimationState from '../context/animation/AnimationState';
 
 const Navbar = () => {
   return (

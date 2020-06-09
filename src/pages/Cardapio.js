@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useContext } from 'react';
 import {
   Button,
   Menu,
@@ -11,29 +11,28 @@ import {
   Input,
   Modal,
   Checkbox,
-  GridRow,
   Label,
   Icon,
   Responsive,
-  ButtonGroup,
   Sidebar,
 } from 'semantic-ui-react';
 import { firestore } from '../firebase';
+import calculationContext from '../context/calculationContext';
 
 const Cardapio = () => {
   const [firebaseInfo, setFirebaseInfo] = useState([]);
   const [infoFilter, setInfoFilter] = useState([]);
   const [infoModal, setInfoModal] = useState('');
   const [modalState, setModalState] = useState(false);
-  // const [buttonActive, setButtonActive] = useState(false);
   const [activeItem, setActiveItem] = useState('refrigerante');
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
-  const [btnActive, setbtnActive] = useState(false);
   const [labelCount, setLabelCount] = useState(1);
-  const [tamanhoProduto, setTamanhoProduto] = useState(false);
   const [sideBarVisible, setSideBarVisible] = useState(false);
-  const [showMensagem, setShowMensagem] = useState(false);
+  const [productPrice, setProductPrice] = useState(0);
+  const [productAmount, setProductAmount] = useState(1);
+
+  const { addTransaction } = useContext(calculationContext);
 
   useEffect(() => {
     firestore
@@ -49,18 +48,8 @@ const Cardapio = () => {
         });
         setFirebaseInfo(newInformation);
         setInfoFilter(filtered);
-        // setIngredientesSelecionados(newInformation);
-        // console.log(newInformation);
       });
   }, []);
-
-  // if (labelCount < 1) {
-  //   setLabelCount(1);
-  // }
-
-  // if (ingredientesSelecionados.length === 0) {
-  //   setShowMensagem(true);
-  // }
 
   const orderBy = (text) => {
     if (text === 'refrigerante' || text === 'agua' || text === 'cerveja') {
@@ -87,7 +76,6 @@ const Cardapio = () => {
   };
 
   const changePrice = (produto, tamanho, price) => {
-    setTamanhoProduto(!tamanhoProduto);
     const resultado = infoFilter.findIndex(
       (produtoArray) => produtoArray.id === produto.id
     );
@@ -101,7 +89,7 @@ const Cardapio = () => {
     }
   };
 
-  const removeorAddElement = (igr) => {
+  const removeorAddIngrediente = (igr) => {
     const retorno = ingredientesSelecionados.findIndex(
       (ingrediente) => ingrediente.id === igr.id
     );
@@ -134,6 +122,8 @@ const Cardapio = () => {
   const closeModal = () => {
     setModalState(false);
     setLabelCount(1);
+    setProductPrice(0);
+    setProductAmount(1);
   };
 
   const addOrRemoveProduct = (number) => {
@@ -149,8 +139,17 @@ const Cardapio = () => {
     setLabelCount(soma);
   };
 
-  let id0 = 0;
-  let id1 = 1;
+  const buyProduct = (price, labelCount) => {
+    setProductPrice(price);
+    setProductAmount(labelCount);
+    const newTransaction = {
+      id: Math.floor(Math.random() * 100000000),
+      labelCount,
+      productPrice: infoModal.price * labelCount,
+      infoModal,
+    };
+    addTransaction(newTransaction);
+  };
 
   return (
     <div style={{ marginTop: '150px' }}>
@@ -288,7 +287,6 @@ const Cardapio = () => {
                             infoItem.medidas[0].price
                           )
                         }
-                        // color={tamanhoProduto ? 'green' : 'red'}
                         color='red'
                       >
                         <Button.Content visible>
@@ -309,7 +307,6 @@ const Cardapio = () => {
                           )
                         }
                         color='green'
-                        // color={!tamanhoProduto ? 'green' : 'red'}
                       >
                         <Button.Content visible>
                           {infoItem.medidas[1].btnName}
@@ -318,23 +315,6 @@ const Cardapio = () => {
                           {infoItem.medidas[1].btnName}
                         </Button.Content>
                       </Button>
-
-                      {/* {infoItem &&
-                        infoItem.medidas.map((medida, index) => {
-                          return (
-                            <Button
-                              // toggle
-                              // active={btnActive}
-                              key={index}
-                              onClick={() =>
-                                changePrice(infoItem, medida.size, medida.price)
-                              }
-                              color={tamanhoProduto ? 'green' : 'red'}
-                            >
-                              {medida.btnName}
-                            </Button>
-                          );
-                        })} */}
                     </Segment>
                     <Segment raised>
                       <Image
@@ -342,7 +322,6 @@ const Cardapio = () => {
                         size='big'
                         src={infoItem.img}
                       />{' '}
-                      {/* <img src={infoItem.img}  alt='' /> */}
                       <Header textAlign='center' as='h2' icon>
                         {infoItem.name}
                         <Header.Subheader>
@@ -418,16 +397,9 @@ const Cardapio = () => {
                               <Grid.Column width={10}>
                                 <Segment raised padded textAlign='center'>
                                   <h3>Ingredientes</h3>
-                                  {/* <p style={{ fontSize: '1.33em' }}>
-                                    Ingredientes:
-                                  </p> */}
+
                                   {ingredientesSelecionados.length === 0 && (
                                     <h1>Sem Ingredientes</h1>
-                                  )}
-                                  {showMensagem && (
-                                    <h1>
-                                      Não existe nenhum ingrediente selecionado
-                                    </h1>
                                   )}
                                   <Grid columns={3}>
                                     {ingredientesSelecionados.map((x) => {
@@ -456,7 +428,9 @@ const Cardapio = () => {
                                         return (
                                           <Checkbox
                                             onChange={() =>
-                                              removeorAddElement(ingrediente)
+                                              removeorAddIngrediente(
+                                                ingrediente
+                                              )
                                             }
                                             key={index}
                                             label={ingrediente.name}
@@ -479,7 +453,9 @@ const Cardapio = () => {
                                             <Checkbox
                                               style={{ margin: '10px' }}
                                               onChange={() =>
-                                                removeorAddElement(ingrediente)
+                                                removeorAddIngrediente(
+                                                  ingrediente
+                                                )
                                               }
                                               key={index}
                                               label={ingrediente.name}
@@ -496,7 +472,14 @@ const Cardapio = () => {
                                   {...Responsive.onlyComputer}
                                 >
                                   <div className='modal-btn-margin'>
-                                    <Button color='green'>Comprar</Button>
+                                    <Button
+                                      onClick={() =>
+                                        buyProduct(infoModal.price, labelCount)
+                                      }
+                                      color='green'
+                                    >
+                                      Comprar
+                                    </Button>
                                   </div>
                                 </Responsive>
                                 <Responsive
@@ -504,7 +487,13 @@ const Cardapio = () => {
                                   {...Responsive.onlyMobile}
                                 >
                                   <div className='modal-btn-margin'>
-                                    <Button fluid color='green'>
+                                    <Button
+                                      onClick={() =>
+                                        buyProduct(infoModal.price, labelCount)
+                                      }
+                                      fluid
+                                      color='green'
+                                    >
                                       Comprar
                                     </Button>
                                   </div>
