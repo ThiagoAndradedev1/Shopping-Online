@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import CalculationState from './context/CalculationState';
+import CalculationState from './context/calculation/CalculationState';
 import Home from '../src/pages/Home';
 import Navbar from '../src/layout/Navbar';
 import Login from '../src/pages/Login';

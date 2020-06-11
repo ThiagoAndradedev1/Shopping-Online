@@ -5,17 +5,15 @@ import {
   Button,
   Header,
   Image,
-  Checkbox,
   Form,
   Segment,
   Container,
   Grid,
   GridColumn,
-  Transition,
   Message,
   Dimmer,
-  Icon,
   Loader,
+  Icon,
 } from 'semantic-ui-react';
 
 const Signup = () => {
@@ -27,10 +25,12 @@ const Signup = () => {
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
+    setError('');
+    setLoading(true);
     if (name === '' || email === '' || password === '') {
       setError('Você precisa preencher todos os campos !');
+      setLoading(false);
     } else {
-      e.preventDefault();
       try {
         const response = await auth.createUserWithEmailAndPassword(
           email,
@@ -41,10 +41,17 @@ const Signup = () => {
           name,
           image:
             'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
+          number: '',
+          cpf: '',
         });
         await auth.signOut();
+        setLoading(false);
+        setName('');
+        setEmail('');
+        setPassword('');
       } catch (error) {
-        console.log(error);
+        setError(error.message);
+        setLoading(false);
       }
     }
   };
@@ -55,10 +62,8 @@ const Signup = () => {
         <Grid columns={3}>
           <GridColumn width={4}></GridColumn>
           <GridColumn width={8}>
-            {/* <Transition.Group animation={transition} duration={800}>
-              {showLogin && ( */}
             <Segment
-              style={{ marginTop: '250px' }}
+              style={{ marginTop: '200px' }}
               placeholder
               color='black'
               padded='very'
@@ -66,14 +71,16 @@ const Signup = () => {
               {loading && (
                 <Dimmer active inverted>
                   <Loader size='large' inverted>
-                    Alterando Informações...
+                    Criando Conta...
                   </Loader>
                 </Dimmer>
               )}
               <Header as='h2' icon textAlign='center'>
+                {error && <Message color='red'>{error}</Message>}
                 <Image size='massive' src='https://i.gifer.com/ZF6F.gif' />
                 <Header.Content>Signup</Header.Content>
               </Header>
+
               <Form onSubmit={handleSubmit}>
                 <Form.Field>
                   <label>Nome</label>
@@ -94,21 +101,17 @@ const Signup = () => {
                 <Form.Field>
                   <label>Senha</label>
                   <input
+                    type='password'
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     placeholder='Senha'
                   />
                 </Form.Field>
-                {/* <Form.Field>
-                  <Checkbox label='Eu concordo com os termos e condições' />
-                </Form.Field> */}
                 <Button secondary type='submit'>
                   Confirmar
                 </Button>
               </Form>
             </Segment>
-            {/* )} */}
-            {/* </Transition.Group> */}
           </GridColumn>
           <GridColumn width={4}></GridColumn>
         </Grid>

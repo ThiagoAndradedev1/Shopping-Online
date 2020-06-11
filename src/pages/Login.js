@@ -4,13 +4,11 @@ import {
   Button,
   Header,
   Image,
-  Checkbox,
   Form,
   Segment,
   Container,
   Grid,
   GridColumn,
-  Transition,
 } from 'semantic-ui-react';
 
 const Login = () => {

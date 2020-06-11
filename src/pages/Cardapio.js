@@ -17,7 +17,7 @@ import {
   Sidebar,
 } from 'semantic-ui-react';
 import { firestore } from '../firebase';
-import calculationContext from '../context/calculationContext';
+import calculationContext from '../context/calculation/calculationContext';
 
 const Cardapio = () => {
   const [firebaseInfo, setFirebaseInfo] = useState([]);
@@ -29,9 +29,6 @@ const Cardapio = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [labelCount, setLabelCount] = useState(1);
   const [sideBarVisible, setSideBarVisible] = useState(false);
-  const [productPrice, setProductPrice] = useState(0);
-  const [productAmount, setProductAmount] = useState(1);
-
   const { addTransaction, transactions } = useContext(calculationContext);
 
   useEffect(() => {
@@ -93,7 +90,6 @@ const Cardapio = () => {
     const retorno = ingredientesSelecionados.findIndex(
       (ingrediente) => ingrediente.id === igr.id
     );
-
     if (retorno !== -1) {
       const copiaIngredientes = [...ingredientesSelecionados];
       copiaIngredientes.splice(retorno, 1);
@@ -105,21 +101,22 @@ const Cardapio = () => {
 
   const openModal = (infoItem, price, labelCount) => {
     if (
-      infoItem.tag === 'porções' ||
+      infoItem.tag === 'porcoes' ||
       infoItem.tag === 'refrigerante' ||
       infoItem.tag === 'agua' ||
       infoItem.tag === 'cerveja'
     ) {
       setModalState(false);
-      const resultado = transactions.findIndex(
-        (transaction) => transaction.id === infoItem.id
-      );
-      if (resultado === infoItem.id) {
-        transactions[resultado].labelCount = labelCount;
-        transactions[resultado].price = labelCount;
-      }
-    } else {
       console.log(infoItem);
+      const newTransaction = {
+        id: Math.floor(Math.random() * 100000000),
+        labelCount,
+        productPrice: price * labelCount,
+        infoModal: infoItem,
+      };
+      console.log(newTransaction);
+      addTransaction(newTransaction);
+    } else {
       setModalState(true);
       setInfoModal(infoItem);
       setIngredientesSelecionados(infoItem.ingredientes);
@@ -129,8 +126,6 @@ const Cardapio = () => {
   const closeModal = () => {
     setModalState(false);
     setLabelCount(1);
-    setProductPrice(0);
-    setProductAmount(1);
   };
 
   const addOrRemoveProduct = (number) => {
@@ -146,13 +141,11 @@ const Cardapio = () => {
     setLabelCount(soma);
   };
 
-  const buyProduct = (price, labelCount) => {
-    setProductPrice(price);
-    setProductAmount(labelCount);
+  const buyProduct = async (price, labelCount) => {
     const newTransaction = {
       id: Math.floor(Math.random() * 100000000),
       labelCount,
-      productPrice: infoModal.price * labelCount,
+      productPrice: price * labelCount,
       infoModal,
     };
     addTransaction(newTransaction);

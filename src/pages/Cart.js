@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import {
   Button,
   Header,
@@ -11,10 +11,15 @@ import {
   Divider,
   Label,
 } from 'semantic-ui-react';
-import CalculationContext from '../context/calculationContext';
+import CalculationContext from '../context/calculation/calculationContext';
 
 const Cart = () => {
   const { transactions, deleteTransaction } = useContext(CalculationContext);
+  // const [results, setResults] = useState(transactions);
+
+  // useEffect(() => {
+  //   setResults([...transactions]);
+  // }, [transactions]);
 
   const amounts = transactions.map((transaction) => transaction.productPrice);
 
@@ -27,19 +32,24 @@ const Cart = () => {
           <GridColumn width={3}></GridColumn>
           <GridColumn mobile={16} computer={10}>
             <Segment
+              textAlign='center'
               raised
               color='black'
               style={{ marginTop: '150px' }}
               placeholder
             >
               <Header as='h2' icon textAlign='center'>
-                <Icon name='users' circular />
-                <Header.Content>Meu Pedido</Header.Content>
+                {transactions.length > 0 && (
+                  <Fragment>
+                    <Icon name='users' circular />
+                    <Header.Content>Meu Pedido</Header.Content>
+                  </Fragment>
+                )}
               </Header>
               <Grid>
                 {transactions.map((transaction) => (
-                  <Fragment>
-                    <Grid.Column key={transaction.id} width={4}>
+                  <Fragment key={transaction.id}>
+                    <Grid.Column width={4}>
                       <Segment raised>
                         <Image src={transaction.infoModal.img} />
                         <Divider />
@@ -54,14 +64,14 @@ const Cart = () => {
                       </Label>
                     </Grid.Column>
 
-                    <Grid.Column key={transaction.id} width={12}>
+                    <Grid.Column width={12}>
                       <Segment textAlign='center' raised>
                         <Header as='h2' icon>
                           {transaction.infoModal.name}{' '}
                           <Header.Subheader>
                             {transaction.infoModal.description}{' '}
                           </Header.Subheader>
-                          ${transaction.productPrice}
+                          R${transaction.productPrice.toFixed(2)}
                         </Header>
                         <Button color='black'>Editar</Button>{' '}
                       </Segment>
@@ -69,7 +79,26 @@ const Cart = () => {
                   </Fragment>
                 ))}
               </Grid>
-              {transactions.length === 0 && <h1>Nenhum Pedido Selecionado</h1>}
+              {transactions.length === 0 && (
+                <Fragment>
+                  <Container>
+                    <Header as='div' icon textAlign='center'>
+                      <p style={{ fontSize: '1.43em' }}>Está com fome?</p>
+                      <Image
+                        size='massive'
+                        src='https://wtcks.com/images/emptycart.png'
+                      />
+                    </Header>
+                    <h1 style={{ fontSize: '1.83em' }}>
+                      Seu pedido está vazio
+                    </h1>
+                    <p style={{ fontSize: '1.83em' }}>
+                      Adicione itens ao seu pedido
+                    </p>
+                    <Button color='black'>Cardápio</Button>
+                  </Container>
+                </Fragment>
+              )}
               {transactions.length > 0 && (
                 <Fragment>
                   <Divider />
@@ -79,7 +108,7 @@ const Cart = () => {
                       <Segment raised textAlign='center'>
                         <Header as='h2'>
                           Valor Total
-                          <div style={{ color: 'red' }}>${total}</div>
+                          <div style={{ color: 'red' }}>R${total}</div>
                         </Header>
                       </Segment>
                     </GridColumn>

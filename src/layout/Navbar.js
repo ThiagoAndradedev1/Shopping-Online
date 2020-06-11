@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react';
-import { Container, Menu, Image, Icon, Label } from 'semantic-ui-react';
+import { Container, Menu, Image, Icon, Label, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import CalculationContext from '../context/calculationContext';
+import CalculationContext from '../context/calculation/calculationContext';
 
 const Navbar = () => {
   const { transactions } = useContext(CalculationContext);
@@ -36,6 +36,14 @@ const Navbar = () => {
         <Container text>
           <Menu.Menu position='right'>
             <Menu.Item>
+              <div>
+                <Link to='/login'>
+                  <Button color='red'>LogIn</Button>
+                </Link>
+                <Link to='/signup'>
+                  <Button color='red'>SignUp</Button>
+                </Link>
+              </div>
               {/* <Dropdown.Item>
                 <Icon name='user' />{' '}
                 <Dropdown text='Olá, entre ou cadastre-se' floating>
