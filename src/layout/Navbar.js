@@ -1,17 +1,11 @@
 import React, { Fragment, useContext } from 'react';
-
-import {
-  Button,
-  Container,
-  Menu,
-  Dropdown,
-  Image,
-  Icon,
-  Label,
-} from 'semantic-ui-react';
+import { Container, Menu, Image, Icon, Label } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import CalculationContext from '../context/calculationContext';
 
 const Navbar = () => {
+  const { transactions } = useContext(CalculationContext);
+
   return (
     <Fragment>
       <Menu borderless fixed='top' size='tiny' color='black' inverted>
@@ -33,7 +27,9 @@ const Navbar = () => {
           <Menu.Item as={Link} to='/cart'>
             <Icon name='cart' /> Carrinho
             <Label circular color='red'>
-              5
+              {transactions.length}
+              {/* {transactions.length === 0 && 1}
+              {transactions.length > 0 && transactions.length} */}
             </Label>
           </Menu.Item>
         </Container>

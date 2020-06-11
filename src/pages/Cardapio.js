@@ -32,7 +32,7 @@ const Cardapio = () => {
   const [productPrice, setProductPrice] = useState(0);
   const [productAmount, setProductAmount] = useState(1);
 
-  const { addTransaction } = useContext(calculationContext);
+  const { addTransaction, transactions } = useContext(calculationContext);
 
   useEffect(() => {
     firestore
@@ -103,7 +103,7 @@ const Cardapio = () => {
     }
   };
 
-  const openModal = (infoItem) => {
+  const openModal = (infoItem, price, labelCount) => {
     if (
       infoItem.tag === 'porções' ||
       infoItem.tag === 'refrigerante' ||
@@ -111,6 +111,13 @@ const Cardapio = () => {
       infoItem.tag === 'cerveja'
     ) {
       setModalState(false);
+      const resultado = transactions.findIndex(
+        (transaction) => transaction.id === infoItem.id
+      );
+      if (resultado === infoItem.id) {
+        transactions[resultado].labelCount = labelCount;
+        transactions[resultado].price = labelCount;
+      }
     } else {
       console.log(infoItem);
       setModalState(true);
@@ -335,7 +342,9 @@ const Cardapio = () => {
                         trigger={
                           <Button
                             animated='fade'
-                            onClick={() => openModal(infoItem)}
+                            onClick={() =>
+                              openModal(infoItem, infoItem.price, labelCount)
+                            }
                             color='green'
                           >
                             <Button.Content visible>Comprar</Button.Content>

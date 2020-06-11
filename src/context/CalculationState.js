@@ -16,9 +16,20 @@ const CalculationState = ({ children }) => {
     });
   };
 
+  const deleteTransaction = (id) => {
+    dispatch({
+      type: 'DELETE_TRANSACTION',
+      payload: id,
+    });
+  };
+
   return (
     <CalculationContext.Provider
-      value={{ transactions: state.transactions, addTransaction }}
+      value={{
+        transactions: state.transactions,
+        addTransaction,
+        deleteTransaction,
+      }}
     >
       {children}
     </CalculationContext.Provider>

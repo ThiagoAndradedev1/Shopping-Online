@@ -14,7 +14,7 @@ import {
 import CalculationContext from '../context/calculationContext';
 
 const Cart = () => {
-  const { transactions } = useContext(CalculationContext);
+  const { transactions, deleteTransaction } = useContext(CalculationContext);
 
   const amounts = transactions.map((transaction) => transaction.productPrice);
 
@@ -42,6 +42,12 @@ const Cart = () => {
                     <Grid.Column key={transaction.id} width={4}>
                       <Segment raised>
                         <Image src={transaction.infoModal.img} />
+                        <Divider />
+                        <Button
+                          onClick={() => deleteTransaction(transaction.id)}
+                          circular
+                          icon='trash alternate outline'
+                        ></Button>
                       </Segment>
                       <Label size='massive' circular color='red' floating>
                         {transaction.labelCount}
@@ -51,37 +57,39 @@ const Cart = () => {
                     <Grid.Column key={transaction.id} width={12}>
                       <Segment textAlign='center' raised>
                         <Header as='h2' icon>
-                          {transaction.infoModal.name}
+                          {transaction.infoModal.name}{' '}
                           <Header.Subheader>
-                            {transaction.infoModal.description}
+                            {transaction.infoModal.description}{' '}
                           </Header.Subheader>
                           ${transaction.productPrice}
                         </Header>
-                        <Button color='black'>Editar</Button>
-                        {/* <Button secondary floated='right'>
-                          Editar
-                        </Button> */}
+                        <Button color='black'>Editar</Button>{' '}
                       </Segment>
                     </Grid.Column>
                   </Fragment>
                 ))}
               </Grid>
-              <Divider />
-              <Grid>
-                <GridColumn width={4}></GridColumn>
-                <GridColumn width={8}>
-                  <Segment textAlign='center'>
-                    <Header as='h2'>
-                      Valor Total
-                      <div style={{ color: 'red' }}>${total}</div>
-                    </Header>
-                  </Segment>
-                </GridColumn>
-                <GridColumn width={4}></GridColumn>
-              </Grid>
-              <Button style={{ marginTop: '15px' }} color='green'>
-                <Icon name='checkmark' /> Finalizar Pedido
-              </Button>
+              {transactions.length === 0 && <h1>Nenhum Pedido Selecionado</h1>}
+              {transactions.length > 0 && (
+                <Fragment>
+                  <Divider />
+                  <Grid>
+                    <GridColumn width={4}></GridColumn>
+                    <GridColumn width={8}>
+                      <Segment raised textAlign='center'>
+                        <Header as='h2'>
+                          Valor Total
+                          <div style={{ color: 'red' }}>${total}</div>
+                        </Header>
+                      </Segment>
+                    </GridColumn>
+                    <GridColumn width={4}></GridColumn>
+                  </Grid>
+                  <Button style={{ marginTop: '15px' }} color='green'>
+                    <Icon name='checkmark' /> Finalizar Pedido
+                  </Button>
+                </Fragment>
+              )}
             </Segment>
           </GridColumn>
           <GridColumn width={3}></GridColumn>
