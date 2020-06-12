@@ -9,7 +9,7 @@ import Login from '../src/pages/Login';
 import Cart from '../src/pages/Cart';
 import Cardapio from './pages/Cardapio';
 import Signup from '../src/pages/Signup';
-
+import 'react-toastify/dist/ReactToastify.css';
 import {
   BrowserRouter as Router,
   Switch,

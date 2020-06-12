@@ -18,6 +18,8 @@ import {
 } from 'semantic-ui-react';
 import { firestore } from '../firebase';
 import calculationContext from '../context/calculation/calculationContext';
+import { toast } from 'react-toastify';
+toast.configure();
 
 const Cardapio = () => {
   const [firebaseInfo, setFirebaseInfo] = useState([]);
@@ -106,16 +108,27 @@ const Cardapio = () => {
       infoItem.tag === 'agua' ||
       infoItem.tag === 'cerveja'
     ) {
+      notify();
       setModalState(false);
-      console.log(infoItem);
-      const newTransaction = {
-        id: Math.floor(Math.random() * 100000000),
-        labelCount,
-        productPrice: price * labelCount,
-        infoModal: infoItem,
-      };
-      console.log(newTransaction);
-      addTransaction(newTransaction);
+      const resultado = transactions.findIndex(
+        (transaction) => transaction.infoModal.name === infoItem.name
+      );
+      if (resultado !== -1) {
+        transactions[resultado].labelCount = labelCount +=
+          transactions[resultado].labelCount;
+        transactions[resultado].productPrice = transactions[
+          resultado
+        ].productPrice += Number(price);
+      } else {
+        const newTransaction = {
+          id: Math.floor(Math.random() * 100000000),
+          labelCount,
+          productPrice: price * labelCount,
+          infoModal: infoItem,
+        };
+
+        addTransaction(newTransaction);
+      }
     } else {
       setModalState(true);
       setInfoModal(infoItem);
@@ -141,14 +154,31 @@ const Cardapio = () => {
     setLabelCount(soma);
   };
 
+  const notify = () => {
+    toast.success('🛒 Compra adicionada ao carrinho...');
+  };
+
   const buyProduct = async (price, labelCount) => {
-    const newTransaction = {
-      id: Math.floor(Math.random() * 100000000),
-      labelCount,
-      productPrice: price * labelCount,
-      infoModal,
-    };
-    addTransaction(newTransaction);
+    notify();
+    setModalState(false);
+    const resultado = transactions.findIndex(
+      (transaction) => transaction.infoModal.name === infoModal.name
+    );
+    if (resultado !== -1) {
+      transactions[resultado].labelCount = labelCount +=
+        transactions[resultado].labelCount;
+      transactions[resultado].productPrice = transactions[
+        resultado
+      ].productPrice += Number(price);
+    } else {
+      const newTransaction = {
+        id: Math.floor(Math.random() * 100000000),
+        labelCount,
+        productPrice: price * labelCount,
+        infoModal,
+      };
+      addTransaction(newTransaction);
+    }
   };
 
   return (

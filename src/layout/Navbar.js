@@ -6,6 +6,10 @@ import CalculationContext from '../context/calculation/calculationContext';
 const Navbar = () => {
   const { transactions } = useContext(CalculationContext);
 
+  const amounts = transactions.map((transaction) => transaction.labelCount);
+
+  const total = amounts.reduce((acc, item) => (acc += item), 0);
+
   return (
     <Fragment>
       <Menu borderless fixed='top' size='tiny' color='black' inverted>

@@ -15,11 +15,6 @@ import CalculationContext from '../context/calculation/calculationContext';
 
 const Cart = () => {
   const { transactions, deleteTransaction } = useContext(CalculationContext);
-  // const [results, setResults] = useState(transactions);
-
-  // useEffect(() => {
-  //   setResults([...transactions]);
-  // }, [transactions]);
 
   const amounts = transactions.map((transaction) => transaction.productPrice);
 
