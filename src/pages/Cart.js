@@ -11,14 +11,28 @@ import {
   Divider,
   Label,
 } from 'semantic-ui-react';
+import Pagination from '../layout/Pagination';
 import CalculationContext from '../context/calculation/calculationContext';
 
 const Cart = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(3);
+  const [showBtn, setShowBtn] = useState(false);
   const { transactions, deleteTransaction } = useContext(CalculationContext);
 
   const amounts = transactions.map((transaction) => transaction.productPrice);
 
   const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentDocs = transactions.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // if (transactions.infoModal.tag === 'hamburger') {
+  //   setShowBtn(true);
+  // }
 
   return (
     <Fragment>
@@ -30,7 +44,7 @@ const Cart = () => {
               textAlign='center'
               raised
               color='black'
-              style={{ marginTop: '150px' }}
+              style={{ marginTop: '110px' }}
               placeholder
             >
               <Header as='h2' icon textAlign='center'>
@@ -42,7 +56,7 @@ const Cart = () => {
                 )}
               </Header>
               <Grid>
-                {transactions.map((transaction) => (
+                {currentDocs.map((transaction) => (
                   <Fragment key={transaction.id}>
                     <Grid.Column width={4}>
                       <Segment raised>
@@ -68,7 +82,17 @@ const Cart = () => {
                           </Header.Subheader>
                           R${transaction.productPrice.toFixed(2)}
                         </Header>
-                        <Button color='black'>Editar</Button>{' '}
+                        <Divider horizontal>
+                          <Header as='h4'>
+                            {/* <Icon name='tag' /> */}
+                            Opções
+                          </Header>
+                        </Divider>
+                        {transaction.infoModal.tag === 'refrigerante' ||
+                          transaction.infoModal.tag === 'agua' ||
+                          transaction.infoModal.tag === 'cerveja' || (
+                            <Button color='black'>Editar</Button>
+                          )}
                       </Segment>
                     </Grid.Column>
                   </Fragment>
@@ -94,6 +118,13 @@ const Cart = () => {
                   </Container>
                 </Fragment>
               )}
+              <Container>
+                <Pagination
+                  postsPerPage={postsPerPage}
+                  totalPosts={transactions.length}
+                  paginate={paginate}
+                />
+              </Container>
               {transactions.length > 0 && (
                 <Fragment>
                   <Divider />

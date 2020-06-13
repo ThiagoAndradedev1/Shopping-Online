@@ -298,7 +298,7 @@ const Cardapio = () => {
             </Menu.Menu>
           </Menu>
 
-          <Segment raised attached='bottom'>
+          <Segment className='' raised attached='bottom'>
             <Grid stackable columns={3}>
               <Grid.Row>
                 {infoFilter.map((infoItem) => (
