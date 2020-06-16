@@ -2,11 +2,16 @@
   text-align: center;
 }
 body {
-  background-image: url('https://images2.alphacoders.com/922/thumb-1920-922691.jpg') !important;
+  background-image: url('https://images8.alphacoders.com/815/thumb-1920-815971.jpg') !important;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
+/* body {
+  background-image: url('https://images2.alphacoders.com/922/thumb-1920-922691.jpg') !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+} */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -42,11 +47,6 @@ body {
   }
 }
 
-/* .login-margin {
-  margin-left: 320px;
-  
-} */
-
 .flex-end {
   align-items: flex-end;
 }
@@ -63,15 +63,6 @@ body {
   margin-top: 20px;
 }
 
-/* .image-modal {
-  height: 200px;
-  width: 50%;
-} */
-
-/* .btn-plus-margin {
-  margin-left: 1px;
-} */
-
 .slick-prev:before,
 .slick-next:before {
   color: black !important;
@@ -84,10 +75,6 @@ body {
   width: 300px;
   color: white;
 }
-
-/* .segment-first {
-  width: 500px;
-} */
 
 .segment-border {
   border-style: solid;
