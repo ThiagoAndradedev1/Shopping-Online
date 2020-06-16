@@ -1,10 +1,14 @@
 .App {
   text-align: center;
 }
-body {
+/* body {
   background-image: url('https://images8.alphacoders.com/815/thumb-1920-815971.jpg') !important;
   background-size: cover;
   background-repeat: no-repeat;
+} */
+
+.segment-background {
+  background-image: url('https://images8.alphacoders.com/815/thumb-1920-815971.jpg') !important;
 }
 
 /* body {
@@ -100,4 +104,8 @@ body {
 .pagination a:hover:not(.active) {
   background-color: red;
   border-radius: 5px;
+}
+
+.segment-border {
+  border-style: solid;
 }

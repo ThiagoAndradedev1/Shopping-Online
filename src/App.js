@@ -9,6 +9,7 @@ import Navbar from './components/layout/Navbar';
 import Login from './components/pages/Login';
 import Cart from './components/pages/Cart';
 import Cardapio from './components/pages/Cardapio';
+import Profile from './components/pages/Profile';
 import Signup from './components/pages/Signup';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -30,6 +31,7 @@ const App = () => {
               <Route exact path='/'>
                 <Redirect to='/home' />
               </Route>
+              <Route exact path='/profile' component={Profile} />
               <Route exact path='/menu' component={Cardapio} />
               <Route exact path='/home' component={Home} />
               <Route exact path='/cart' component={Cart} />

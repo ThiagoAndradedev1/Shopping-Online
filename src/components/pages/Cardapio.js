@@ -369,7 +369,7 @@ const Cardapio = () => {
                             onClick={() =>
                               openModal(infoItem, infoItem.price, labelCount)
                             }
-                            color='green'
+                            color='red'
                           >
                             <Button.Content visible>Comprar</Button.Content>
                             <Button.Content hidden>Comprar</Button.Content>

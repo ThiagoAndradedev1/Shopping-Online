@@ -61,7 +61,13 @@ const Home = () => {
   return (
     <Fragment>
       <div style={{ marginTop: '70px' }}>
-        <Segment inverted style={{ minHeight: '700px' }} textAlign='center'>
+        <div
+          className='segment-background'
+          style={{
+            minHeight: '700px',
+            textAlign: 'center',
+          }}
+        >
           <Container text>
             <Slider {...settings2}>
               <div>
@@ -135,11 +141,12 @@ const Home = () => {
                   <Icon name='right arrow' />
                 </Button> */}
           </Container>
-        </Segment>
+        </div>
       </div>
       <Container style={{ marginTop: '100px' }}>
-        <div>
+        <div style={{ textAlign: 'center' }}>
           <h1>Mais Vendidos</h1>
+          <p>vamo lá porra</p>
           <Slider {...settings}>
             <div>
               <div className='card'>

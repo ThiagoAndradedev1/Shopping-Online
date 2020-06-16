@@ -12,7 +12,7 @@ const Navbar = () => {
 
   return (
     <Fragment>
-      <Menu borderless fixed='top' size='tiny' color='black' inverted>
+      <Menu borderless fixed='top' size='tiny' color='red' inverted>
         <Container text>
           <Menu.Item>
             <Image
@@ -30,7 +30,7 @@ const Navbar = () => {
           <Menu.Item as='a'>Sobre</Menu.Item>
           <Menu.Item as={Link} to='/cart'>
             <Icon name='cart' /> Carrinho
-            <Label circular color='red'>
+            <Label circular color='black'>
               {transactions.length}
               {/* {transactions.length === 0 && 1}
               {transactions.length > 0 && transactions.length} */}
@@ -42,10 +42,12 @@ const Navbar = () => {
             <Menu.Item>
               <div>
                 <Link to='/login'>
-                  <Button color='red'>LogIn</Button>
+                  <Button color='black'>Log In</Button>
                 </Link>
                 <Link to='/signup'>
-                  <Button color='red'>SignUp</Button>
+                  <Button style={{ marginLeft: '0.5em' }} color='black'>
+                    Registrar
+                  </Button>
                 </Link>
               </div>
               {/* <Dropdown.Item>
