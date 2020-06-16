@@ -1,6 +1,5 @@
 import React, { useState, useContext, Fragment } from 'react';
-
-import { auth, firestore } from '../firebase';
+import { auth } from '../../firebase';
 import {
   Button,
   Header,
@@ -9,49 +8,35 @@ import {
   Segment,
   Container,
   Grid,
-  GridColumn,
-  Message,
   Dimmer,
   Loader,
-  Icon,
+  Message,
+  GridColumn,
 } from 'semantic-ui-react';
+import { useHistory } from 'react-router-dom';
 
-const Signup = () => {
-  // const transition = 'fly left';
-  const [name, setName] = useState('');
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const history = useHistory();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setError('');
     setLoading(true);
-    if (name === '' || email === '' || password === '') {
+    if (email === '' || password === '') {
       setError('Você precisa preencher todos os campos !');
       setLoading(false);
     } else {
       try {
-        const response = await auth.createUserWithEmailAndPassword(
-          email,
-          password
-        );
-        await firestore.collection('userinfo').doc(response.user.uid).set({
-          email,
-          name,
-          image:
-            'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
-          number: '',
-          cpf: '',
-        });
-        await auth.signOut();
+        await auth.signInWithEmailAndPassword(email, password);
         setLoading(false);
-        setName('');
-        setEmail('');
-        setPassword('');
+        history.push('/menu');
       } catch (error) {
-        setError(error.message);
         setLoading(false);
+        setError(error.message);
       }
     }
   };
@@ -63,7 +48,7 @@ const Signup = () => {
           <GridColumn width={4}></GridColumn>
           <GridColumn width={8}>
             <Segment
-              style={{ marginTop: '200px' }}
+              style={{ marginTop: '170px' }}
               placeholder
               color='black'
               padded='very'
@@ -77,24 +62,18 @@ const Signup = () => {
               )}
               <Header as='h2' icon textAlign='center'>
                 {error && <Message color='red'>{error}</Message>}
-                <Image size='massive' src='https://i.gifer.com/ZF6F.gif' />
-                <Header.Content>Signup</Header.Content>
+                <Image
+                  size='massive'
+                  src='https://thumbs.gfycat.com/GloomyKeyImpala-size_restricted.gif'
+                />
+                <Header.Content>Login</Header.Content>
               </Header>
-
-              <Form onSubmit={handleSubmit}>
-                <Form.Field>
-                  <label>Nome</label>
-                  <input
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
-                    placeholder='Nome'
-                  />
-                </Form.Field>
+              <Form onSubmit={handleLogin}>
                 <Form.Field>
                   <label>Email</label>
                   <input
+                    type='email'
                     onChange={(e) => setEmail(e.target.value)}
-                    value={email}
                     placeholder='Email'
                   />
                 </Form.Field>
@@ -103,7 +82,6 @@ const Signup = () => {
                   <input
                     type='password'
                     onChange={(e) => setPassword(e.target.value)}
-                    value={password}
                     placeholder='Senha'
                   />
                 </Form.Field>
@@ -120,4 +98,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

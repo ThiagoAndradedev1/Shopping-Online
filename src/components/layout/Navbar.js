@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react';
 import { Container, Menu, Image, Icon, Label, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import CalculationContext from '../context/calculation/calculationContext';
+import CalculationContext from '../../context/calculation/calculationContext';
 
 const Navbar = () => {
   const { transactions } = useContext(CalculationContext);

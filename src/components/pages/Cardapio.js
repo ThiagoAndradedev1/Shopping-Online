@@ -16,8 +16,8 @@ import {
   Responsive,
   Sidebar,
 } from 'semantic-ui-react';
-import { firestore } from '../firebase';
-import calculationContext from '../context/calculation/calculationContext';
+import { firestore } from '../../firebase';
+import calculationContext from '../../context/calculation/calculationContext';
 import { toast } from 'react-toastify';
 toast.configure();
 
@@ -155,7 +155,7 @@ const Cardapio = () => {
   };
 
   const notify = () => {
-    toast.success('🛒 Compra adicionada ao carrinho...');
+    toast.success('🛒 Produto adicionado ao carrinho...');
   };
 
   const buyProduct = async (price, labelCount) => {
@@ -175,6 +175,7 @@ const Cardapio = () => {
         id: Math.floor(Math.random() * 100000000),
         labelCount,
         productPrice: price * labelCount,
+        ingredientesSelecionados,
         infoModal,
       };
       addTransaction(newTransaction);

@@ -12,16 +12,14 @@ import {
   Label,
 } from 'semantic-ui-react';
 import Pagination from '../layout/Pagination';
-import CalculationContext from '../context/calculation/calculationContext';
+import CalculationContext from '../../context/calculation/calculationContext';
 
 const Cart = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
-  const [showBtn, setShowBtn] = useState(false);
   const { transactions, deleteTransaction } = useContext(CalculationContext);
 
   const amounts = transactions.map((transaction) => transaction.productPrice);
-
   const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -30,16 +28,30 @@ const Cart = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // if (transactions.infoModal.tag === 'hamburger') {
-  //   setShowBtn(true);
-  // }
+  const handleLabelCount = (number, id) => {
+    const resultado = transactions.findIndex(
+      (transaction) => transaction.id === id
+    );
+    if (resultado !== -1 && number === 1) {
+      transactions[resultado].labelCount = transactions[
+        resultado
+      ].labelCount += 1;
+    } else if (resultado !== -1 && number === 0) {
+      let minusResult = (transactions[resultado].labelCount = transactions[
+        resultado
+      ].labelCount -= 1);
+      if (minusResult < 1) {
+        minusResult = 1;
+      }
+    }
+  };
 
   return (
     <Fragment>
       <Container>
         <Grid columns={3}>
-          <GridColumn width={3}></GridColumn>
-          <GridColumn mobile={16} computer={10}>
+          <GridColumn width={2}></GridColumn>
+          <GridColumn mobile={16} computer={12}>
             <Segment
               textAlign='center'
               raised
@@ -59,20 +71,29 @@ const Cart = () => {
                 {currentDocs.map((transaction) => (
                   <Fragment key={transaction.id}>
                     <Grid.Column width={4}>
-                      <Segment raised>
+                      <Segment textAlign='center' raised>
                         <Image src={transaction.infoModal.img} />
                         <Divider />
-                        <Button
-                          onClick={() => deleteTransaction(transaction.id)}
-                          circular
-                          icon='trash alternate outline'
-                        ></Button>
+                        <h3>Quantidade</h3>
+                        <div>
+                          <Button
+                            onClick={() => handleLabelCount(0, transaction.id)}
+                            size='mini'
+                            circular
+                            icon='minus'
+                          ></Button>
+                          <Button
+                            onClick={() => handleLabelCount(1, transaction.id)}
+                            size='mini'
+                            circular
+                            icon='plus'
+                          ></Button>
+                        </div>
                       </Segment>
                       <Label size='massive' circular color='red' floating>
                         {transaction.labelCount}
                       </Label>
                     </Grid.Column>
-
                     <Grid.Column width={12}>
                       <Segment textAlign='center' raised>
                         <Header as='h2' icon>
@@ -91,10 +112,18 @@ const Cart = () => {
                         {transaction.infoModal.tag === 'refrigerante' ||
                           transaction.infoModal.tag === 'agua' ||
                           transaction.infoModal.tag === 'cerveja' || (
-                            <Button color='black'>Editar</Button>
+                            <Button color='black'>Editar Pedido</Button>
                           )}
+                        <Button
+                          style={{ marginTop: '10px' }}
+                          onClick={() => deleteTransaction(transaction.id)}
+                          color='black'
+                        >
+                          Cancelar Pedido
+                        </Button>
                       </Segment>
                     </Grid.Column>
+                    {/* <Modal key={transaction.id} transaction={transaction} /> */}
                   </Fragment>
                 ))}
               </Grid>
@@ -147,7 +176,7 @@ const Cart = () => {
               )}
             </Segment>
           </GridColumn>
-          <GridColumn width={3}></GridColumn>
+          <GridColumn width={2}></GridColumn>
         </Grid>
       </Container>
     </Fragment>
