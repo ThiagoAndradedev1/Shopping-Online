@@ -17,6 +17,7 @@ import CalculationContext from '../../context/calculation/calculationContext';
 const Cart = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
+  const [labelCount, setLabelCount] = useState(1);
   const { transactions, deleteTransaction } = useContext(CalculationContext);
 
   const amounts = transactions.map((transaction) => transaction.productPrice);
@@ -71,7 +72,7 @@ const Cart = () => {
                 {currentDocs.map((transaction) => (
                   <Fragment key={transaction.id}>
                     <Grid.Column width={4}>
-                      <Segment textAlign='center' raised>
+                      <Segment size='mini' padded textAlign='center' raised>
                         <Image src={transaction.infoModal.img} />
                         <Divider />
                         <h3>Quantidade</h3>
@@ -123,7 +124,6 @@ const Cart = () => {
                         </Button>
                       </Segment>
                     </Grid.Column>
-                    {/* <Modal key={transaction.id} transaction={transaction} /> */}
                   </Fragment>
                 ))}
               </Grid>

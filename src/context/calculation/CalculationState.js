@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import CalculationContext from './calculationContext';
 import CalculationReducer from './CalculationReducer';
 

@@ -6,9 +6,9 @@ import CalculationContext from '../../context/calculation/calculationContext';
 const Navbar = () => {
   const { transactions } = useContext(CalculationContext);
 
-  const amounts = transactions.map((transaction) => transaction.labelCount);
+  // const amounts = transactions.map((transaction) => transaction.labelCount);
 
-  const total = amounts.reduce((acc, item) => (acc += item), 0);
+  // const total = amounts.reduce((acc, item) => (acc += item), 0);
 
   return (
     <Fragment>
@@ -27,7 +27,9 @@ const Navbar = () => {
           <Menu.Item as={Link} to='/menu'>
             Cardápio
           </Menu.Item>
-          <Menu.Item as='a'>Sobre</Menu.Item>
+          <Menu.Item as={Link} to='/about'>
+            Sobre
+          </Menu.Item>
           <Menu.Item as={Link} to='/cart'>
             <Icon name='cart' /> Carrinho
             <Label circular color='black'>

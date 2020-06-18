@@ -144,7 +144,34 @@ const Home = () => {
         </div>
       </div>
       <div className='segment-background2'></div>
-      <Container style={{ marginTop: '70px' }}>
+      <Container style={{ marginTop: '40px' }}>
+        {/* <div
+          className='segment-background3'
+          style={{
+            minHeight: '300px',
+            textAlign: 'center',
+          }}
+        >
+          <Container style={{ marginTop: '50px' }}>
+            <h1>Opiniões</h1>
+            <Slider {...settingsQuotes}>
+              <div>
+                <p style={{ fontSize: '2.00em' }}>
+                  A Pizzaria A Paulistinha começou no mês de Agosto de 2000,
+                  quando o proprietário que morava em São Paulo, decidiu
+                  retornar para Aracaju. Com um conceito inovador e com a
+                  qualidade das melhores pizzarias Paulistas, com pizzaiolos bem
+                  treinados conseguimos atender as expectativas dos nossos
+                  clientes.
+                </p>
+                <h3> - João Paulo</h3>
+              </div>
+              <div>
+                <h3>1</h3>
+              </div>
+            </Slider>
+          </Container>
+        </div> */}
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ fontSize: '3.93em' }}>Mais Vendidos</h1>
           <p style={{ fontSize: '1.73em' }}>
@@ -273,8 +300,9 @@ const Home = () => {
             style={{
               fontSize: '4em',
               fontWeight: 'normal',
-              marginBottom: '0px',
-              marginTop: '3em',
+              marginTop: '50px',
+              // marginBottom: '0px',
+              // marginTop: '3em',
             }}
           />
           <Header

@@ -175,7 +175,6 @@ const Cardapio = () => {
         id: Math.floor(Math.random() * 100000000),
         labelCount,
         productPrice: price * labelCount,
-        ingredientesSelecionados,
         infoModal,
       };
       addTransaction(newTransaction);
@@ -183,7 +182,7 @@ const Cardapio = () => {
   };
 
   return (
-    <div style={{ marginTop: '150px' }}>
+    <div className='menu-background' style={{ marginTop: '150px' }}>
       <Grid columns={3}>
         <Responsive as={Fragment} {...Responsive.onlyMobile}>
           <Sidebar
@@ -299,7 +298,7 @@ const Cardapio = () => {
             </Menu.Menu>
           </Menu>
 
-          <Segment className='' raised attached='bottom'>
+          <Segment raised attached='bottom'>
             <Grid stackable columns={3}>
               <Grid.Row>
                 {infoFilter.map((infoItem) => (

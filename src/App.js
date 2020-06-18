@@ -11,6 +11,8 @@ import Cart from './components/pages/Cart';
 import Cardapio from './components/pages/Cardapio';
 import Profile from './components/pages/Profile';
 import Signup from './components/pages/Signup';
+import Orders from './components/pages/Orders';
+import About from './components/pages/About';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   BrowserRouter as Router,
@@ -37,6 +39,8 @@ const App = () => {
               <Route exact path='/cart' component={Cart} />
               <Route exact path='/login' component={Login} />
               <Route exact path='/signup' component={Signup} />
+              <Route exact path='/about' component={About} />
+              <Route exact path='/orders' component={Orders} />
             </Switch>
           </Router>
         </CalculationState>

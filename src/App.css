@@ -7,6 +7,10 @@
   background-repeat: no-repeat;
 } */
 
+.segment-border {
+  border: 2px solid black !important;
+}
+
 .segment-background {
   background-image: url('https://images8.alphacoders.com/815/thumb-1920-815971.jpg') !important;
 }
@@ -18,6 +22,12 @@
 .segment-background3 {
   background-image: url('https://wallpaperaccess.com/full/1091554.jpg') !important;
 }
+
+/* .menu-background {
+  background-image: url('https://images7.alphacoders.com/817/thumb-350-817988.jpg') !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+} */
 /* body {
   background-image: url('https://images2.alphacoders.com/922/thumb-1920-922691.jpg') !important;
   background-size: cover;
