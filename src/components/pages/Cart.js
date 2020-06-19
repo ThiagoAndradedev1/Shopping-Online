@@ -18,7 +18,9 @@ const Cart = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
   const [labelCount, setLabelCount] = useState(1);
-  const { transactions, deleteTransaction } = useContext(CalculationContext);
+  const { transactions, deleteTransaction, updateTransacation } = useContext(
+    CalculationContext
+  );
 
   const amounts = transactions.map((transaction) => transaction.productPrice);
   const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
@@ -29,22 +31,19 @@ const Cart = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const handleLabelCount = (number, id) => {
-    const resultado = transactions.findIndex(
-      (transaction) => transaction.id === id
-    );
-    if (resultado !== -1 && number === 1) {
-      transactions[resultado].labelCount = transactions[
-        resultado
-      ].labelCount += 1;
-    } else if (resultado !== -1 && number === 0) {
-      let minusResult = (transactions[resultado].labelCount = transactions[
-        resultado
-      ].labelCount -= 1);
-      if (minusResult < 1) {
-        minusResult = 1;
-      }
+  const handleLabelCount = (number, transaction, index) => {
+    const newTransaction = { ...transactions[index] };
+
+    if (number === 1) {
+      newTransaction.labelCount += 1;
+    } else if (number === 0) {
+      newTransaction.labelCount =
+        updateTransacation.labelCount < 0
+          ? updateTransacation.labelCount
+          : (newTransaction.labelCount -= 1);
     }
+
+    updateTransacation(newTransaction);
   };
 
   return (
@@ -69,7 +68,7 @@ const Cart = () => {
                 )}
               </Header>
               <Grid>
-                {currentDocs.map((transaction) => (
+                {currentDocs.map((transaction, index) => (
                   <Fragment key={transaction.id}>
                     <Grid.Column width={4}>
                       <Segment size='mini' padded textAlign='center' raised>
@@ -78,13 +77,17 @@ const Cart = () => {
                         <h3>Quantidade</h3>
                         <div>
                           <Button
-                            onClick={() => handleLabelCount(0, transaction.id)}
+                            onClick={() =>
+                              handleLabelCount(0, transaction.id, index)
+                            }
                             size='mini'
                             circular
                             icon='minus'
                           ></Button>
                           <Button
-                            onClick={() => handleLabelCount(1, transaction.id)}
+                            onClick={() =>
+                              handleLabelCount(1, transaction.id, index)
+                            }
                             size='mini'
                             circular
                             icon='plus'

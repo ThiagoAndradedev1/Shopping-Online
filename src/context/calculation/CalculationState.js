@@ -23,12 +23,20 @@ const CalculationState = ({ children }) => {
     });
   };
 
+  const updateTransacation = (newTransaction) => {
+    dispatch({
+      type: 'UPDATE_TRANSACTION_LABEL',
+      payload: newTransaction,
+    });
+  };
+
   return (
     <CalculationContext.Provider
       value={{
         transactions: state.transactions,
         addTransaction,
         deleteTransaction,
+        updateTransacation,
       }}
     >
       {children}
