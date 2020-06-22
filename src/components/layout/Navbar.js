@@ -1,14 +1,62 @@
-import React, { Fragment, useContext } from 'react';
-import { Container, Menu, Image, Icon, Label, Button } from 'semantic-ui-react';
+import React, { Fragment, useContext, useEffect } from 'react';
+import {
+  Container,
+  Menu,
+  Image,
+  Icon,
+  Label,
+  Button,
+  Dropdown,
+} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { firestore, auth } from '../../firebase';
 import CalculationContext from '../../context/calculation/calculationContext';
+import AuthContext from '../../context/authentication/authContext';
+import { useState } from 'react';
 
 const Navbar = () => {
+  const [userInfo, setUserInfo] = useState('');
+  const { currentUser } = useContext(AuthContext);
   const { transactions } = useContext(CalculationContext);
 
   // const amounts = transactions.map((transaction) => transaction.labelCount);
-
   // const total = amounts.reduce((acc, item) => (acc += item), 0);
+
+  useEffect(() => {
+    if (currentUser) {
+      const returnDocument = async () => {
+        await firestore
+          .collection('userinfo')
+          .doc(currentUser.uid)
+          .onSnapshot((snapshot) => {
+            setUserInfo(snapshot.data());
+          });
+      };
+      returnDocument();
+    }
+  }, [currentUser]);
+
+  const logOut = async () => {
+    await auth.signOut();
+  };
+
+  const options = [
+    { key: 'user', text: 'Perfil', icon: 'user', as: Link, to: '/profile' },
+    {
+      key: 'settings',
+      text: 'Compras',
+      icon: 'settings',
+      as: Link,
+      to: '/orders',
+    },
+    { key: 'sign-out', text: 'Sair', icon: 'sign out' },
+  ];
+
+  const trigger = (
+    <span>
+      <Image avatar src={userInfo.image} /> Olá, {userInfo.name}!
+    </span>
+  );
 
   return (
     <Fragment>
@@ -42,38 +90,27 @@ const Navbar = () => {
         <Container text>
           <Menu.Menu position='right'>
             <Menu.Item>
-              <div>
-                <Link to='/login'>
-                  <Button color='black'>Log In</Button>
-                </Link>
-                <Link to='/signup'>
-                  <Button style={{ marginLeft: '0.5em' }} color='black'>
-                    Registrar
-                  </Button>
-                </Link>
-              </div>
-              {/* <Dropdown.Item>
-                <Icon name='user' />{' '}
-                <Dropdown text='Olá, entre ou cadastre-se' floating>
-                  <Dropdown.Menu>
-                    <Dropdown.Item>
-                      <Button.Group>
-                        <Button as={Link} to='/login' color='black'>
-                          Login
-                        </Button>
-                        <Button.Or text='ou' />
-                        <Button
-                          onClick={() => setShowLogin(true)}
-                          as={Link}
-                          to='/signup'
-                        >
-                          Signup
-                        </Button>
-                      </Button.Group>
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Dropdown.Item> */}
+              {!currentUser && (
+                <div>
+                  <Link to='/login'>
+                    <Button color='black'>Log In</Button>
+                  </Link>
+                  <Link to='/signup'>
+                    <Button style={{ marginLeft: '0.5em' }} color='black'>
+                      Registrar
+                    </Button>
+                  </Link>
+                </div>
+              )}
+              {currentUser && (
+                <Dropdown
+                  trigger={trigger}
+                  options={options}
+                  pointing='top'
+                  icon={null}
+                />
+              )}
+              {/* <Button onClick={logOut}>Sair</Button> */}
             </Menu.Item>
           </Menu.Menu>
         </Container>

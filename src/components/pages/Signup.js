@@ -69,7 +69,7 @@ const Signup = () => {
               {loading && (
                 <Dimmer active inverted>
                   <Loader size='large' inverted>
-                    Entrando...
+                    Criando Conta...
                   </Loader>
                 </Dimmer>
               )}

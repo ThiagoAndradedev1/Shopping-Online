@@ -56,7 +56,7 @@ const Login = () => {
               {loading && (
                 <Dimmer active inverted>
                   <Loader size='large' inverted>
-                    Criando Conta...
+                    Entrando...
                   </Loader>
                 </Dimmer>
               )}
