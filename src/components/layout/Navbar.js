@@ -110,7 +110,7 @@ const Navbar = () => {
                   icon={null}
                 />
               )}
-              {/* <Button onClick={logOut}>Sair</Button> */}
+              <Button onClick={logOut}>Sair</Button>
             </Menu.Item>
           </Menu.Menu>
         </Container>

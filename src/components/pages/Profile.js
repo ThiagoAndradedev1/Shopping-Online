@@ -13,19 +13,26 @@ import {
   Form,
   Button,
   Modal,
+  Message,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 
 const Profile = () => {
   const { currentUser } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [emailChange, setEmailChange] = useState('');
+  const [passwordChange, setPasswordChange] = useState('');
   const [cpf, setCpf] = useState('');
   const [number, setNumber] = useState('');
   const [userInfo, setUserInfo] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -42,30 +49,76 @@ const Profile = () => {
   }, [currentUser]);
 
   const handleChange = async () => {
-    auth.sendPasswordResetEmail(password);
-    await firestore.collection('userinfo').doc(currentUser.uid).update({
-      email,
-      name,
-      number,
-      cpf,
-    });
+    try {
+      setLoading(true);
+      if (email === '' || name === '') {
+        setErrorMsg('O nome é uma campo obrigatório e não pode ficar vazio.');
+        setLoading(false);
+      } else {
+        await firestore.collection('userinfo').doc(currentUser.uid).update({
+          email,
+          name,
+          number,
+          cpf,
+        });
+        setSuccessMsg('Você modificou com sucesso a sua conta!');
+        setLoading(false);
+        setShowModal(false);
+      }
+    } catch (error) {
+      setErrorMsg(error);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    try {
+      if (passwordChange !== '') {
+        await currentUser.updatePassword(passwordChange);
+        window.alert('Email has been sent to you, Please check and verify.');
+      } else {
+        window.alert('Form is incomplete. Please fill out all fields');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChangeEmail = async () => {
+    try {
+      if (emailChange !== '') {
+        await currentUser.updateEmail(emailChange);
+        await firestore.collection('userinfo').doc(currentUser.uid).update({
+          email: emailChange,
+        });
+        window.alert('Email has been sent to you, Please check and verify.');
+      } else {
+        window.alert('Form is incomplete. Please fill out all fields');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const openModal = () => {
     setShowModal(true);
+    setSuccessMsg('');
+    setErrorMsg('');
     setName(userInfo.name);
     setEmail(userInfo.email);
     setNumber(userInfo.number);
     setCpf(userInfo.cpf);
-    setPassword('');
   };
 
   const openPasswordModal = () => {
     setShowPasswordModal(true);
   };
 
+  const openEmailModal = () => {
+    setShowEmailModal(true);
+  };
+
   return (
-    <Fragment className='body'>
+    <Fragment>
       <Container>
         <Grid columns={3}>
           <GridColumn width={3}></GridColumn>
@@ -75,6 +128,14 @@ const Profile = () => {
               textAlign='center'
               style={{ marginTop: '120px', padding: '40px' }}
             >
+              {successMsg && (
+                <Message
+                  icon='check'
+                  success
+                  header='Sucesso'
+                  content={successMsg}
+                />
+              )}
               <Header as='h2'>
                 <Image
                   circular
@@ -105,7 +166,7 @@ const Profile = () => {
                 </GridColumn>
                 <GridColumn width={6}></GridColumn>
                 <GridColumn width={5}>
-                  <Button onClick={() => openModal()} color='red'>
+                  <Button onClick={() => openEmailModal()} color='red'>
                     Editar
                   </Button>
                 </GridColumn>
@@ -143,7 +204,7 @@ const Profile = () => {
               </Divider>
               <Grid columns={3}>
                 <GridColumn width={5}>
-                  <h1>{userInfo.cpf}</h1>
+                  <h3>{userInfo.cpf}</h3>
                 </GridColumn>
                 <GridColumn width={6}></GridColumn>
                 <GridColumn width={5}>
@@ -165,6 +226,19 @@ const Profile = () => {
           closeIcon
         >
           <Modal.Content>
+            {errorMsg && (
+              <Message
+                icon='exclamation triangle'
+                negative
+                header='Houve um problema'
+                content={errorMsg}
+              />
+            )}
+            {loading && (
+              <Dimmer active inverted>
+                <Loader size='large'>Alterando Informações...</Loader>
+              </Dimmer>
+            )}
             <Header textAlign='center' as='h2'>
               <Image
                 centered
@@ -182,14 +256,14 @@ const Profile = () => {
                   placeholder='Nome'
                 />
               </Form.Field>
-              <Form.Field>
+              {/* <Form.Field>
                 <label>Email</label>
                 <input
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                   placeholder='Email'
                 />
-              </Form.Field>
+              </Form.Field> */}
               <Form.Field>
                 <label>Número</label>
                 <input
@@ -233,14 +307,52 @@ const Profile = () => {
               />{' '}
               Alterar Senha
             </Header>
-            <Form onSubmit={handleChange} size='large'>
+            <Form onSubmit={handleChangePassword} size='large'>
               <Form.Field>
-                <label>Senha</label>
+                <label>Email</label>
                 <input
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-                  placeholder='Senha'
+                  onChange={(e) => setPasswordChange(e.target.value)}
+                  value={passwordChange}
+                  placeholder='Email'
                   type='password'
+                />
+              </Form.Field>
+
+              <Grid>
+                <Grid.Column textAlign='center'>
+                  <Button style={{ padding: '15px' }} type='submit' secondary>
+                    Confirmar
+                  </Button>
+                </Grid.Column>
+              </Grid>
+            </Form>
+          </Modal.Content>
+        </Modal>
+        <Modal
+          style={{ padding: '15px' }}
+          size='tiny'
+          open={showEmailModal}
+          onClose={() => setShowEmailModal(false)}
+          centered={true}
+          closeIcon
+        >
+          <Modal.Content>
+            <Header textAlign='center' as='h2'>
+              <Image
+                centered
+                circular
+                src='https://img.pngio.com/profile-icon-png-image-free-download-searchpngcom-profile-icon-png-673_673.png'
+              />{' '}
+              Alterar Email
+            </Header>
+            <Form onSubmit={handleChangeEmail} size='large'>
+              <Form.Field>
+                <label>Email</label>
+                <input
+                  onChange={(e) => setEmailChange(e.target.value)}
+                  value={emailChange}
+                  placeholder='Email'
+                  type='email'
                 />
               </Form.Field>
 
