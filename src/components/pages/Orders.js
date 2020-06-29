@@ -13,6 +13,7 @@ import {
   Modal,
   Step,
 } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const Orders = () => {
   return (
@@ -24,48 +25,24 @@ const Orders = () => {
             <Segment
               raised
               textAlign='center'
-              style={{ marginTop: '120px', padding: '40px' }}
+              style={{ marginTop: '140px', padding: '40px' }}
             >
-              <Header as='h2'>
-                <Image src='https://image.flaticon.com/icons/png/512/34/34627.png' />{' '}
-                Seus Pedidos
-              </Header>
-              <Divider style={{ marginTop: '30px' }} horizontal>
-                <Header as='h4'>03/04/2020</Header>
-              </Divider>
-              <Container>
-                {/* <Step.Group>
-                  <Step>
-                    <Icon name='truck' />
-                    <Step.Content>
-                      <Step.Title>Shipping</Step.Title>
-                      <Step.Description>
-                        Choose your shipping options
-                      </Step.Description>
-                    </Step.Content>
-                  </Step>
-
-                  <Step active>
-                    <Icon name='payment' />
-                    <Step.Content>
-                      <Step.Title>Billing</Step.Title>
-                      <Step.Description>
-                        Enter billing information
-                      </Step.Description>
-                    </Step.Content>
-                  </Step>
-
-                  <Step disabled>
-                    <Icon name='info' />
-                    <Step.Content>
-                      <Step.Title>Confirm Order</Step.Title>
-                    </Step.Content>
-                  </Step>
-                </Step.Group> */}
-              </Container>
-              <Divider style={{ marginTop: '30px' }} horizontal>
-                <Header as='h4'>05/07/2020</Header>
-              </Divider>
+              <Grid columns={3}>
+                <GridColumn width={8}>
+                  <Header as='h2'>
+                    <Image
+                      circular
+                      src='https://support.ezlynx.com/support/wp-content/uploads/2018/10/02182034/checkmark.png'
+                    />{' '}
+                    Lanchonete Online
+                  </Header>
+                  <p>26/06/2020</p>
+                </GridColumn>
+                <GridColumn width={4}></GridColumn>
+                <GridColumn width={4}>
+                  <h2>R$ 54,67</h2>
+                </GridColumn>
+              </Grid>
             </Segment>
           </GridColumn>
           <GridColumn width={3}></GridColumn>

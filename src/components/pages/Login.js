@@ -14,6 +14,7 @@ import {
   GridColumn,
 } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
+import AuthContext from '../../context/authentication/authContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,6 +22,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const history = useHistory();
+  const { setPasswordContext } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,6 +33,7 @@ const Login = () => {
       setLoading(false);
     } else {
       try {
+        await setPasswordContext(password);
         await auth.signInWithEmailAndPassword(email, password);
         setLoading(false);
         history.push('/menu');

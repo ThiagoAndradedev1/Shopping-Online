@@ -9,7 +9,6 @@ import {
   Header,
   Image,
   Divider,
-  Icon,
   Form,
   Button,
   Modal,
@@ -19,7 +18,9 @@ import {
 } from 'semantic-ui-react';
 
 const Profile = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setPasswordContext, passwordContext } = useContext(
+    AuthContext
+  );
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [emailChange, setEmailChange] = useState('');
@@ -51,6 +52,7 @@ const Profile = () => {
   const handleChange = async () => {
     try {
       setLoading(true);
+      setErrorMsg('');
       if (email === '' || name === '') {
         setErrorMsg('O nome é uma campo obrigatório e não pode ficar vazio.');
         setLoading(false);
@@ -72,11 +74,16 @@ const Profile = () => {
 
   const handleChangePassword = async () => {
     try {
+      setLoading(true);
       if (passwordChange !== '') {
+        // await setPasswordContext(passwordChange);
+        // await auth.signInWithEmailAndPassword(userInfo.email, passwordContext);
         await currentUser.updatePassword(passwordChange);
-        window.alert('Email has been sent to you, Please check and verify.');
+        setSuccessMsg('Você modificou com sucesso a sua conta!');
+        setLoading(false);
+        setShowPasswordModal(false);
       } else {
-        window.alert('Form is incomplete. Please fill out all fields');
+        window.alert('Email has been sent to you, Please check and verify.');
       }
     } catch (error) {
       console.log(error);
@@ -85,17 +92,24 @@ const Profile = () => {
 
   const handleChangeEmail = async () => {
     try {
+      setErrorMsg('');
+      setLoading(true);
       if (emailChange !== '') {
+        // await auth.signInWithEmailAndPassword(userInfo.email, passwordContext);
         await currentUser.updateEmail(emailChange);
         await firestore.collection('userinfo').doc(currentUser.uid).update({
           email: emailChange,
         });
-        window.alert('Email has been sent to you, Please check and verify.');
+        setSuccessMsg('Você modificou com sucesso a sua conta!');
+        setLoading(false);
+        setShowEmailModal(false);
       } else {
-        window.alert('Form is incomplete. Please fill out all fields');
+        setErrorMsg('Você precissa preencher o campo com o seu novo email!');
+        setLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      setErrorMsg(error.message);
     }
   };
 
@@ -111,10 +125,12 @@ const Profile = () => {
 
   const openPasswordModal = () => {
     setShowPasswordModal(true);
+    setSuccessMsg('');
   };
 
   const openEmailModal = () => {
     setShowEmailModal(true);
+    setSuccessMsg('');
   };
 
   return (
@@ -299,6 +315,19 @@ const Profile = () => {
           closeIcon
         >
           <Modal.Content>
+            {errorMsg && (
+              <Message
+                icon='exclamation triangle'
+                negative
+                header='Houve um problema'
+                content={errorMsg}
+              />
+            )}
+            {loading && (
+              <Dimmer active inverted>
+                <Loader size='large'>Alterando Informações...</Loader>
+              </Dimmer>
+            )}
             <Header textAlign='center' as='h2'>
               <Image
                 centered
@@ -337,6 +366,19 @@ const Profile = () => {
           closeIcon
         >
           <Modal.Content>
+            {errorMsg && (
+              <Message
+                icon='exclamation triangle'
+                negative
+                header='Houve um problema'
+                content={errorMsg}
+              />
+            )}
+            {loading && (
+              <Dimmer active inverted>
+                <Loader size='large'>Alterando Informações...</Loader>
+              </Dimmer>
+            )}
             <Header textAlign='center' as='h2'>
               <Image
                 centered

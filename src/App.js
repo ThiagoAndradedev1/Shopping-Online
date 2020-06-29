@@ -9,6 +9,7 @@ import Navbar from './components/layout/Navbar';
 import Login from './components/pages/Login';
 import Cart from './components/pages/Cart';
 import Cardapio from './components/pages/Cardapio';
+import PrivateRoute from './private/PrivateRoute';
 import Profile from './components/pages/Profile';
 import Signup from './components/pages/Signup';
 import Orders from './components/pages/Orders';
@@ -33,14 +34,14 @@ const App = () => {
               <Route exact path='/'>
                 <Redirect to='/home' />
               </Route>
-              <Route exact path='/profile' component={Profile} />
               <Route exact path='/menu' component={Cardapio} />
               <Route exact path='/home' component={Home} />
               <Route exact path='/cart' component={Cart} />
               <Route exact path='/login' component={Login} />
               <Route exact path='/signup' component={Signup} />
               <Route exact path='/about' component={About} />
-              <Route exact path='/orders' component={Orders} />
+              <PrivateRoute exact path='/profile' component={Profile} />
+              <PrivateRoute exact path='/orders' component={Orders} />
             </Switch>
           </Router>
         </CalculationState>

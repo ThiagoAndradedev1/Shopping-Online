@@ -4,6 +4,7 @@ import AuthContext from './authContext';
 
 const AuthState = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [passwordContext, setPasswordContext] = useState('');
   const [pending, setPending] = useState(true);
 
   useEffect(() => {
@@ -18,7 +19,9 @@ const AuthState = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ currentUser }}>
+    <AuthContext.Provider
+      value={{ currentUser, passwordContext, setPasswordContext }}
+    >
       {children}
     </AuthContext.Provider>
   );
