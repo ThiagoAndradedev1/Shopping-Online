@@ -41,6 +41,7 @@ const Orders = () => {
                 <GridColumn width={4}></GridColumn>
                 <GridColumn width={4}>
                   <h2>R$ 54,67</h2>
+                  <Button color='black'>Ver Detalhes</Button>
                 </GridColumn>
               </Grid>
             </Segment>

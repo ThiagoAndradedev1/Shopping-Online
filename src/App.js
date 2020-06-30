@@ -14,6 +14,7 @@ import Profile from './components/pages/Profile';
 import Signup from './components/pages/Signup';
 import Orders from './components/pages/Orders';
 import About from './components/pages/About';
+import OrdersDetails from './components/pages/OrdersDetails';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   BrowserRouter as Router,
@@ -42,6 +43,11 @@ const App = () => {
               <Route exact path='/about' component={About} />
               <PrivateRoute exact path='/profile' component={Profile} />
               <PrivateRoute exact path='/orders' component={Orders} />
+              <PrivateRoute
+                exact
+                path='/ordersdetails'
+                component={OrdersDetails}
+              />
             </Switch>
           </Router>
         </CalculationState>
