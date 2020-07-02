@@ -11,16 +11,20 @@ import {
   Divider,
   Label,
 } from 'semantic-ui-react';
+import { firestore, firebase } from '../../firebase';
 import Pagination from '../layout/Pagination';
 import CalculationContext from '../../context/calculation/calculationContext';
+import AuthContext from '../../context/authentication/authContext';
+
+import { v4 as uuidv4 } from 'uuid';
 
 const Cart = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
-  const [labelCount, setLabelCount] = useState(1);
   const { transactions, deleteTransaction, updateTransacation } = useContext(
     CalculationContext
   );
+  const { currentUser } = useContext(AuthContext);
 
   const amounts = transactions.map((transaction) => transaction.productPrice);
   const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
@@ -44,6 +48,23 @@ const Cart = () => {
     }
 
     updateTransacation(newTransaction);
+  };
+
+  const handleOrders = async () => {
+    await firestore
+      .collection('orderinfo')
+      .doc(currentUser.uid)
+      .set(
+        {
+          orders: firebase.firestore.FieldValue.arrayUnion({
+            id: uuidv4(),
+            date: Date.now(),
+            total,
+            transactions,
+          }),
+        },
+        { merge: true }
+      );
   };
 
   return (
@@ -172,7 +193,11 @@ const Cart = () => {
                     </GridColumn>
                     <GridColumn width={4}></GridColumn>
                   </Grid>
-                  <Button style={{ marginTop: '15px' }} color='green'>
+                  <Button
+                    onClick={() => handleOrders()}
+                    style={{ marginTop: '15px' }}
+                    color='green'
+                  >
                     <Icon name='checkmark' /> Finalizar Pedido
                   </Button>
                 </Fragment>

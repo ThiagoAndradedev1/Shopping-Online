@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import {
   Segment,
   Container,
@@ -13,8 +13,11 @@ import {
   Modal,
   Step,
 } from 'semantic-ui-react';
+import AuthContext from '../../context/authentication/authContext';
 
 const OrdersDetails = () => {
+  const { orderDetails } = useContext(AuthContext);
+
   return (
     <Fragment>
       <Container>
@@ -53,102 +56,33 @@ const OrdersDetails = () => {
                   Seu Pedido
                 </Header>
               </Divider>
-              <Segment raised>
-                <Grid columns={3}>
-                  <GridColumn width={6}>
-                    <Header as='h2'>
-                      <Image
-                        size='massive'
-                        src='https://vejario.abril.com.br/wp-content/uploads/2017/11/mc-donalds.png'
-                      />{' '}
-                      Hambúrger
-                    </Header>
-                  </GridColumn>
-                  <GridColumn width={6}></GridColumn>
-                  <GridColumn width={4}>
-                    <h2>R$ 54,67</h2>
-                    <input
-                      disabled
-                      type='text'
-                      className='order-input'
-                      value={'1'}
-                      size='1'
-                    ></input>
-                  </GridColumn>
-                </Grid>
-              </Segment>
-              <Segment raised>
-                <Grid columns={3}>
-                  <GridColumn width={6}>
-                    <Header as='h2'>
-                      <Image
-                        size='massive'
-                        src='https://vejario.abril.com.br/wp-content/uploads/2017/11/mc-donalds.png'
-                      />{' '}
-                      Hambúrger
-                    </Header>
-                  </GridColumn>
-                  <GridColumn width={6}></GridColumn>
-                  <GridColumn width={4}>
-                    <h2>R$ 54,67</h2>
-                    <input
-                      disabled
-                      type='text'
-                      className='order-input'
-                      value={'3'}
-                      size='1'
-                    ></input>
-                  </GridColumn>
-                </Grid>
-              </Segment>
-              <Segment raised>
-                <Grid columns={3}>
-                  <GridColumn width={6}>
-                    <Header as='h2'>
-                      <Image
-                        size='massive'
-                        src='https://pngimg.com/uploads/burger_sandwich/burger_sandwich_PNG4135.png'
-                      />{' '}
-                      Hambúrger
-                    </Header>
-                  </GridColumn>
-                  <GridColumn width={6}></GridColumn>
-                  <GridColumn width={4}>
-                    <h2>R$ 54,67</h2>
-                    <input
-                      disabled
-                      type='text'
-                      className='order-input'
-                      value={'5'}
-                      size='1'
-                    ></input>
-                  </GridColumn>
-                </Grid>
-              </Segment>
-              <Segment raised>
-                <Grid columns={3}>
-                  <GridColumn width={6}>
-                    <Header as='h2'>
-                      <Image
-                        size='massive'
-                        src='https://pngimg.com/uploads/burger_sandwich/burger_sandwich_PNG4135.png'
-                      />{' '}
-                      Hambúrger
-                    </Header>
-                  </GridColumn>
-                  <GridColumn width={6}></GridColumn>
-                  <GridColumn width={4}>
-                    <h2>R$ 54,67</h2>
-                    <input
-                      disabled
-                      type='text'
-                      className='order-input'
-                      value={'5'}
-                      size='1'
-                    ></input>
-                  </GridColumn>
-                </Grid>
-              </Segment>
+              {orderDetails.lenght > 0 &&
+                orderDetails.transactions.map((order) => (
+                  <Segment key={order.id} raised>
+                    <Grid columns={3}>
+                      <GridColumn width={6}>
+                        <Header as='h2'>
+                          <Image
+                            size='massive'
+                            src='https://vejario.abril.com.br/wp-content/uploads/2017/11/mc-donalds.png'
+                          />{' '}
+                          Hambúrger
+                        </Header>
+                      </GridColumn>
+                      <GridColumn width={6}></GridColumn>
+                      <GridColumn width={4}>
+                        <h2>R$ 54,67</h2>
+                        <input
+                          disabled
+                          type='text'
+                          className='order-input'
+                          value={order.labelCount}
+                          size='1'
+                        ></input>
+                      </GridColumn>
+                    </Grid>
+                  </Segment>
+                ))}
               <Divider style={{ marginTop: '30px' }} />
               <Header as='h2'>
                 Valor Total
