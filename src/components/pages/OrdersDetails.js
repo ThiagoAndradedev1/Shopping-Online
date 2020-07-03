@@ -56,22 +56,19 @@ const OrdersDetails = () => {
                   Seu Pedido
                 </Header>
               </Divider>
-              {orderDetails.lenght > 0 &&
+              {orderDetails.transactions.length > 0 &&
                 orderDetails.transactions.map((order) => (
                   <Segment key={order.id} raised>
                     <Grid columns={3}>
                       <GridColumn width={6}>
                         <Header as='h2'>
-                          <Image
-                            size='massive'
-                            src='https://vejario.abril.com.br/wp-content/uploads/2017/11/mc-donalds.png'
-                          />{' '}
+                          <Image size='massive' src={order.infoModal.img} />{' '}
                           Hambúrger
                         </Header>
                       </GridColumn>
                       <GridColumn width={6}></GridColumn>
                       <GridColumn width={4}>
-                        <h2>R$ 54,67</h2>
+                        <h2>{order.productPrice.toFixed(2)}</h2>
                         <input
                           disabled
                           type='text'
@@ -86,7 +83,7 @@ const OrdersDetails = () => {
               <Divider style={{ marginTop: '30px' }} />
               <Header as='h2'>
                 Valor Total
-                <div style={{ color: 'red' }}>R$ 25.50</div>
+                <div style={{ color: 'red' }}>{orderDetails.total}</div>
               </Header>
             </div>
           </GridColumn>

@@ -16,6 +16,7 @@ import {
 import AuthContext from '../../context/authentication/authContext';
 import { firestore } from '../../firebase';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 const Orders = () => {
   const { currentUser, setOrderDetails } = useContext(AuthContext);
@@ -40,15 +41,17 @@ const Orders = () => {
       <Container>
         <Grid columns={3}>
           <GridColumn width={2}></GridColumn>
-          <div
-            style={{
-              marginTop: '140px',
-              padding: '40px',
-              textAlign: 'center',
-            }}
-          >
-            {orderInfo.map((order) => (
-              <GridColumn key={order.id} width={11}>
+          <GridColumn width={12}>
+            <div
+              style={{
+                marginTop: '70px',
+                padding: '40px',
+                textAlign: 'center',
+              }}
+            >
+              <h1>Seus Pedidos</h1>
+              {orderInfo.map((order) => (
+                // <GridColumn key={order.id} width={11}>
                 <Segment raised>
                   <Grid columns={3}>
                     <GridColumn width={8}>
@@ -59,7 +62,7 @@ const Orders = () => {
                         />{' '}
                         Lanchonete Online
                       </Header>
-                      <p>{order.date}</p>
+                      <p>{moment(order.date.toDate()).format('LLL')}</p>
                     </GridColumn>
                     <GridColumn width={4}></GridColumn>
                     <GridColumn width={4}>
@@ -75,10 +78,11 @@ const Orders = () => {
                     </GridColumn>
                   </Grid>
                 </Segment>
-              </GridColumn>
-            ))}
-          </div>
-          <GridColumn width={3}></GridColumn>
+                // </GridColumn>
+              ))}
+            </div>
+          </GridColumn>
+          <GridColumn width={2}></GridColumn>
         </Grid>
       </Container>
     </Fragment>

@@ -86,7 +86,18 @@ const Profile = () => {
         window.alert('Email has been sent to you, Please check and verify.');
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      switch (error.code) {
+        case 'auth/requires-recent-login':
+          setErrorMsg(
+            'Essa operação é sensivel e precisa de uma autenticação recente.'
+          );
+          break;
+
+        default:
+          setErrorMsg('Ocorreu um erro.');
+          break;
+      }
     }
   };
 
@@ -109,7 +120,18 @@ const Profile = () => {
       }
     } catch (error) {
       setLoading(false);
-      setErrorMsg(error.message);
+
+      switch (error.code) {
+        case 'auth/requires-recent-login':
+          setErrorMsg(
+            'Essa operação é sensivel e precisa de uma autenticação recente.'
+          );
+          break;
+
+        default:
+          setErrorMsg('Ocorreu um erro.');
+          break;
+      }
     }
   };
 
