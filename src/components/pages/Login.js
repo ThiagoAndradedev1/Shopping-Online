@@ -15,6 +15,7 @@ import {
 } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
 import AuthContext from '../../context/authentication/authContext';
+import { returnErrorFromFirebase } from '../../utils/utils';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -39,7 +40,8 @@ const Login = () => {
         history.push('/menu');
       } catch (error) {
         setLoading(false);
-        setError(error.message);
+        setError(returnErrorFromFirebase(error.code));
+        // setError(error.message);
       }
     }
   };

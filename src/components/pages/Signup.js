@@ -14,6 +14,7 @@ import {
   Loader,
 } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
+import { returnErrorFromFirebase } from '../../utils/utils';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -48,7 +49,9 @@ const Signup = () => {
         history.push('/login');
         setLoading(false);
       } catch (error) {
-        setError(error.message);
+        console.log(error.code);
+        // setError(error.message);
+        setError(returnErrorFromFirebase(error.code));
         setLoading(false);
       }
     }

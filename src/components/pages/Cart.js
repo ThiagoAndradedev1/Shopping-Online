@@ -10,17 +10,22 @@ import {
   Image,
   Divider,
   Label,
+  Modal,
 } from 'semantic-ui-react';
 import { firestore, firebase } from '../../firebase';
 import Pagination from '../layout/Pagination';
 import CalculationContext from '../../context/calculation/calculationContext';
 import AuthContext from '../../context/authentication/authContext';
-
 import { v4 as uuidv4 } from 'uuid';
 
 const Cart = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
+  const [pageIndetification, setpageIndetification] = useState(false);
+  const [currenteDocs, setCurrentDocs] = useState([]);
+  const [initialPrice, setInitialPrice] = useState(0);
+
+  const [modalState, setModalState] = useState(false);
   const { transactions, deleteTransaction, updateTransacation } = useContext(
     CalculationContext
   );
@@ -31,20 +36,31 @@ const Cart = () => {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentDocs = transactions.slice(indexOfFirstPost, indexOfLastPost);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  useEffect(() => {
+    setCurrentDocs(transactions.slice(indexOfFirstPost, indexOfLastPost));
+  }, [transactions, indexOfFirstPost, indexOfLastPost]);
 
-  const handleLabelCount = (number, transaction, index) => {
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleLabelCount = (number, index, productPrice) => {
     const newTransaction = { ...transactions[index] };
-
     if (number === 1) {
       newTransaction.labelCount += 1;
+      newTransaction.productPrice =
+        newTransaction.productPrice + transactions[index].initialPrice;
     } else if (number === 0) {
-      newTransaction.labelCount =
-        updateTransacation.labelCount < 0
-          ? updateTransacation.labelCount
-          : (newTransaction.labelCount -= 1);
+      newTransaction.labelCount -= 1;
+      if (newTransaction.labelCount < 2) {
+        console.log(newTransaction.initialPrice);
+        newTransaction.labelCount = 1;
+        newTransaction.productPrice = newTransaction.initialPrice;
+      } else {
+        newTransaction.productPrice =
+          newTransaction.productPrice - transactions[index].initialPrice;
+      }
     }
 
     updateTransacation(newTransaction);
@@ -67,13 +83,26 @@ const Cart = () => {
       );
   };
 
+  const openModal = () => {
+    setModalState(true);
+  };
+
+  const closeModal = () => {
+    setModalState(false);
+  };
+
+  const handleCancelBtn = (transaction) => {
+    deleteTransaction(transaction);
+    setpageIndetification(true);
+  };
+
   return (
     <Fragment>
       <Container>
         <Grid columns={3}>
           <GridColumn width={2}></GridColumn>
           <GridColumn mobile={16} computer={12}>
-            <div style={{ marginTop: '190px' }}>
+            <div style={{ marginTop: '120px' }}>
               <Segment textAlign='center' raised color='black' placeholder>
                 <Header as='h2' icon textAlign='center'>
                   {transactions.length > 0 && (
@@ -84,7 +113,7 @@ const Cart = () => {
                   )}
                 </Header>
                 <Grid>
-                  {currentDocs.map((transaction, index) => (
+                  {currenteDocs.map((transaction, index) => (
                     <Fragment key={transaction.id}>
                       <Grid.Column width={4}>
                         <Segment size='mini' padded textAlign='center' raised>
@@ -93,16 +122,18 @@ const Cart = () => {
                           <h3>Quantidade</h3>
                           <div>
                             <Button
-                              onClick={() =>
-                                handleLabelCount(0, transaction.id, index)
-                              }
+                              onClick={() => handleLabelCount(0, index)}
                               size='mini'
                               circular
                               icon='minus'
                             ></Button>
                             <Button
                               onClick={() =>
-                                handleLabelCount(1, transaction.id, index)
+                                handleLabelCount(
+                                  1,
+                                  index
+                                  // transaction.productPrice
+                                )
                               }
                               size='mini'
                               circular
@@ -124,19 +155,31 @@ const Cart = () => {
                             R${transaction.productPrice.toFixed(2)}
                           </Header>
                           <Divider horizontal>
-                            <Header as='h4'>
-                              {/* <Icon name='tag' /> */}
-                              Opções
-                            </Header>
+                            <Header as='h4'>Opções</Header>
                           </Divider>
                           {transaction.infoModal.tag === 'refrigerante' ||
                             transaction.infoModal.tag === 'agua' ||
                             transaction.infoModal.tag === 'cerveja' || (
-                              <Button color='black'>Editar Pedido</Button>
+                              <Modal
+                                trigger={
+                                  <Button
+                                    onClick={() => openModal()}
+                                    color='black'
+                                  >
+                                    Editar Pedido
+                                  </Button>
+                                }
+                                open={modalState}
+                                onClose={() => closeModal()}
+                              >
+                                <Segment>
+                                  <h1>ola</h1>
+                                </Segment>
+                              </Modal>
                             )}
                           <Button
                             style={{ marginTop: '10px' }}
-                            onClick={() => deleteTransaction(transaction.id)}
+                            onClick={() => handleCancelBtn(transaction.id)}
                             color='black'
                           >
                             Cancelar Pedido
@@ -171,6 +214,8 @@ const Cart = () => {
                     postsPerPage={postsPerPage}
                     totalPosts={transactions.length}
                     paginate={paginate}
+                    currenteDocs={currenteDocs}
+                    pageIndetification={pageIndetification}
                   />
                 </Container>
                 {transactions.length > 0 && (

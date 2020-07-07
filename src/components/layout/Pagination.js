@@ -1,6 +1,18 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 
-const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
+const Pagination = ({
+  postsPerPage,
+  totalPosts,
+  paginate,
+  currenteDocs,
+  pageIndetification,
+}) => {
+  useEffect(() => {
+    if (currenteDocs.length === 0 && pageIndetification) {
+      paginate(Math.ceil(totalPosts / postsPerPage));
+    }
+  }, [totalPosts, postsPerPage, paginate, currenteDocs, pageIndetification]);
+
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
@@ -11,9 +23,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
     <div>
       {pageNumbers.map((number) => (
         <li key={number} className='pagination'>
-          <a href='#' onClick={() => paginate(number)}>
-            {number}
-          </a>
+          <span onClick={() => paginate(number)}>{number}</span>
         </li>
       ))}
     </div>

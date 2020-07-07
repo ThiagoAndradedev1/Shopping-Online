@@ -24,9 +24,7 @@
 }
 
 /* .menu-background {
-  background-image: url('https://images7.alphacoders.com/817/thumb-350-817988.jpg') !important;
-  background-size: cover;
-  background-repeat: no-repeat;
+  border-radius: 295px;
 } */
 /* body {
   background-image: url('https://images2.alphacoders.com/922/thumb-1920-922691.jpg') !important;
@@ -107,20 +105,20 @@
   cursor: pointer;
 }
 
-.pagination a {
+.pagination span {
   color: rgb(20, 60, 241);
   background-color: #020802;
   color: white;
-  border-radius: 5px;
+  border-radius: 25px;
   margin: 10px;
   float: left;
   padding: 8px 16px;
   text-decoration: none;
 }
 
-.pagination a:hover:not(.active) {
+.pagination span:hover:not(.active) {
   background-color: red;
-  border-radius: 5px;
+  border-radius: 25px;
 }
 
 .segment-border {

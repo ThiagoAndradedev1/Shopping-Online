@@ -14,6 +14,7 @@ import {
   Step,
 } from 'semantic-ui-react';
 import AuthContext from '../../context/authentication/authContext';
+import Pagination from '../../components/layout/Pagination';
 import { firestore } from '../../firebase';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -21,6 +22,10 @@ import moment from 'moment';
 const Orders = () => {
   const { currentUser, setOrderDetails } = useContext(AuthContext);
   const [orderInfo, setOrderInfo] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(4);
+  const [pageIndetification] = useState(false);
+  const [currenteDocs, setCurrentDocs] = useState([]);
 
   useEffect(() => {
     if (currentUser) {
@@ -36,6 +41,16 @@ const Orders = () => {
     }
   }, [currentUser]);
 
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  useEffect(() => {
+    setCurrentDocs(orderInfo.slice(indexOfFirstPost, indexOfLastPost));
+  }, [orderInfo, indexOfFirstPost, indexOfLastPost]);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <Fragment>
       <Container>
@@ -50,7 +65,7 @@ const Orders = () => {
               }}
             >
               <h1>Seus Pedidos</h1>
-              {orderInfo.map((order) => (
+              {currenteDocs.map((order) => (
                 // <GridColumn key={order.id} width={11}>
                 <Segment raised>
                   <Grid columns={3}>
@@ -80,6 +95,13 @@ const Orders = () => {
                 </Segment>
                 // </GridColumn>
               ))}
+              <Pagination
+                postsPerPage={postsPerPage}
+                totalPosts={orderInfo.length}
+                paginate={paginate}
+                currenteDocs={currenteDocs}
+                pageIndetification={pageIndetification}
+              />
             </div>
           </GridColumn>
           <GridColumn width={2}></GridColumn>

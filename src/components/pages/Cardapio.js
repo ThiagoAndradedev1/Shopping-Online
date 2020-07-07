@@ -17,6 +17,7 @@ import {
   Sidebar,
 } from 'semantic-ui-react';
 import { firestore } from '../../firebase';
+import { v4 as uuidv4 } from 'uuid';
 import calculationContext from '../../context/calculation/calculationContext';
 import { toast } from 'react-toastify';
 toast.configure();
@@ -121,10 +122,11 @@ const Cardapio = () => {
         ].productPrice += Number(price);
       } else {
         const newTransaction = {
-          id: Math.floor(Math.random() * 100000000),
+          id: uuidv4(),
           labelCount,
           productPrice: price * labelCount,
           infoModal: infoItem,
+          initialPrice: Number(price),
         };
 
         addTransaction(newTransaction);
@@ -172,10 +174,12 @@ const Cardapio = () => {
       ].productPrice += Number(price);
     } else {
       const newTransaction = {
-        id: Math.floor(Math.random() * 100000000),
+        id: uuidv4(),
         labelCount,
         productPrice: price * labelCount,
         infoModal,
+        initialPrice: Number(price),
+        ingredientesSelecionados,
       };
       addTransaction(newTransaction);
     }
