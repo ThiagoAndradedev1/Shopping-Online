@@ -124,7 +124,7 @@ const Cardapio = () => {
         const newTransaction = {
           id: uuidv4(),
           labelCount,
-          productPrice: price * labelCount,
+          price: price * labelCount,
           infoModal: infoItem,
           initialPrice: Number(price),
         };
@@ -176,7 +176,7 @@ const Cardapio = () => {
       const newTransaction = {
         id: uuidv4(),
         labelCount,
-        productPrice: price * labelCount,
+        price: price * labelCount,
         infoModal,
         initialPrice: Number(price),
         ingredientesSelecionados,

@@ -11,6 +11,8 @@ import {
   Divider,
   Label,
   Modal,
+  ModalContent,
+  GridRow,
 } from 'semantic-ui-react';
 import { firestore, firebase } from '../../firebase';
 import Pagination from '../layout/Pagination';
@@ -23,7 +25,8 @@ const Cart = () => {
   const [postsPerPage] = useState(3);
   const [pageIndetification, setpageIndetification] = useState(false);
   const [currenteDocs, setCurrentDocs] = useState([]);
-  const [initialPrice, setInitialPrice] = useState(0);
+  const [modalInfo, setModalInfo] = useState({});
+  const [labelCount, setLabelCount] = useState(1);
 
   const [modalState, setModalState] = useState(false);
   const { transactions, deleteTransaction, updateTransacation } = useContext(
@@ -31,7 +34,7 @@ const Cart = () => {
   );
   const { currentUser } = useContext(AuthContext);
 
-  const amounts = transactions.map((transaction) => transaction.productPrice);
+  const amounts = transactions.map((transaction) => transaction.price);
   const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -45,21 +48,26 @@ const Cart = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleLabelCount = (number, index, productPrice) => {
-    const newTransaction = { ...transactions[index] };
+  const handleLabelCount = (number, id) => {
+    console.log(id);
+    const docId = transactions.findIndex(
+      (transaction) => transaction.id === id
+    );
+    const newTransaction = { ...transactions[docId] };
+    // console.log(x);
     if (number === 1) {
       newTransaction.labelCount += 1;
-      newTransaction.productPrice =
-        newTransaction.productPrice + transactions[index].initialPrice;
+      newTransaction.price =
+        newTransaction.price + transactions[docId].initialPrice;
     } else if (number === 0) {
       newTransaction.labelCount -= 1;
       if (newTransaction.labelCount < 2) {
         console.log(newTransaction.initialPrice);
         newTransaction.labelCount = 1;
-        newTransaction.productPrice = newTransaction.initialPrice;
+        newTransaction.price = newTransaction.initialPrice;
       } else {
-        newTransaction.productPrice =
-          newTransaction.productPrice - transactions[index].initialPrice;
+        newTransaction.price =
+          newTransaction.price - transactions[docId].initialPrice;
       }
     }
 
@@ -83,9 +91,21 @@ const Cart = () => {
       );
   };
 
-  const openModal = () => {
+  const openModal = (transaction) => {
     setModalState(true);
+    setModalInfo({ ...transaction });
+    console.log(modalInfo);
+    // console.log(transaction);
+    // console.log(labelCount);
+    // setModalInfo({ ...infoModal, labelCount, productPrice });
   };
+
+  // const openModal = (infoModal, labelCount, productPrice) => {
+  //   setModalState(true);
+  //   console.log(labelCount);
+  //   setModalInfo({ ...infoModal, labelCount, productPrice });
+  //   // setLabelCount(labelCount);
+  // };
 
   const closeModal = () => {
     setModalState(false);
@@ -122,18 +142,16 @@ const Cart = () => {
                           <h3>Quantidade</h3>
                           <div>
                             <Button
-                              onClick={() => handleLabelCount(0, index)}
+                              onClick={() =>
+                                handleLabelCount(0, transaction.id)
+                              }
                               size='mini'
                               circular
                               icon='minus'
                             ></Button>
                             <Button
                               onClick={() =>
-                                handleLabelCount(
-                                  1,
-                                  index
-                                  // transaction.productPrice
-                                )
+                                handleLabelCount(1, transaction.id)
                               }
                               size='mini'
                               circular
@@ -152,7 +170,7 @@ const Cart = () => {
                             <Header.Subheader>
                               {transaction.infoModal.description}{' '}
                             </Header.Subheader>
-                            R${transaction.productPrice.toFixed(2)}
+                            R${transaction.price.toFixed(2)}
                           </Header>
                           <Divider horizontal>
                             <Header as='h4'>Opções</Header>
@@ -163,7 +181,14 @@ const Cart = () => {
                               <Modal
                                 trigger={
                                   <Button
-                                    onClick={() => openModal()}
+                                    onClick={() =>
+                                      openModal(
+                                        transaction
+                                        // transaction.infoModal,
+                                        // transaction.labelCount,
+                                        // transaction.price
+                                      )
+                                    }
                                     color='black'
                                   >
                                     Editar Pedido
@@ -172,9 +197,68 @@ const Cart = () => {
                                 open={modalState}
                                 onClose={() => closeModal()}
                               >
-                                <Segment>
-                                  <h1>ola</h1>
+                                <Segment
+                                  style={{ fontSize: '1.33em' }}
+                                  inverted
+                                  color='red'
+                                >
+                                  Pizza
                                 </Segment>
+                                <ModalContent image>
+                                  <Grid stackable>
+                                    <Grid.Row>
+                                      <Grid.Column width={4}>
+                                        <Segment
+                                          raised
+                                          padded
+                                          size='mini'
+                                          textAlign='center'
+                                        >
+                                          <Image
+                                            centered
+                                            circular
+                                            wrapped
+                                            size='medium'
+                                            // src={modalInfo.infoModal.img}
+                                          />
+                                          <Label
+                                            size='massive'
+                                            circular
+                                            color='red'
+                                            floating
+                                          >
+                                            {/* {modalInfo.labelCount} */}
+                                          </Label>
+                                          {/* <h3>{modalInfo.infoModal.name}</h3> */}
+                                          {/* <h3>${modalInfo.price}</h3> */}
+                                          <h3>Quantidade</h3>
+                                          <Button
+                                            onClick={() =>
+                                              handleLabelCount(0, modalInfo.id)
+                                            }
+                                            size='mini'
+                                            circular
+                                            icon='minus'
+                                          ></Button>
+                                          <Button
+                                            onClick={() =>
+                                              handleLabelCount(1, modalInfo.id)
+                                            }
+                                            size='mini'
+                                            circular
+                                            icon='plus'
+                                          ></Button>
+                                        </Segment>
+                                      </Grid.Column>
+                                      <Grid.Column width={10}>
+                                        <h2>hello</h2>
+                                      </Grid.Column>
+                                      <Grid.Column width={2}>
+                                        <h2>hello</h2>
+                                      </Grid.Column>
+                                    </Grid.Row>
+                                  </Grid>
+                                </ModalContent>
                               </Modal>
                             )}
                           <Button
@@ -183,6 +267,10 @@ const Cart = () => {
                             color='black'
                           >
                             Cancelar Pedido
+                          </Button>
+
+                          <Button onClick={() => console.log(transaction)}>
+                            Imprimir Id Do Item
                           </Button>
                         </Segment>
                       </Grid.Column>
