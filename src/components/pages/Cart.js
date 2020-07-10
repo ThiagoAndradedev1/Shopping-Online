@@ -13,6 +13,8 @@ import {
   Modal,
   ModalContent,
   GridRow,
+  Responsive,
+  Checkbox,
 } from 'semantic-ui-react';
 import { firestore, firebase } from '../../firebase';
 import Pagination from '../layout/Pagination';
@@ -26,7 +28,6 @@ const Cart = () => {
   const [pageIndetification, setpageIndetification] = useState(false);
   const [currenteDocs, setCurrentDocs] = useState([]);
   const [modalInfo, setModalInfo] = useState({});
-  const [labelCount, setLabelCount] = useState(1);
 
   const [modalState, setModalState] = useState(false);
   const { transactions, deleteTransaction, updateTransacation } = useContext(
@@ -42,27 +43,34 @@ const Cart = () => {
 
   useEffect(() => {
     setCurrentDocs(transactions.slice(indexOfFirstPost, indexOfLastPost));
-  }, [transactions, indexOfFirstPost, indexOfLastPost]);
+    console.log(modalInfo?.infoModal?.ingredientes);
+    if (modalInfo && modalInfo.infoModal) {
+      const copiaIngredientes = modalInfo.infoModal.ingredientes.map((v) => ({
+        ...v,
+        checked: true,
+      }));
+      console.log(copiaIngredientes);
+    }
+  }, [transactions, indexOfFirstPost, indexOfLastPost, modalInfo]);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   const handleLabelCount = (number, id) => {
-    console.log(id);
     const docId = transactions.findIndex(
       (transaction) => transaction.id === id
     );
     const newTransaction = { ...transactions[docId] };
-    // console.log(x);
     if (number === 1) {
       newTransaction.labelCount += 1;
       newTransaction.price =
         newTransaction.price + transactions[docId].initialPrice;
+      setModalInfo(newTransaction);
     } else if (number === 0) {
       newTransaction.labelCount -= 1;
+      setModalInfo(newTransaction);
       if (newTransaction.labelCount < 2) {
-        console.log(newTransaction.initialPrice);
         newTransaction.labelCount = 1;
         newTransaction.price = newTransaction.initialPrice;
       } else {
@@ -94,18 +102,7 @@ const Cart = () => {
   const openModal = (transaction) => {
     setModalState(true);
     setModalInfo({ ...transaction });
-    console.log(modalInfo);
-    // console.log(transaction);
-    // console.log(labelCount);
-    // setModalInfo({ ...infoModal, labelCount, productPrice });
   };
-
-  // const openModal = (infoModal, labelCount, productPrice) => {
-  //   setModalState(true);
-  //   console.log(labelCount);
-  //   setModalInfo({ ...infoModal, labelCount, productPrice });
-  //   // setLabelCount(labelCount);
-  // };
 
   const closeModal = () => {
     setModalState(false);
@@ -181,14 +178,7 @@ const Cart = () => {
                               <Modal
                                 trigger={
                                   <Button
-                                    onClick={() =>
-                                      openModal(
-                                        transaction
-                                        // transaction.infoModal,
-                                        // transaction.labelCount,
-                                        // transaction.price
-                                      )
-                                    }
+                                    onClick={() => openModal(transaction)}
                                     color='black'
                                   >
                                     Editar Pedido
@@ -219,7 +209,7 @@ const Cart = () => {
                                             circular
                                             wrapped
                                             size='medium'
-                                            // src={modalInfo.infoModal.img}
+                                            src={modalInfo.infoModal?.img}
                                           />
                                           <Label
                                             size='massive'
@@ -227,10 +217,12 @@ const Cart = () => {
                                             color='red'
                                             floating
                                           >
-                                            {/* {modalInfo.labelCount} */}
+                                            {modalInfo.labelCount}
                                           </Label>
-                                          {/* <h3>{modalInfo.infoModal.name}</h3> */}
-                                          {/* <h3>${modalInfo.price}</h3> */}
+
+                                          <h3>{modalInfo.infoModal?.name}</h3>
+
+                                          <h3>${modalInfo.price}</h3>
                                           <h3>Quantidade</h3>
                                           <Button
                                             onClick={() =>
@@ -251,10 +243,53 @@ const Cart = () => {
                                         </Segment>
                                       </Grid.Column>
                                       <Grid.Column width={10}>
-                                        <h2>hello</h2>
+                                        <Segment
+                                          raised
+                                          padded
+                                          textAlign='center'
+                                        >
+                                          <h3>Ingredientes</h3>
+
+                                          {modalInfo.ingredientesSelecionados
+                                            ?.length === 0 && (
+                                            <h1>Sem Ingredientes</h1>
+                                          )}
+                                          <Grid columns={3}>
+                                            {modalInfo.ingredientesSelecionados?.map(
+                                              (x) => {
+                                                return (
+                                                  <Grid.Column key={x.id}>
+                                                    <Image
+                                                      centered
+                                                      size='tiny'
+                                                      src={x.image}
+                                                      key={x.id}
+                                                    ></Image>
+                                                  </Grid.Column>
+                                                );
+                                              }
+                                            )}
+                                          </Grid>
+                                        </Segment>
                                       </Grid.Column>
                                       <Grid.Column width={2}>
-                                        <h2>hello</h2>
+                                        <Responsive
+                                          as={Fragment}
+                                          {...Responsive.onlyComputer}
+                                        >
+                                          {modalInfo.infoModal?.ingredientes?.map(
+                                            (ingrediente, index) => {
+                                              return (
+                                                <Checkbox
+                                                  checked={() => true}
+                                                  key={index}
+                                                  label={ingrediente.name}
+                                                />
+                                                // <input type="checkbox" checked={} />
+                                              );
+                                            }
+                                          )}
+                                        </Responsive>
                                       </Grid.Column>
                                     </Grid.Row>
                                   </Grid>
@@ -267,10 +302,6 @@ const Cart = () => {
                             color='black'
                           >
                             Cancelar Pedido
-                          </Button>
-
-                          <Button onClick={() => console.log(transaction)}>
-                            Imprimir Id Do Item
                           </Button>
                         </Segment>
                       </Grid.Column>
