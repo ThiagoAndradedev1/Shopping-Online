@@ -7,6 +7,10 @@
   background-repeat: no-repeat;
 } */
 
+/* body {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+} */
+
 .segment-border {
   border: 2px solid black !important;
 }
@@ -137,4 +141,15 @@
   height: 40px;
   text-align: center;
   font-size: 20px;
+}
+
+.flex {
+  display: flex;
+  margin: 0;
+  justify-content: space-between;
+}
+
+.flex-item-button {
+  margin-left: auto;
+  align-self: center;
 }

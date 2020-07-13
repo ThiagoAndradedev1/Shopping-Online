@@ -28,6 +28,7 @@ const Cart = () => {
   const [pageIndetification, setpageIndetification] = useState(false);
   const [currenteDocs, setCurrentDocs] = useState([]);
   const [modalInfo, setModalInfo] = useState({});
+  const [ingredientsCopy, setIngredientsCopy] = useState([]);
 
   const [modalState, setModalState] = useState(false);
   const { transactions, deleteTransaction, updateTransacation } = useContext(
@@ -42,14 +43,25 @@ const Cart = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
 
   useEffect(() => {
+    // console.log(0)
     setCurrentDocs(transactions.slice(indexOfFirstPost, indexOfLastPost));
-    console.log(modalInfo?.infoModal?.ingredientes);
     if (modalInfo && modalInfo.infoModal) {
-      const copiaIngredientes = modalInfo.infoModal.ingredientes.map((v) => ({
-        ...v,
-        checked: true,
-      }));
-      console.log(copiaIngredientes);
+      const copiaIngredientes = modalInfo.infoModal.ingredientes.map(
+        (ingrediente) => ({
+          ...ingrediente,
+          checked: false,
+        })
+      );
+
+      modalInfo.ingredientesSelecionados.forEach((ingrdienteSelecionado) => {
+        copiaIngredientes.forEach((copiaIngrediente) => {
+          if (ingrdienteSelecionado.id === copiaIngrediente.id) {
+            copiaIngrediente.checked = true;
+          }
+        });
+      });
+
+      setIngredientsCopy(copiaIngredientes);
     }
   }, [transactions, indexOfFirstPost, indexOfLastPost, modalInfo]);
 
@@ -61,6 +73,7 @@ const Cart = () => {
     const docId = transactions.findIndex(
       (transaction) => transaction.id === id
     );
+    console.log(transactions);
     const newTransaction = { ...transactions[docId] };
     if (number === 1) {
       newTransaction.labelCount += 1;
@@ -111,6 +124,23 @@ const Cart = () => {
   const handleCancelBtn = (transaction) => {
     deleteTransaction(transaction);
     setpageIndetification(true);
+  };
+
+  const removeorAddIngrediente = (ingrediente) => {
+    console.log(ingrediente);
+    const retorno = ingredientsCopy.findIndex(
+      (ingredienteCopy) => ingredienteCopy.id === ingrediente.id
+    );
+    const copy = [...ingredientsCopy];
+    if (retorno !== -1) {
+      console.log(copy);
+      copy[retorno].checked = false;
+      setIngredientsCopy(copy);
+    } else {
+      console.log('caiu aqui');
+      copy[retorno].checked = true;
+      setIngredientsCopy(copy);
+    }
   };
 
   return (
@@ -277,15 +307,19 @@ const Cart = () => {
                                           as={Fragment}
                                           {...Responsive.onlyComputer}
                                         >
-                                          {modalInfo.infoModal?.ingredientes?.map(
+                                          {ingredientsCopy.map(
                                             (ingrediente, index) => {
                                               return (
                                                 <Checkbox
-                                                  checked={() => true}
+                                                  checked={ingrediente.checked}
                                                   key={index}
                                                   label={ingrediente.name}
+                                                  onChange={() =>
+                                                    removeorAddIngrediente(
+                                                      ingrediente
+                                                    )
+                                                  }
                                                 />
-                                                // <input type="checkbox" checked={} />
                                               );
                                             }
                                           )}

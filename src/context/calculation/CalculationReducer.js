@@ -14,6 +14,15 @@ export default (state, action) => {
       };
 
     case 'UPDATE_TRANSACTION_LABEL':
+      // const cloneTransactions = [...state.transactions];
+      // let filtered = cloneTransactions.filter(
+      //   (transaction) => transaction.id === action.payload.newTransaction.id
+      // );
+      // cloneTransactions.splice(
+      //   action.payload.index,
+      //   0,
+      //   action.payload.newTransaction
+      // );
       return {
         ...state,
         transactions: [
@@ -22,6 +31,14 @@ export default (state, action) => {
           ),
           action.payload,
         ],
+        // transactions: [
+        //   state.transactions.splice(
+        //     action.payload.index,
+        //     0,
+        //     action.payload.newTransaction
+        //   ),
+        // ],
+        // transactions: cloneTransactions,
       };
     default:
       return state;

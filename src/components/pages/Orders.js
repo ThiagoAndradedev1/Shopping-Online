@@ -16,16 +16,20 @@ import {
 import AuthContext from '../../context/authentication/authContext';
 import Pagination from '../../components/layout/Pagination';
 import { firestore } from '../../firebase';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import moment from 'moment';
 
 const Orders = () => {
-  const { currentUser, setOrderDetails } = useContext(AuthContext);
+  const { currentUser, setOrderDetails, orderDetails } = useContext(
+    AuthContext
+  );
   const [orderInfo, setOrderInfo] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(4);
   const [pageIndetification] = useState(false);
   const [currenteDocs, setCurrentDocs] = useState([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     if (currentUser) {
@@ -51,6 +55,13 @@ const Orders = () => {
     setCurrentPage(pageNumber);
   };
 
+  const setOrder = (order) => {
+    setOrderDetails(order);
+    if (orderDetails) {
+      history.push('/ordersdetails');
+    }
+  };
+
   return (
     <Fragment>
       <Container>
@@ -66,34 +77,29 @@ const Orders = () => {
             >
               <h1>Seus Pedidos</h1>
               {currenteDocs.map((order) => (
-                // <GridColumn key={order.id} width={11}>
-                <Segment raised>
-                  <Grid columns={3}>
-                    <GridColumn width={8}>
-                      <Header as='h2'>
-                        <Image
-                          circular
-                          src='https://support.ezlynx.com/support/wp-content/uploads/2018/10/02182034/checkmark.png'
-                        />{' '}
-                        Lanchonete Online
-                      </Header>
-                      <p>{moment(order.date.toDate()).format('LLL')}</p>
-                    </GridColumn>
-                    <GridColumn width={4}></GridColumn>
-                    <GridColumn width={4}>
-                      <h2>{order.total}</h2>
-                      <Button
-                        as={Link}
-                        to='/ordersdetails'
-                        onClick={() => setOrderDetails(order)}
-                        color='black'
-                      >
-                        Ver Detalhes
-                      </Button>
-                    </GridColumn>
-                  </Grid>
-                </Segment>
-                // </GridColumn>
+                <GridColumn key={order.id} width={11}>
+                  <Segment raised>
+                    <Grid columns={3}>
+                      <GridColumn width={8}>
+                        <Header as='h2'>
+                          <Image
+                            circular
+                            src='https://support.ezlynx.com/support/wp-content/uploads/2018/10/02182034/checkmark.png'
+                          />{' '}
+                          Lanchonete Online
+                        </Header>
+                        <p>{moment(order.date.toDate()).format('LLL')}</p>
+                      </GridColumn>
+                      <GridColumn width={4}></GridColumn>
+                      <GridColumn width={4}>
+                        <h2>{order.total}</h2>
+                        <Button onClick={() => setOrder(order)} color='black'>
+                          Ver Detalhes
+                        </Button>
+                      </GridColumn>
+                    </Grid>
+                  </Segment>
+                </GridColumn>
               ))}
               <Pagination
                 postsPerPage={postsPerPage}

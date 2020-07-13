@@ -23,9 +23,10 @@ const CalculationState = ({ children }) => {
     });
   };
 
-  const updateTransacation = (newTransaction) => {
+  const updateTransacation = (newTransaction, index) => {
     dispatch({
       type: 'UPDATE_TRANSACTION_LABEL',
+      // payload: { newTransaction, index },
       payload: newTransaction,
     });
   };

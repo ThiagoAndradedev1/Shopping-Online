@@ -7,6 +7,12 @@ import {
   Label,
   Button,
   Dropdown,
+  Responsive,
+  Grid,
+  Sidebar,
+  Header,
+  GridColumn,
+  Divider,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { firestore, auth } from '../../firebase';
@@ -16,6 +22,7 @@ import { useState } from 'react';
 
 const Navbar = () => {
   const [userInfo, setUserInfo] = useState('');
+  const [sideBarVisible, setSideBarVisible] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const { transactions } = useContext(CalculationContext);
 
@@ -58,62 +65,168 @@ const Navbar = () => {
     </span>
   );
 
+  const mobileLogOut = async () => {
+    setSideBarVisible(false);
+    await auth.signOut();
+  };
+
   return (
     <Fragment>
-      <Menu borderless fixed='top' size='tiny' color='red' inverted>
-        <Container text>
+      <Menu
+        borderless
+        // fixed='top'
+        size='tiny'
+        color='red'
+        inverted
+        className='flex'
+        attached
+      >
+        <Responsive {...Responsive.onlyMobile}>
           <Menu.Item>
             <Image
-              size='mini'
+              size='small'
               src='https://i.pinimg.com/originals/6a/27/ac/6a27ac5560df47ec8bb998051b74b1f0.png'
             />
           </Menu.Item>
-          <Menu.Item header>Hamburgeria</Menu.Item>
-          <Menu.Item as={Link} to='/home'>
-            Home
-          </Menu.Item>
-          <Menu.Item as={Link} to='/menu'>
-            Cardápio
-          </Menu.Item>
-          <Menu.Item as={Link} to='/about'>
-            Sobre
-          </Menu.Item>
-          <Menu.Item as={Link} to='/cart'>
-            <Icon name='cart' /> Carrinho
-            <Label circular color='black'>
-              {transactions.length}
-              {/* {transactions.length === 0 && 1}
-              {transactions.length > 0 && transactions.length} */}
-            </Label>
-          </Menu.Item>
+        </Responsive>
+        <Responsive as={Fragment} {...Responsive.onlyMobile}>
+          <Sidebar
+            as={Menu}
+            color='black'
+            direction='left'
+            animation='overlay'
+            icon='labeled'
+            inverted
+            vertical
+            onHide={() => setSideBarVisible(false)}
+            visible={sideBarVisible}
+            width='thin'
+          >
+            <Menu.Item
+              onClick={() => setSideBarVisible(false)}
+              as={Link}
+              to='/home'
+            >
+              <Icon name='home' />
+              Home
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => setSideBarVisible(false)}
+              as={Link}
+              to='/menu'
+            >
+              <Icon name='food' />
+              Cardápio
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => setSideBarVisible(false)}
+              as={Link}
+              to='/about'
+            >
+              <Icon name='question circle outline' />
+              Sobre
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => setSideBarVisible(false)}
+              as={Link}
+              to='/cart'
+            >
+              <Icon name='cart' />
+              Carrinho
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => setSideBarVisible(false)}
+              as={Link}
+              to='/profile'
+            >
+              <Icon name='user outline' />
+              Perfil
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => setSideBarVisible(false)}
+              as={Link}
+              to='/signup'
+            >
+              <Icon name='sign-in' />
+              Cadastrar
+            </Menu.Item>
+            <Menu.Item
+              onClick={() => setSideBarVisible(false)}
+              as={Link}
+              to='/login'
+            >
+              <Icon name='long arrow alternate right' />
+              Entrar
+            </Menu.Item>
+            <Menu.Item onClick={() => mobileLogOut()} as={Link} to='/login'>
+              <Icon name='sign-out' />
+              Sair
+            </Menu.Item>
+          </Sidebar>
+        </Responsive>
+
+        <Container text>
+          <Responsive as={Fragment} minWidth={Responsive.onlyComputer.minWidth}>
+            <Menu.Item>
+              <Image
+                size='mini'
+                src='https://i.pinimg.com/originals/6a/27/ac/6a27ac5560df47ec8bb998051b74b1f0.png'
+              />
+            </Menu.Item>
+            <Menu.Item header>Hamburgeria</Menu.Item>
+            <Menu.Item as={Link} to='/home'>
+              Home
+            </Menu.Item>
+            <Menu.Item as={Link} to='/menu'>
+              Cardápio
+            </Menu.Item>
+            <Menu.Item as={Link} to='/about'>
+              Sobre
+            </Menu.Item>
+            <Menu.Item as={Link} to='/cart'>
+              <Icon name='cart' /> Carrinho
+              <Label circular color='black'>
+                {transactions.length}
+              </Label>
+            </Menu.Item>
+          </Responsive>
         </Container>
         <Container text>
-          <Menu.Menu position='right'>
-            <Menu.Item>
-              {!currentUser && (
-                <div>
-                  <Link to='/login'>
-                    <Button color='black'>Log In</Button>
-                  </Link>
-                  <Link to='/signup'>
-                    <Button style={{ marginLeft: '0.5em' }} color='black'>
-                      Registrar
-                    </Button>
-                  </Link>
-                </div>
-              )}
-              {currentUser && (
-                <Dropdown
-                  trigger={trigger}
-                  options={options}
-                  pointing='top'
-                  icon={null}
-                />
-              )}
-              <Button onClick={logOut}>Sair</Button>
-            </Menu.Item>
-          </Menu.Menu>
+          <Responsive as={Fragment} minWidth={Responsive.onlyComputer.minWidth}>
+            <Menu.Menu position='right'>
+              <Menu.Item>
+                {!currentUser && (
+                  <div>
+                    <Link to='/login'>
+                      <Button color='black'>Log In</Button>
+                    </Link>
+                    <Link to='/signup'>
+                      <Button style={{ marginLeft: '0.5em' }} color='black'>
+                        Registrar
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+                {currentUser && (
+                  <Dropdown
+                    trigger={trigger}
+                    options={options}
+                    pointing='top'
+                    icon={null}
+                  />
+                )}
+                <Button onClick={logOut}>Sair</Button>
+              </Menu.Item>
+            </Menu.Menu>
+          </Responsive>
         </Container>
+
+        <Responsive className='flex-item-button' {...Responsive.onlyMobile}>
+          {/* <Button>Click me</Button> */}
+          <Button onClick={() => setSideBarVisible(true)} color='red'>
+            <Icon name='sidebar' size='large' />
+          </Button>
+        </Responsive>
       </Menu>
     </Fragment>
   );

@@ -86,7 +86,7 @@ const settingsWelcomeModal = {
 const Home = () => {
   return (
     <Fragment>
-      <div style={{ marginTop: '70px' }}>
+      <div>
         <div
           className='segment-background'
           style={{
