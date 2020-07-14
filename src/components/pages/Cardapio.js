@@ -186,7 +186,7 @@ const Cardapio = () => {
   };
 
   return (
-    <div className='menu-background' style={{ marginTop: '150px' }}>
+    <div className='menu-background' style={{ marginTop: '50px' }}>
       <Grid columns={3}>
         <Responsive as={Fragment} {...Responsive.onlyMobile}>
           <Sidebar
@@ -257,7 +257,9 @@ const Cardapio = () => {
                   Porções
                 </Button>
                 <Button color='red'>Condimentos</Button>
-                <Button color='red'>Combos</Button>
+                <Button onClick={() => orderBy('combo')} color='red'>
+                  Combos
+                </Button>
                 <Button onClick={() => orderBy('porções')} color='red'>
                   Exibir Todas Opções
                 </Button>
@@ -307,49 +309,53 @@ const Cardapio = () => {
               <Grid.Row>
                 {infoFilter.map((infoItem) => (
                   <Grid.Column key={infoItem.id}>
-                    <Segment
-                      raised
-                      style={{ marginTop: '10px' }}
-                      textAlign='center'
-                    >
-                      <Button
-                        animated='fade'
-                        onClick={() =>
-                          changePrice(
-                            infoItem,
-                            infoItem.medidas[0].size,
-                            infoItem.medidas[0].price
-                          )
-                        }
-                        color='red'
-                      >
-                        <Button.Content visible>
-                          {infoItem.medidas[0].btnName}
-                        </Button.Content>
-                        <Button.Content hidden>
-                          {infoItem.medidas[0].btnName}
-                        </Button.Content>
-                      </Button>
+                    {infoItem.tag !== 'combo' && (
+                      <Fragment>
+                        <Segment
+                          raised
+                          style={{ marginTop: '10px' }}
+                          textAlign='center'
+                        >
+                          <Button
+                            animated='fade'
+                            onClick={() =>
+                              changePrice(
+                                infoItem,
+                                infoItem.medidas[0].size,
+                                infoItem.medidas[0].price
+                              )
+                            }
+                            color='red'
+                          >
+                            <Button.Content visible>
+                              {infoItem.medidas[0].btnName}
+                            </Button.Content>
+                            <Button.Content hidden>
+                              {infoItem.medidas[0].btnName}
+                            </Button.Content>
+                          </Button>
 
-                      <Button
-                        animated='fade'
-                        onClick={() =>
-                          changePrice(
-                            infoItem,
-                            infoItem.medidas[1].size,
-                            infoItem.medidas[1].price
-                          )
-                        }
-                        color='green'
-                      >
-                        <Button.Content visible>
-                          {infoItem.medidas[1].btnName}
-                        </Button.Content>
-                        <Button.Content hidden>
-                          {infoItem.medidas[1].btnName}
-                        </Button.Content>
-                      </Button>
-                    </Segment>
+                          <Button
+                            animated='fade'
+                            onClick={() =>
+                              changePrice(
+                                infoItem,
+                                infoItem.medidas[1].size,
+                                infoItem.medidas[1].price
+                              )
+                            }
+                            color='green'
+                          >
+                            <Button.Content visible>
+                              {infoItem.medidas[1].btnName}
+                            </Button.Content>
+                            <Button.Content hidden>
+                              {infoItem.medidas[1].btnName}
+                            </Button.Content>
+                          </Button>
+                        </Segment>
+                      </Fragment>
+                    )}
                     <Segment raised>
                       <Image
                         style={{ minHeight: '250px' }}

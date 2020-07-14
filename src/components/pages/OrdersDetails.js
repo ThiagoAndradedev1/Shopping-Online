@@ -74,7 +74,7 @@ const OrdersDetails = () => {
                           </GridColumn>
                           <GridColumn width={6}></GridColumn>
                           <GridColumn width={4}>
-                            <h2>{order.productPrice?.toFixed(2)}</h2>
+                            <h2>{order.price?.toFixed(2)}</h2>
                             <input
                               disabled
                               type='text'

@@ -45,24 +45,24 @@ const Cart = () => {
   useEffect(() => {
     // console.log(0)
     setCurrentDocs(transactions.slice(indexOfFirstPost, indexOfLastPost));
-    if (modalInfo && modalInfo.infoModal) {
-      const copiaIngredientes = modalInfo.infoModal.ingredientes.map(
-        (ingrediente) => ({
-          ...ingrediente,
-          checked: false,
-        })
-      );
+    // if (modalInfo && modalInfo.infoModal) {
+    //   const copiaIngredientes = modalInfo.infoModal.ingredientes.map(
+    //     (ingrediente) => ({
+    //       ...ingrediente,
+    //       checked: false,
+    //     })
+    //   );
 
-      modalInfo.ingredientesSelecionados.forEach((ingrdienteSelecionado) => {
-        copiaIngredientes.forEach((copiaIngrediente) => {
-          if (ingrdienteSelecionado.id === copiaIngrediente.id) {
-            copiaIngrediente.checked = true;
-          }
-        });
-      });
+    //   modalInfo.ingredientesSelecionados.forEach((ingrdienteSelecionado) => {
+    //     copiaIngredientes.forEach((copiaIngrediente) => {
+    //       if (ingrdienteSelecionado.id === copiaIngrediente.id) {
+    //         copiaIngrediente.checked = true;
+    //       }
+    //     });
+    //   });
 
-      setIngredientsCopy(copiaIngredientes);
-    }
+    //   setIngredientsCopy(copiaIngredientes);
+    // }
   }, [transactions, indexOfFirstPost, indexOfLastPost, modalInfo]);
 
   const paginate = (pageNumber) => {
@@ -149,7 +149,7 @@ const Cart = () => {
         <Grid columns={3}>
           <GridColumn width={2}></GridColumn>
           <GridColumn mobile={16} computer={12}>
-            <div style={{ marginTop: '120px' }}>
+            <div style={{ marginTop: '50px' }}>
               <Segment textAlign='center' raised color='black' placeholder>
                 <Header as='h2' icon textAlign='center'>
                   {transactions.length > 0 && (
@@ -204,7 +204,8 @@ const Cart = () => {
                           </Divider>
                           {transaction.infoModal.tag === 'refrigerante' ||
                             transaction.infoModal.tag === 'agua' ||
-                            transaction.infoModal.tag === 'cerveja' || (
+                            transaction.infoModal.tag === 'cerveja' ||
+                            transaction.infoModal.tag === 'combo' || (
                               <Modal
                                 trigger={
                                   <Button
@@ -307,7 +308,7 @@ const Cart = () => {
                                           as={Fragment}
                                           {...Responsive.onlyComputer}
                                         >
-                                          {ingredientsCopy.map(
+                                          {/* {ingredientsCopy.map(
                                             (ingrediente, index) => {
                                               return (
                                                 <Checkbox
@@ -322,7 +323,7 @@ const Cart = () => {
                                                 />
                                               );
                                             }
-                                          )}
+                                          )} */}
                                         </Responsive>
                                       </Grid.Column>
                                     </Grid.Row>
