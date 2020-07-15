@@ -107,7 +107,8 @@ const Cardapio = () => {
       infoItem.tag === 'porcoes' ||
       infoItem.tag === 'refrigerante' ||
       infoItem.tag === 'agua' ||
-      infoItem.tag === 'cerveja'
+      infoItem.tag === 'cerveja' ||
+      infoItem.tag === 'combo'
     ) {
       notify();
       setModalState(false);
@@ -169,9 +170,9 @@ const Cardapio = () => {
     if (resultado !== -1) {
       transactions[resultado].labelCount = labelCount +=
         transactions[resultado].labelCount;
-      transactions[resultado].productPrice = transactions[
-        resultado
-      ].productPrice += Number(price);
+      transactions[resultado].price = transactions[resultado].price += Number(
+        price
+      );
     } else {
       const newTransaction = {
         id: uuidv4(),

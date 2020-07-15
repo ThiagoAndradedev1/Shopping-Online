@@ -45,24 +45,24 @@ const Cart = () => {
   useEffect(() => {
     // console.log(0)
     setCurrentDocs(transactions.slice(indexOfFirstPost, indexOfLastPost));
-    // if (modalInfo && modalInfo.infoModal) {
-    //   const copiaIngredientes = modalInfo.infoModal.ingredientes.map(
-    //     (ingrediente) => ({
-    //       ...ingrediente,
-    //       checked: false,
-    //     })
-    //   );
+    if (modalInfo && modalInfo.infoModal) {
+      const copiaIngredientes = modalInfo.infoModal.ingredientes.map(
+        (ingrediente) => ({
+          ...ingrediente,
+          checked: false,
+        })
+      );
 
-    //   modalInfo.ingredientesSelecionados.forEach((ingrdienteSelecionado) => {
-    //     copiaIngredientes.forEach((copiaIngrediente) => {
-    //       if (ingrdienteSelecionado.id === copiaIngrediente.id) {
-    //         copiaIngrediente.checked = true;
-    //       }
-    //     });
-    //   });
+      modalInfo.ingredientesSelecionados.forEach((ingrdienteSelecionado) => {
+        copiaIngredientes.forEach((copiaIngrediente) => {
+          if (ingrdienteSelecionado.id === copiaIngrediente.id) {
+            copiaIngrediente.checked = true;
+          }
+        });
+      });
 
-    //   setIngredientsCopy(copiaIngredientes);
-    // }
+      setIngredientsCopy(copiaIngredientes);
+    }
   }, [transactions, indexOfFirstPost, indexOfLastPost, modalInfo]);
 
   const paginate = (pageNumber) => {
@@ -308,7 +308,7 @@ const Cart = () => {
                                           as={Fragment}
                                           {...Responsive.onlyComputer}
                                         >
-                                          {/* {ingredientsCopy.map(
+                                          {ingredientsCopy.map(
                                             (ingrediente, index) => {
                                               return (
                                                 <Checkbox
@@ -323,7 +323,7 @@ const Cart = () => {
                                                 />
                                               );
                                             }
-                                          )} */}
+                                          )}
                                         </Responsive>
                                       </Grid.Column>
                                     </Grid.Row>

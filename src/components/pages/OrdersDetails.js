@@ -69,7 +69,7 @@ const OrdersDetails = () => {
                           <GridColumn width={6}>
                             <Header as='h2'>
                               <Image size='massive' src={order.infoModal.img} />{' '}
-                              Hambúrger
+                              {order.infoModal?.name}
                             </Header>
                           </GridColumn>
                           <GridColumn width={6}></GridColumn>
