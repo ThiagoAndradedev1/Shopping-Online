@@ -160,11 +160,11 @@ const Profile = () => {
       <Container>
         <Grid columns={3}>
           <GridColumn width={3}></GridColumn>
-          <GridColumn width={10}>
+          <GridColumn mobile={16} computer={10}>
             <Segment
               raised
               textAlign='center'
-              style={{ marginTop: '120px', padding: '40px' }}
+              style={{ marginTop: '40px', padding: '40px' }}
             >
               {successMsg && (
                 <Message

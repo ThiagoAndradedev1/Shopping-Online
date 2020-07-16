@@ -45,14 +45,28 @@ const Signup = () => {
           number: '',
           cpf: '',
         });
-        await auth.signOut();
-        history.push('/login');
+        // await auth.signOut();
+        history.push('/menu');
         setLoading(false);
       } catch (error) {
-        console.log(error.code);
-        // setError(error.message);
-        setError(returnErrorFromFirebase(error.code));
         setLoading(false);
+        console.log(error.code);
+        switch (error.code) {
+          case 'auth/requires-recent-login':
+            setError(
+              'Essa operação é sensivel e precisa de uma autenticação recente.'
+            );
+            break;
+          case 'auth/invalid-email':
+            setError('O endereço de e-mail está mal formatado.');
+            break;
+          case 'auth/weak-password':
+            setError('A senha deve ter 6 caracteres ou mais.');
+            break;
+          default:
+            setError('Ocorreu um erro, tente novamente.');
+            break;
+        }
       }
     }
   };
@@ -62,9 +76,9 @@ const Signup = () => {
       <Container>
         <Grid columns={3}>
           <GridColumn width={4}></GridColumn>
-          <GridColumn width={8}>
+          <GridColumn mobile={16} computer={8}>
             <Segment
-              style={{ marginTop: '170px' }}
+              style={{ marginTop: '60px' }}
               placeholder
               color='black'
               padded='very'

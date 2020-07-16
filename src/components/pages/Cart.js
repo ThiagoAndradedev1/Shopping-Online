@@ -17,6 +17,7 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import { firestore, firebase } from '../../firebase';
+import { Link } from 'react-router-dom';
 import Pagination from '../layout/Pagination';
 import CalculationContext from '../../context/calculation/calculationContext';
 import AuthContext from '../../context/authentication/authContext';
@@ -149,254 +150,254 @@ const Cart = () => {
         <Grid columns={3}>
           <GridColumn width={2}></GridColumn>
           <GridColumn mobile={16} computer={12}>
-            <div style={{ marginTop: '50px' }}>
-              <Segment textAlign='center' raised color='black' placeholder>
-                <Header as='h2' icon textAlign='center'>
-                  {transactions.length > 0 && (
-                    <Fragment>
-                      <Icon name='users' circular />
-                      <Header.Content>Meu Pedido</Header.Content>
-                    </Fragment>
-                  )}
-                </Header>
-                <Grid>
-                  {currenteDocs.map((transaction, index) => (
-                    <Fragment key={transaction.id}>
-                      <Grid.Column width={4}>
-                        <Segment size='mini' padded textAlign='center' raised>
-                          <Image src={transaction.infoModal.img} />
-                          <Divider />
-                          <h3>Quantidade</h3>
-                          <div>
-                            <Button
-                              onClick={() =>
-                                handleLabelCount(0, transaction.id)
-                              }
-                              size='mini'
-                              circular
-                              icon='minus'
-                            ></Button>
-                            <Button
-                              onClick={() =>
-                                handleLabelCount(1, transaction.id)
-                              }
-                              size='mini'
-                              circular
-                              icon='plus'
-                            ></Button>
-                          </div>
-                        </Segment>
-                        <Label size='massive' circular color='red' floating>
-                          {transaction.labelCount}
-                        </Label>
-                      </Grid.Column>
-                      <Grid.Column width={12}>
-                        <Segment textAlign='center' raised>
-                          <Header as='h2' icon>
-                            {transaction.infoModal.name}{' '}
-                            <Header.Subheader>
-                              {transaction.infoModal.description}{' '}
-                            </Header.Subheader>
-                            R${transaction.price.toFixed(2)}
-                          </Header>
-                          <Divider horizontal>
-                            <Header as='h4'>Opções</Header>
-                          </Divider>
-                          {transaction.infoModal.tag === 'refrigerante' ||
-                            transaction.infoModal.tag === 'agua' ||
-                            transaction.infoModal.tag === 'cerveja' ||
-                            transaction.infoModal.tag === 'combo' || (
-                              <Modal
-                                trigger={
-                                  <Button
-                                    onClick={() => openModal(transaction)}
-                                    color='black'
-                                  >
-                                    Editar Pedido
-                                  </Button>
-                                }
-                                open={modalState}
-                                onClose={() => closeModal()}
-                              >
-                                <Segment
-                                  style={{ fontSize: '1.33em' }}
-                                  inverted
-                                  color='red'
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+              {/* <Segment textAlign='center' raised color='black' placeholder> */}
+              <Header as='h2' icon textAlign='center'>
+                {transactions.length > 0 && (
+                  <Fragment>
+                    <Icon name='users' circular />
+                    <Header.Content>Meu Pedido</Header.Content>
+                  </Fragment>
+                )}
+              </Header>
+              <Grid stackable>
+                {currenteDocs.map((transaction, index) => (
+                  <Fragment key={transaction.id}>
+                    <Grid.Column mobile={1} computer={4}>
+                      <Segment size='mini' padded textAlign='center' raised>
+                        <Image src={transaction.infoModal.img} />
+                        <Divider />
+                        <h3>Quantidade</h3>
+                        <div>
+                          <Button
+                            onClick={() => handleLabelCount(0, transaction.id)}
+                            size='mini'
+                            circular
+                            icon='minus'
+                          ></Button>
+                          <Button
+                            onClick={() => handleLabelCount(1, transaction.id)}
+                            size='mini'
+                            circular
+                            icon='plus'
+                          ></Button>
+                        </div>
+                      </Segment>
+                      <Label size='massive' circular color='red' floating>
+                        {transaction.labelCount}
+                      </Label>
+                    </Grid.Column>
+                    <Grid.Column computer={12}>
+                      <Segment textAlign='center' raised>
+                        <Header as='h2' icon>
+                          {transaction.infoModal.name}{' '}
+                          <Header.Subheader>
+                            {transaction.infoModal.description}{' '}
+                          </Header.Subheader>
+                          R${transaction.price.toFixed(2)}
+                        </Header>
+                        <Divider horizontal>
+                          <Header as='h4'>Opções</Header>
+                        </Divider>
+                        {transaction.infoModal.tag === 'refrigerante' ||
+                          transaction.infoModal.tag === 'agua' ||
+                          transaction.infoModal.tag === 'cerveja' ||
+                          transaction.infoModal.tag === 'combo' || (
+                            <Modal
+                              trigger={
+                                <Button
+                                  onClick={() => openModal(transaction)}
+                                  color='black'
                                 >
-                                  Pizza
-                                </Segment>
-                                <ModalContent image>
-                                  <Grid stackable>
-                                    <Grid.Row>
-                                      <Grid.Column width={4}>
-                                        <Segment
-                                          raised
-                                          padded
+                                  Editar Pedido
+                                </Button>
+                              }
+                              open={modalState}
+                              onClose={() => closeModal()}
+                            >
+                              <Segment
+                                style={{ fontSize: '1.33em' }}
+                                inverted
+                                color='red'
+                              >
+                                Pizza
+                              </Segment>
+                              <ModalContent image>
+                                <Grid stackable>
+                                  <Grid.Row>
+                                    <Grid.Column width={4}>
+                                      <Segment
+                                        raised
+                                        padded
+                                        size='mini'
+                                        textAlign='center'
+                                      >
+                                        <Image
+                                          centered
+                                          circular
+                                          wrapped
+                                          size='medium'
+                                          src={modalInfo.infoModal?.img}
+                                        />
+                                        <Label
+                                          size='massive'
+                                          circular
+                                          color='red'
+                                          floating
+                                        >
+                                          {modalInfo.labelCount}
+                                        </Label>
+
+                                        <h3>{modalInfo.infoModal?.name}</h3>
+
+                                        <h3>${modalInfo.price}</h3>
+                                        <h3>Quantidade</h3>
+                                        <Button
+                                          onClick={() =>
+                                            handleLabelCount(0, modalInfo.id)
+                                          }
                                           size='mini'
-                                          textAlign='center'
-                                        >
-                                          <Image
-                                            centered
-                                            circular
-                                            wrapped
-                                            size='medium'
-                                            src={modalInfo.infoModal?.img}
-                                          />
-                                          <Label
-                                            size='massive'
-                                            circular
-                                            color='red'
-                                            floating
-                                          >
-                                            {modalInfo.labelCount}
-                                          </Label>
+                                          circular
+                                          icon='minus'
+                                        ></Button>
+                                        <Button
+                                          onClick={() =>
+                                            handleLabelCount(1, modalInfo.id)
+                                          }
+                                          size='mini'
+                                          circular
+                                          icon='plus'
+                                        ></Button>
+                                      </Segment>
+                                    </Grid.Column>
+                                    <Grid.Column width={10}>
+                                      <Segment raised padded textAlign='center'>
+                                        <h3>Ingredientes</h3>
 
-                                          <h3>{modalInfo.infoModal?.name}</h3>
-
-                                          <h3>${modalInfo.price}</h3>
-                                          <h3>Quantidade</h3>
-                                          <Button
-                                            onClick={() =>
-                                              handleLabelCount(0, modalInfo.id)
-                                            }
-                                            size='mini'
-                                            circular
-                                            icon='minus'
-                                          ></Button>
-                                          <Button
-                                            onClick={() =>
-                                              handleLabelCount(1, modalInfo.id)
-                                            }
-                                            size='mini'
-                                            circular
-                                            icon='plus'
-                                          ></Button>
-                                        </Segment>
-                                      </Grid.Column>
-                                      <Grid.Column width={10}>
-                                        <Segment
-                                          raised
-                                          padded
-                                          textAlign='center'
-                                        >
-                                          <h3>Ingredientes</h3>
-
-                                          {modalInfo.ingredientesSelecionados
-                                            ?.length === 0 && (
-                                            <h1>Sem Ingredientes</h1>
-                                          )}
-                                          <Grid columns={3}>
-                                            {modalInfo.ingredientesSelecionados?.map(
-                                              (x) => {
-                                                return (
-                                                  <Grid.Column key={x.id}>
-                                                    <Image
-                                                      centered
-                                                      size='tiny'
-                                                      src={x.image}
-                                                      key={x.id}
-                                                    ></Image>
-                                                  </Grid.Column>
-                                                );
-                                              }
-                                            )}
-                                          </Grid>
-                                        </Segment>
-                                      </Grid.Column>
-                                      <Grid.Column width={2}>
-                                        <Responsive
-                                          as={Fragment}
-                                          {...Responsive.onlyComputer}
-                                        >
-                                          {ingredientsCopy.map(
-                                            (ingrediente, index) => {
+                                        {modalInfo.ingredientesSelecionados
+                                          ?.length === 0 && (
+                                          <h1>Sem Ingredientes</h1>
+                                        )}
+                                        <Grid columns={3}>
+                                          {modalInfo.ingredientesSelecionados?.map(
+                                            (x) => {
                                               return (
-                                                <Checkbox
-                                                  checked={ingrediente.checked}
-                                                  key={index}
-                                                  label={ingrediente.name}
-                                                  onChange={() =>
-                                                    removeorAddIngrediente(
-                                                      ingrediente
-                                                    )
-                                                  }
-                                                />
+                                                <Grid.Column key={x.id}>
+                                                  <Image
+                                                    centered
+                                                    size='tiny'
+                                                    src={x.image}
+                                                    key={x.id}
+                                                  ></Image>
+                                                </Grid.Column>
                                               );
                                             }
                                           )}
-                                        </Responsive>
-                                      </Grid.Column>
-                                    </Grid.Row>
-                                  </Grid>
-                                </ModalContent>
-                              </Modal>
-                            )}
-                          <Button
-                            style={{ marginTop: '10px' }}
-                            onClick={() => handleCancelBtn(transaction.id)}
-                            color='black'
-                          >
-                            Cancelar Pedido
-                          </Button>
-                        </Segment>
-                      </Grid.Column>
-                    </Fragment>
-                  ))}
-                </Grid>
-                {transactions.length === 0 && (
-                  <Fragment>
-                    <Container>
-                      <Header as='div' icon textAlign='center'>
-                        <p style={{ fontSize: '1.43em' }}>Está com fome?</p>
-                        <Image
-                          size='massive'
-                          src='https://wtcks.com/images/emptycart.png'
-                        />
-                      </Header>
-                      <h1 style={{ fontSize: '1.83em' }}>
-                        Seu pedido está vazio
-                      </h1>
-                      <p style={{ fontSize: '1.83em' }}>
-                        Adicione itens ao seu pedido
-                      </p>
-                      <Button color='black'>Cardápio</Button>
-                    </Container>
+                                        </Grid>
+                                      </Segment>
+                                    </Grid.Column>
+                                    <Grid.Column width={2}>
+                                      <Responsive
+                                        as={Fragment}
+                                        {...Responsive.onlyComputer}
+                                      >
+                                        {ingredientsCopy.map(
+                                          (ingrediente, index) => {
+                                            return (
+                                              <Checkbox
+                                                checked={ingrediente.checked}
+                                                key={index}
+                                                label={ingrediente.name}
+                                                onChange={() =>
+                                                  removeorAddIngrediente(
+                                                    ingrediente
+                                                  )
+                                                }
+                                              />
+                                            );
+                                          }
+                                        )}
+                                      </Responsive>
+                                    </Grid.Column>
+                                  </Grid.Row>
+                                </Grid>
+                              </ModalContent>
+                            </Modal>
+                          )}
+                        <Button
+                          style={{ marginTop: '10px' }}
+                          onClick={() => handleCancelBtn(transaction.id)}
+                          color='black'
+                        >
+                          Cancelar Pedido
+                        </Button>
+                      </Segment>
+                    </Grid.Column>
                   </Fragment>
-                )}
-                <Container>
-                  <Pagination
-                    postsPerPage={postsPerPage}
-                    totalPosts={transactions.length}
-                    paginate={paginate}
-                    currenteDocs={currenteDocs}
-                    pageIndetification={pageIndetification}
-                  />
-                </Container>
-                {transactions.length > 0 && (
-                  <Fragment>
-                    <Divider />
-                    <Grid>
-                      <GridColumn width={4}></GridColumn>
-                      <GridColumn width={8}>
-                        <Segment raised textAlign='center'>
-                          <Header as='h2'>
-                            Valor Total
-                            <div style={{ color: 'red' }}>R${total}</div>
-                          </Header>
-                        </Segment>
-                      </GridColumn>
-                      <GridColumn width={4}></GridColumn>
-                    </Grid>
-                    <Button
-                      onClick={() => handleOrders()}
-                      style={{ marginTop: '15px' }}
-                      color='green'
-                    >
-                      <Icon name='checkmark' /> Finalizar Pedido
-                    </Button>
-                  </Fragment>
-                )}
-              </Segment>
+                ))}
+              </Grid>
+              {transactions.length === 0 && (
+                <Fragment>
+                  <Container>
+                    <div style={{ marginTop: '55px' }}>
+                      <Segment>
+                        <Header as='div' icon textAlign='center'>
+                          <p style={{ fontSize: '1.43em' }}>Está com fome?</p>
+                          <Image
+                            size='massive'
+                            src='https://wtcks.com/images/emptycart.png'
+                          />
+                        </Header>
+                        <h1 style={{ fontSize: '1.83em' }}>
+                          Seu pedido está vazio
+                        </h1>
+                        <p style={{ fontSize: '1.83em' }}>
+                          Adicione itens ao seu pedido
+                        </p>
+                        <Button as={Link} to='/menu' color='black'>
+                          Cardápio
+                        </Button>
+                      </Segment>
+                    </div>
+                  </Container>
+                </Fragment>
+              )}
+              <Container>
+                <Pagination
+                  postsPerPage={postsPerPage}
+                  totalPosts={transactions.length}
+                  paginate={paginate}
+                  currenteDocs={currenteDocs}
+                  pageIndetification={pageIndetification}
+                />
+              </Container>
+              {transactions.length > 0 && (
+                <Fragment>
+                  <Divider />
+                  <Grid>
+                    <GridColumn width={4}></GridColumn>
+                    <GridColumn width={8}>
+                      <Segment raised textAlign='center'>
+                        <Header as='h2'>
+                          Valor Total
+                          <div style={{ color: 'red' }}>R${total}</div>
+                        </Header>
+                      </Segment>
+                    </GridColumn>
+                    <GridColumn width={4}></GridColumn>
+                  </Grid>
+                  <Button
+                    as={Link}
+                    to='/orders'
+                    onClick={() => handleOrders()}
+                    style={{ marginTop: '15px' }}
+                    color='green'
+                  >
+                    <Icon name='checkmark' /> Finalizar Pedido
+                  </Button>
+                </Fragment>
+              )}
+              {/* </Segment> */}
             </div>
           </GridColumn>
           <GridColumn width={2}></GridColumn>

@@ -40,8 +40,25 @@ const Login = () => {
         history.push('/menu');
       } catch (error) {
         setLoading(false);
-        setError(returnErrorFromFirebase(error.code));
-        // setError(error.message);
+        console.log(error.code);
+        switch (error.code) {
+          case 'auth/requires-recent-login':
+            setError(
+              'Essa operação é sensivel e precisa de uma autenticação recente.'
+            );
+            break;
+          case 'auth/user-not-found':
+            setError(
+              'Não há nenhum registro de usuário correspondente a este identificador. O usuário pode ter sido excluído'
+            );
+            break;
+          case 'auth/wrong-password':
+            setError('A senha é inválida ou o usuário não tem uma senha.');
+            break;
+          default:
+            setError('Ocorreu um erro, tente novamente.');
+            break;
+        }
       }
     }
   };
@@ -51,9 +68,9 @@ const Login = () => {
       <Container>
         <Grid columns={3}>
           <GridColumn width={4}></GridColumn>
-          <GridColumn width={8}>
+          <GridColumn mobile={16} computer={8}>
             <Segment
-              style={{ marginTop: '170px' }}
+              style={{ marginTop: '70px' }}
               placeholder
               color='black'
               padded='very'

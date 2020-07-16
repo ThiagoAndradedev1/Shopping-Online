@@ -12,6 +12,7 @@ import {
   Button,
   Modal,
   Step,
+  Label,
 } from 'semantic-ui-react';
 import AuthContext from '../../context/authentication/authContext';
 import Pagination from '../../components/layout/Pagination';
@@ -67,7 +68,7 @@ const Orders = () => {
       <Container>
         <Grid columns={3}>
           <GridColumn width={2}></GridColumn>
-          <GridColumn width={12}>
+          <GridColumn mobile={16} computer={12}>
             <div
               style={{
                 marginTop: '70px',
@@ -79,7 +80,7 @@ const Orders = () => {
               {currenteDocs.map((order) => (
                 <GridColumn key={order.id} width={11}>
                   <Segment raised>
-                    <Grid columns={3}>
+                    <Grid stackable columns={3}>
                       <GridColumn width={8}>
                         <Header as='h2'>
                           <Image

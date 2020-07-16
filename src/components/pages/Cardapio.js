@@ -186,8 +186,10 @@ const Cardapio = () => {
     }
   };
 
+  const square = { width: 175, height: 175 };
+
   return (
-    <div className='menu-background' style={{ marginTop: '50px' }}>
+    <div style={{ marginTop: '20px' }}>
       <Grid columns={3}>
         <Responsive as={Fragment} {...Responsive.onlyMobile}>
           <Sidebar
@@ -215,21 +217,33 @@ const Cardapio = () => {
         <GridColumn width={4}></GridColumn>
         <GridColumn width={8}>
           <Responsive as={Fragment} {...Responsive.onlyMobile}>
-            <Segment raised textAlign='center' secondary>
-              <Header as='h2' icon textAlign='center'>
+            <Segment inverted color='red' circular style={square}>
+              <Header as='h2'>
                 <Image
                   size='massive'
-                  src='https://media.giphy.com/media/l1J9OJBbfEFY6YCK4/giphy.gif'
+                  src='https://www.pngkit.com/png/full/408-4083688_hamburguer-em-png-imagens-de-hambrguer-png.png'
                 />
-                <Header.Content>Nosso Cardápio</Header.Content>
+                Nosso Cardápio
+                <Header.Subheader as={Button}></Header.Subheader>
               </Header>
-              <Divider />
-              <div>
-                <Button onClick={() => setSideBarVisible(true)} color='red'>
-                  Ver Cardapio...
-                </Button>
-              </div>
+              <Button
+                onClick={() => setSideBarVisible(true)}
+                size='large'
+                style={{ fontSize: '0.93em' }}
+                color='red'
+              >
+                Ver mais...
+              </Button>
             </Segment>
+          </Responsive>
+          <Responsive {...Responsive.onlyMobile}>
+            <Input
+              style={{ marginTop: '50px' }}
+              onChange={(e) => searchBy(e.target.value)}
+              fluid
+              size='big'
+              placeholder='Pesquisa...'
+            />
           </Responsive>
           <Responsive as={Fragment} {...Responsive.onlyComputer}>
             <Segment secondary>
@@ -271,7 +285,7 @@ const Cardapio = () => {
         <GridColumn width={4}></GridColumn>
       </Grid>
       <Grid columns={3}>
-        <GridColumn width={4}></GridColumn>
+        <GridColumn mobile={0} computer={4}></GridColumn>
         <GridColumn mobile={16} computer={8}>
           <Menu attached='top' tabular>
             {showMenu && (
@@ -296,12 +310,14 @@ const Cardapio = () => {
               />
             )}
             <Menu.Menu position='right'>
-              <Menu.Item>
-                <Input
-                  onChange={(e) => searchBy(e.target.value)}
-                  placeholder='Pesquisa...'
-                />
-              </Menu.Item>
+              <Responsive {...Responsive.onlyComputer}>
+                <Menu.Item>
+                  <Input
+                    onChange={(e) => searchBy(e.target.value)}
+                    placeholder='Pesquisa...'
+                  />
+                </Menu.Item>
+              </Responsive>
             </Menu.Menu>
           </Menu>
 
@@ -398,6 +414,7 @@ const Cardapio = () => {
                         <Modal.Content image>
                           <Grid stackable>
                             <Grid.Row>
+                              <Segment></Segment>
                               <Grid.Column width={4}>
                                 <Segment
                                   raised
