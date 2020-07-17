@@ -52,6 +52,7 @@ const Cardapio = () => {
   }, []);
 
   const orderBy = (text) => {
+    console.log(text);
     if (text === 'refrigerante' || text === 'agua' || text === 'cerveja') {
       setShowMenu(true);
       setActiveItem(text);
@@ -64,8 +65,17 @@ const Cardapio = () => {
       let filtered = firebaseInfo.filter((info) => {
         return info.tag.match(text);
       });
+      console.log(filtered);
+      console.log(firebaseInfo);
       setInfoFilter(filtered);
     }
+  };
+
+  const orderByAll = (text) => {
+    let filtered = firebaseInfo.filter((info) => {
+      return info.tagAll.match(text);
+    });
+    setInfoFilter(filtered);
   };
 
   const searchBy = (search) => {
@@ -108,7 +118,9 @@ const Cardapio = () => {
       infoItem.tag === 'refrigerante' ||
       infoItem.tag === 'agua' ||
       infoItem.tag === 'cerveja' ||
-      infoItem.tag === 'combo'
+      infoItem.tag === 'combo' ||
+      infoItem.tag === 'condimentos' ||
+      infoItem.tag === 'porções'
     ) {
       notify();
       setModalState(false);
@@ -188,11 +200,17 @@ const Cardapio = () => {
 
   const square = { width: 175, height: 175 };
 
+  const sideBarOrderBy = (info) => {
+    orderBy(info);
+    setSideBarVisible(false);
+  };
+
   return (
     <div style={{ marginTop: '20px' }}>
       <Grid columns={3}>
         <Responsive as={Fragment} {...Responsive.onlyMobile}>
           <Sidebar
+            style={{ textAlign: 'center' }}
             as={Menu}
             color='black'
             direction='right'
@@ -204,14 +222,34 @@ const Cardapio = () => {
             visible={sideBarVisible}
             width='thin'
           >
-            <Menu.Item>
-              <Fragment>
-                <Header inverted as='h2' icon textAlign='center'>
-                  <Icon name='users' circular />
-                  <Header.Content>Friends</Header.Content>
-                </Header>
-              </Fragment>
+            <Menu.Item as={Button} onClick={() => sideBarOrderBy('hamburger')}>
+              Hamburger
             </Menu.Item>
+            <Menu.Item as={Button} onClick={() => sideBarOrderBy('Pizza')}>
+              Pizza
+            </Menu.Item>
+            <Menu.Item as={Button} onClick={() => sideBarOrderBy('pizzadoce')}>
+              Pizzas Doces
+            </Menu.Item>
+            <Menu.Item
+              as={Button}
+              onClick={() => sideBarOrderBy('refrigerante')}
+            >
+              Bebidas
+            </Menu.Item>
+            <Menu.Item as={Button} onClick={() => sideBarOrderBy('porções')}>
+              Porções
+            </Menu.Item>
+            <Menu.Item
+              as={Button}
+              onClick={() => sideBarOrderBy('condimentos')}
+            >
+              Condimentos
+            </Menu.Item>
+            <Menu.Item as={Button} onClick={() => sideBarOrderBy('combo')}>
+              Combos
+            </Menu.Item>
+            <Menu.Item as={Button}>Todas Opções</Menu.Item>
           </Sidebar>
         </Responsive>
         <GridColumn width={4}></GridColumn>
@@ -271,11 +309,13 @@ const Cardapio = () => {
                 <Button onClick={() => orderBy('porções')} color='red'>
                   Porções
                 </Button>
-                <Button color='red'>Condimentos</Button>
+                <Button onClick={() => orderBy('condimentos')} color='red'>
+                  Condimentos
+                </Button>
                 <Button onClick={() => orderBy('combo')} color='red'>
                   Combos
                 </Button>
-                <Button onClick={() => orderBy('porções')} color='red'>
+                <Button onClick={() => orderByAll('allDocuments')} color='red'>
                   Exibir Todas Opções
                 </Button>
               </div>
@@ -285,7 +325,7 @@ const Cardapio = () => {
         <GridColumn width={4}></GridColumn>
       </Grid>
       <Grid columns={3}>
-        <GridColumn mobile={0} computer={4}></GridColumn>
+        <GridColumn computer={4}></GridColumn>
         <GridColumn mobile={16} computer={8}>
           <Menu attached='top' tabular>
             {showMenu && (
@@ -326,7 +366,9 @@ const Cardapio = () => {
               <Grid.Row>
                 {infoFilter.map((infoItem) => (
                   <Grid.Column key={infoItem.id}>
-                    {infoItem.tag !== 'combo' && (
+                    {!(
+                      infoItem.tag === 'combo' || infoItem.tag === 'condimentos'
+                    ) && (
                       <Fragment>
                         <Segment
                           raised
@@ -345,10 +387,10 @@ const Cardapio = () => {
                             color='red'
                           >
                             <Button.Content visible>
-                              {infoItem.medidas[0].btnName}
+                              {infoItem.medidas[0]?.btnName}
                             </Button.Content>
                             <Button.Content hidden>
-                              {infoItem.medidas[0].btnName}
+                              {infoItem.medidas[0]?.btnName}
                             </Button.Content>
                           </Button>
 
@@ -357,17 +399,17 @@ const Cardapio = () => {
                             onClick={() =>
                               changePrice(
                                 infoItem,
-                                infoItem.medidas[1].size,
-                                infoItem.medidas[1].price
+                                infoItem.medidas[1]?.size,
+                                infoItem.medidas[1]?.price
                               )
                             }
                             color='green'
                           >
                             <Button.Content visible>
-                              {infoItem.medidas[1].btnName}
+                              {infoItem.medidas[1]?.btnName}
                             </Button.Content>
                             <Button.Content hidden>
-                              {infoItem.medidas[1].btnName}
+                              {infoItem.medidas[1]?.btnName}
                             </Button.Content>
                           </Button>
                         </Segment>
@@ -387,7 +429,11 @@ const Cardapio = () => {
                         <span>${infoItem.price} </span>
                       </Header>
                     </Segment>
-                    <Segment raised textAlign='center'>
+                    <Segment
+                      style={{ marginBottom: '25px' }}
+                      raised
+                      textAlign='center'
+                    >
                       <Modal
                         trigger={
                           <Button
@@ -414,7 +460,6 @@ const Cardapio = () => {
                         <Modal.Content image>
                           <Grid stackable>
                             <Grid.Row>
-                              <Segment></Segment>
                               <Grid.Column width={4}>
                                 <Segment
                                   raised

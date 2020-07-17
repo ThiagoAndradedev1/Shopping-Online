@@ -29,17 +29,23 @@ const Orders = () => {
   const [postsPerPage] = useState(4);
   const [pageIndetification] = useState(false);
   const [currenteDocs, setCurrentDocs] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(true);
 
   const history = useHistory();
 
   useEffect(() => {
+    setShowSpinner(true);
     if (currentUser) {
       const returnDocument = async () => {
         await firestore
           .collection('orderinfo')
           .doc(currentUser.uid)
           .onSnapshot((snapshot) => {
-            setOrderInfo([...snapshot.data()['orders']]);
+            if (snapshot.data()) {
+              console.log(snapshot);
+              setOrderInfo([...snapshot.data()['orders']]);
+            }
+            setShowSpinner(false);
           });
       };
       returnDocument();
@@ -71,37 +77,44 @@ const Orders = () => {
           <GridColumn mobile={16} computer={12}>
             <div
               style={{
-                marginTop: '70px',
+                marginTop: '-10px',
                 padding: '40px',
                 textAlign: 'center',
               }}
             >
               <h1>Seus Pedidos</h1>
-              {currenteDocs.map((order) => (
-                <GridColumn key={order.id} width={11}>
-                  <Segment raised>
-                    <Grid stackable columns={3}>
-                      <GridColumn width={8}>
-                        <Header as='h2'>
-                          <Image
-                            circular
-                            src='https://support.ezlynx.com/support/wp-content/uploads/2018/10/02182034/checkmark.png'
-                          />{' '}
-                          Lanchonete Online
-                        </Header>
-                        <p>{moment(order.date.toDate()).format('LLL')}</p>
-                      </GridColumn>
-                      <GridColumn width={4}></GridColumn>
-                      <GridColumn width={4}>
-                        <h2>{order.total}</h2>
-                        <Button onClick={() => setOrder(order)} color='black'>
-                          Ver Detalhes
-                        </Button>
-                      </GridColumn>
-                    </Grid>
-                  </Segment>
-                </GridColumn>
-              ))}
+              {orderInfo.length > 0 &&
+                currenteDocs.map((order) => (
+                  <GridColumn key={order.id} width={11}>
+                    <Segment style={{ marginTop: '25px' }} raised>
+                      <Grid stackable columns={3}>
+                        <GridColumn width={8}>
+                          <Header as='h2'>
+                            <Image
+                              circular
+                              src='https://support.ezlynx.com/support/wp-content/uploads/2018/10/02182034/checkmark.png'
+                            />{' '}
+                            Lanchonete Online
+                          </Header>
+                          <p>{moment(order.date.toDate()).format('LLL')}</p>
+                        </GridColumn>
+                        <GridColumn width={4}></GridColumn>
+                        <GridColumn width={4}>
+                          <h2>{order.total}</h2>
+                          <Button onClick={() => setOrder(order)} color='black'>
+                            Ver Detalhes
+                          </Button>
+                        </GridColumn>
+                      </Grid>
+                    </Segment>
+                  </GridColumn>
+                ))}
+
+              {showSpinner && <h1>Carregando...</h1>}
+
+              {currenteDocs.length === 0 && !showSpinner && (
+                <h1>Não tem nada aqui</h1>
+              )}
               <Pagination
                 postsPerPage={postsPerPage}
                 totalPosts={orderInfo.length}

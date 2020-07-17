@@ -158,6 +158,14 @@ const Navbar = () => {
               <Icon name='long arrow alternate right' />
               Entrar
             </Menu.Item>
+            <Menu.Item
+              onClick={() => setSideBarVisible(false)}
+              as={Link}
+              to='/orders'
+            >
+              <Icon name='long arrow alternate right' />
+              Pedidos
+            </Menu.Item>
             <Menu.Item onClick={() => mobileLogOut()} as={Link} to='/login'>
               <Icon name='sign-out' />
               Sair

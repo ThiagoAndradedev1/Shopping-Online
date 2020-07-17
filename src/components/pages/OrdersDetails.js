@@ -12,6 +12,7 @@ import {
   Button,
   Modal,
   Step,
+  Input,
 } from 'semantic-ui-react';
 import AuthContext from '../../context/authentication/authContext';
 
@@ -28,7 +29,7 @@ const OrdersDetails = () => {
         <Container>
           <Grid columns={3}>
             <GridColumn width={3}></GridColumn>
-            <GridColumn width={10}>
+            <GridColumn mobile={16} computer={10}>
               <div className='order-style'>
                 <Segment>
                   <Step.Group ordered>

@@ -18,20 +18,26 @@ import {
   Button,
 } from 'semantic-ui-react';
 
-const SampleNextArrow = () => {
+const SampleNextArrow = (props) => {
+  const { className, style, onClick } = props;
   return (
-    <Button
-      onClick={() => Slider.slickNext()}
-      style={{ display: 'block' }}
-      color='black'
-    >
-      +
-    </Button>
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'red' }}
+      onClick={onClick}
+    />
   );
 };
 
-const SamplePrevArrow = () => {
-  return <Button color='black'>-</Button>;
+const SamplePrevArrow = (props) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'green' }}
+      onClick={onClick}
+    />
+  );
 };
 
 const settingsBestSelling = {
@@ -40,6 +46,8 @@ const settingsBestSelling = {
   slidesToShow: 1,
   slidesToScroll: 1,
   adaptiveHeight: true,
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />,
 };
 
 const settingsQuotes = {

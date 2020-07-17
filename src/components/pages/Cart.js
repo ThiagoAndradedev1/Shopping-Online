@@ -97,20 +97,36 @@ const Cart = () => {
   };
 
   const handleOrders = async () => {
-    await firestore
-      .collection('orderinfo')
-      .doc(currentUser.uid)
-      .set(
-        {
-          orders: firebase.firestore.FieldValue.arrayUnion({
-            id: uuidv4(),
-            date: new Date(),
-            total,
-            transactions,
-          }),
-        },
-        { merge: true }
-      );
+    if (currentUser) {
+      await firestore
+        .collection('orderinfo')
+        .doc(currentUser.uid)
+        .set(
+          {
+            orders: firebase.firestore.FieldValue.arrayUnion({
+              id: uuidv4(),
+              date: new Date(),
+              total,
+              transactions,
+            }),
+          },
+          { merge: true }
+        );
+    }
+    // await firestore
+    //   .collection('orderinfo')
+    //   .doc(currentUser.uid)
+    //   .set(
+    //     {
+    //       orders: firebase.firestore.FieldValue.arrayUnion({
+    //         id: uuidv4(),
+    //         date: new Date(),
+    //         total,
+    //         transactions,
+    //       }),
+    //     },
+    //     { merge: true }
+    //   );
   };
 
   const openModal = (transaction) => {
@@ -149,7 +165,7 @@ const Cart = () => {
       <Container>
         <Grid columns={3}>
           <GridColumn width={2}></GridColumn>
-          <GridColumn mobile={16} computer={12}>
+          <GridColumn mobile={12} computer={12}>
             <div style={{ marginTop: '20px', textAlign: 'center' }}>
               {/* <Segment textAlign='center' raised color='black' placeholder> */}
               <Header as='h2' icon textAlign='center'>
@@ -163,8 +179,14 @@ const Cart = () => {
               <Grid stackable>
                 {currenteDocs.map((transaction, index) => (
                   <Fragment key={transaction.id}>
-                    <Grid.Column mobile={1} computer={4}>
-                      <Segment size='mini' padded textAlign='center' raised>
+                    <Grid.Column computer={4}>
+                      <Segment
+                        // style={{ marginTop: '25px' }}
+                        size='mini'
+                        padded
+                        textAlign='center'
+                        raised
+                      >
                         <Image src={transaction.infoModal.img} />
                         <Divider />
                         <h3>Quantidade</h3>
@@ -188,7 +210,11 @@ const Cart = () => {
                       </Label>
                     </Grid.Column>
                     <Grid.Column computer={12}>
-                      <Segment textAlign='center' raised>
+                      <Segment
+                        // style={{ marginTop: '25px' }}
+                        textAlign='center'
+                        raised
+                      >
                         <Header as='h2' icon>
                           {transaction.infoModal.name}{' '}
                           <Header.Subheader>
@@ -202,7 +228,9 @@ const Cart = () => {
                         {transaction.infoModal.tag === 'refrigerante' ||
                           transaction.infoModal.tag === 'agua' ||
                           transaction.infoModal.tag === 'cerveja' ||
-                          transaction.infoModal.tag === 'combo' || (
+                          transaction.infoModal.tag === 'combo' ||
+                          transaction.infoModal.tag === 'porções' ||
+                          transaction.infoModal.tag === 'condimentos' || (
                             <Modal
                               trigger={
                                 <Button
