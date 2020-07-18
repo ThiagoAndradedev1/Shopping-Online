@@ -144,20 +144,20 @@ const Cart = () => {
   };
 
   const removeorAddIngrediente = (ingrediente) => {
-    console.log(ingrediente);
-    const retorno = ingredientsCopy.findIndex(
-      (ingredienteCopy) => ingredienteCopy.id === ingrediente.id
-    );
     const copy = [...ingredientsCopy];
-    if (retorno !== -1) {
-      console.log(copy);
-      copy[retorno].checked = false;
-      setIngredientsCopy(copy);
-    } else {
-      console.log('caiu aqui');
-      copy[retorno].checked = true;
-      setIngredientsCopy(copy);
-    }
+
+    copy.forEach((ingredienteCopy) => {
+      if (ingredienteCopy.id === ingrediente.id) {
+        ingredienteCopy.checked = !ingredienteCopy.checked;
+        return;
+      }
+    });
+    setIngredientsCopy(copy);
+    console.log(ingredientsCopy);
+  };
+
+  const thereIsIngredients = () => {
+    return ingredientsCopy.some((ingrediente) => ingrediente.checked);
   };
 
   return (
@@ -307,24 +307,28 @@ const Cart = () => {
                                       <Segment raised padded textAlign='center'>
                                         <h3>Ingredientes</h3>
 
-                                        {modalInfo.ingredientesSelecionados
+                                        {/* {modalInfo.ingredientesSelecionados
                                           ?.length === 0 && (
+                                          <h1>Sem Ingredientes</h1>
+                                        )} */}
+                                        {!thereIsIngredients() && (
                                           <h1>Sem Ingredientes</h1>
                                         )}
                                         <Grid columns={3}>
-                                          {modalInfo.ingredientesSelecionados?.map(
-                                            (x) => {
-                                              return (
-                                                <Grid.Column key={x.id}>
+                                          {ingredientsCopy.map(
+                                            (ingrediente) =>
+                                              ingrediente.checked && (
+                                                <Grid.Column
+                                                  key={ingrediente.id}
+                                                >
                                                   <Image
                                                     centered
                                                     size='tiny'
-                                                    src={x.image}
-                                                    key={x.id}
+                                                    src={ingrediente.image}
+                                                    key={ingrediente.id}
                                                   ></Image>
                                                 </Grid.Column>
-                                              );
-                                            }
+                                              )
                                           )}
                                         </Grid>
                                       </Segment>
