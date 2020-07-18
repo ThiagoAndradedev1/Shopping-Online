@@ -70,7 +70,7 @@ const Cart = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handleLabelCount = (number, id) => {
+  const handleLabelCount = (number, id, index) => {
     const docId = transactions.findIndex(
       (transaction) => transaction.id === id
     );
@@ -93,7 +93,7 @@ const Cart = () => {
       }
     }
 
-    updateTransacation(newTransaction);
+    updateTransacation(newTransaction, index);
   };
 
   const handleOrders = async () => {
@@ -192,13 +192,17 @@ const Cart = () => {
                         <h3>Quantidade</h3>
                         <div>
                           <Button
-                            onClick={() => handleLabelCount(0, transaction.id)}
+                            onClick={() =>
+                              handleLabelCount(0, transaction.id, index)
+                            }
                             size='mini'
                             circular
                             icon='minus'
                           ></Button>
                           <Button
-                            onClick={() => handleLabelCount(1, transaction.id)}
+                            onClick={() =>
+                              handleLabelCount(1, transaction.id, index)
+                            }
                             size='mini'
                             circular
                             icon='plus'
@@ -232,6 +236,7 @@ const Cart = () => {
                           transaction.infoModal.tag === 'porções' ||
                           transaction.infoModal.tag === 'condimentos' || (
                             <Modal
+                              dimmer={true}
                               trigger={
                                 <Button
                                   onClick={() => openModal(transaction)}

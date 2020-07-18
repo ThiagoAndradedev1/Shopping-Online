@@ -435,6 +435,7 @@ const Cardapio = () => {
                       textAlign='center'
                     >
                       <Modal
+                        dimmer={true}
                         trigger={
                           <Button
                             animated='fade'

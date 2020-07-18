@@ -1,7 +1,14 @@
 export default (state, action) => {
   switch (action.type) {
     case 'DELETE_TRANSACTION':
+      // const ordersArray = state.transactions.splice(
+      //   action.payload.index,
+      //   0,
+      //   action.payload.newTransaction
+      // );
+
       return {
+        // transactions: ordersArray,
         ...state,
         transactions: state.transactions.filter(
           (transaction) => transaction.id !== action.payload
@@ -14,31 +21,10 @@ export default (state, action) => {
       };
 
     case 'UPDATE_TRANSACTION_LABEL':
-      // const cloneTransactions = [...state.transactions];
-      // let filtered = cloneTransactions.filter(
-      //   (transaction) => transaction.id === action.payload.newTransaction.id
-      // );
-      // cloneTransactions.splice(
-      //   action.payload.index,
-      //   0,
-      //   action.payload.newTransaction
-      // );
+      const testeArray = [...state.transactions];
+      testeArray.splice(action.payload.index, 1, action.payload.newTransaction);
       return {
-        ...state,
-        transactions: [
-          ...state.transactions.filter(
-            (transaction) => transaction.id !== action.payload.id
-          ),
-          action.payload,
-        ],
-        // transactions: [
-        //   state.transactions.splice(
-        //     action.payload.index,
-        //     0,
-        //     action.payload.newTransaction
-        //   ),
-        // ],
-        // transactions: cloneTransactions,
+        transactions: [...testeArray],
       };
     default:
       return state;
