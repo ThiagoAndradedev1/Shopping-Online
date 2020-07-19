@@ -15,17 +15,17 @@
   border: 2px solid black !important;
 }
 
-.segment-background {
+.welcome-img {
   background-image: url('https://images8.alphacoders.com/815/thumb-1920-815971.jpg') !important;
 }
 
-.segment-background2 {
+.combos-background-img {
   background-image: url('https://wallpaperplay.com/walls/full/e/6/a/189632.jpg') !important;
 }
 
-.segment-background3 {
+/* .segment-background3 {
   background-image: url('https://wallpaperaccess.com/full/1091554.jpg') !important;
-}
+} */
 
 /* .menu-background {
   border-radius: 295px;
@@ -86,9 +86,16 @@
   margin-top: 20px;
 }
 
-.slick-prev:before,
+/* .slick-prev:before,
 .slick-next:before {
   color: black !important;
+} */
+
+@media (min-width: 700px) {
+  .slick-prev:before,
+  .slick-next:before {
+    color: black !important;
+  }
 }
 
 .card {
@@ -147,6 +154,35 @@
   display: flex;
   margin: 0;
   justify-content: space-between;
+}
+
+.flex-step {
+  display: flex;
+  margin: 0;
+  justify-content: space-between;
+}
+
+@media (max-width: 700px) {
+  .flex-step {
+    flex-direction: column;
+  }
+  .flex-item-step {
+    margin-bottom: 8px;
+  }
+}
+
+.flex-item-step {
+  flex: 1;
+  border-radius: 7px;
+  margin-right: 4px;
+}
+
+.flex-item-step.todo {
+  border: 2px solid #e4e1e1;
+}
+
+.flex-item-step.done {
+  border: 2px solid #1fb332;
 }
 
 .flex-item-button {

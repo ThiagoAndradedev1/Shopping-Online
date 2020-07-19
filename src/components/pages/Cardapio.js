@@ -249,7 +249,9 @@ const Cardapio = () => {
             <Menu.Item as={Button} onClick={() => sideBarOrderBy('combo')}>
               Combos
             </Menu.Item>
-            <Menu.Item as={Button}>Todas Opções</Menu.Item>
+            <Menu.Item as={Button} onClick={() => orderByAll('allDocuments')}>
+              Todas Opções
+            </Menu.Item>
           </Sidebar>
         </Responsive>
         <GridColumn width={4}></GridColumn>

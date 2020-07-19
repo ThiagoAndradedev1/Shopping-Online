@@ -31,8 +31,92 @@ const OrdersDetails = () => {
             <GridColumn width={3}></GridColumn>
             <GridColumn mobile={16} computer={10}>
               <div className='order-style'>
+                <div className='flex-step'>
+                  <div className='flex-item-step done'>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <div>
+                        <i
+                          aria-hidden='true'
+                          class='check huge icon'
+                          style={{ fontSize: '2.5em', color: '#1fb332' }}
+                        ></i>
+                      </div>
+                      <div>
+                        <h1>1 Passo</h1>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='flex-item-step todo'>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <div>
+                        <i
+                          aria-hidden='true'
+                          class='check huge icon'
+                          style={{ fontSize: '2.5em', color: '#6bb16' }}
+                        ></i>
+                      </div>
+                      <div>
+                        <h1>2 Passo</h1>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='flex-item-step todo'>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <div>
+                        <i
+                          aria-hidden='true'
+                          class='check huge icon'
+                          style={{ fontSize: '2.5em', color: '#6bb16' }}
+                        ></i>
+                      </div>
+                      <div>
+                        <h1>3 Passo</h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* <Step.Group ordered>
+                  <Step completed>
+                    <Step.Content>
+                      <Step.Title>Shipping</Step.Title>
+                      <Step.Description>
+                        Choose your shipping options
+                      </Step.Description>
+                    </Step.Content>
+                  </Step>
+
+                  <Step completed>
+                    <Step.Content>
+                      <Step.Title>Billing</Step.Title>
+                      <Step.Description>
+                        Enter billing information
+                      </Step.Description>
+                    </Step.Content>
+                  </Step>
+
+                  <Step active>
+                    <Step.Content>
+                      <Step.Title>Confirm Order</Step.Title>
+                    </Step.Content>
+                  </Step>
+                </Step.Group> */}
                 <Segment>
-                  <Step.Group ordered>
+                  {/* <Step.Group ordered>
                     <Step completed>
                       <Step.Content>
                         <Step.Title>Shipping</Step.Title>
@@ -56,7 +140,7 @@ const OrdersDetails = () => {
                         <Step.Title>Confirm Order</Step.Title>
                       </Step.Content>
                     </Step>
-                  </Step.Group>
+                  </Step.Group> */}
                   <Divider horizontal>
                     <Header as='h4'>
                       <Icon name='money bill alternate outline' />
@@ -73,8 +157,8 @@ const OrdersDetails = () => {
                               {order.infoModal?.name}
                             </Header>
                           </GridColumn>
-                          <GridColumn width={6}></GridColumn>
-                          <GridColumn width={4}>
+                          <GridColumn width={4}></GridColumn>
+                          <GridColumn width={6}>
                             <h2>{order.price?.toFixed(2)}</h2>
                             <input
                               disabled

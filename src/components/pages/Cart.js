@@ -12,7 +12,6 @@ import {
   Label,
   Modal,
   ModalContent,
-  GridRow,
   Responsive,
   Checkbox,
 } from 'semantic-ui-react';
@@ -113,20 +112,6 @@ const Cart = () => {
           { merge: true }
         );
     }
-    // await firestore
-    //   .collection('orderinfo')
-    //   .doc(currentUser.uid)
-    //   .set(
-    //     {
-    //       orders: firebase.firestore.FieldValue.arrayUnion({
-    //         id: uuidv4(),
-    //         date: new Date(),
-    //         total,
-    //         transactions,
-    //       }),
-    //     },
-    //     { merge: true }
-    //   );
   };
 
   const openModal = (transaction) => {
@@ -306,11 +291,6 @@ const Cart = () => {
                                     <Grid.Column width={10}>
                                       <Segment raised padded textAlign='center'>
                                         <h3>Ingredientes</h3>
-
-                                        {/* {modalInfo.ingredientesSelecionados
-                                          ?.length === 0 && (
-                                          <h1>Sem Ingredientes</h1>
-                                        )} */}
                                         {!thereIsIngredients() && (
                                           <h1>Sem Ingredientes</h1>
                                         )}
@@ -389,7 +369,7 @@ const Cart = () => {
                           Seu pedido está vazio
                         </h1>
                         <p style={{ fontSize: '1.83em' }}>
-                          Adicione itens ao seu pedido
+                          Adicione itens ao seu carrinho
                         </p>
                         <Button as={Link} to='/menu' color='black'>
                           Cardápio

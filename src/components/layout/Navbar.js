@@ -8,11 +8,7 @@ import {
   Button,
   Dropdown,
   Responsive,
-  Grid,
   Sidebar,
-  Header,
-  GridColumn,
-  Divider,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { firestore, auth } from '../../firebase';
@@ -26,8 +22,8 @@ const Navbar = () => {
   const { currentUser } = useContext(AuthContext);
   const { transactions } = useContext(CalculationContext);
 
-  // const amounts = transactions.map((transaction) => transaction.labelCount);
-  // const total = amounts.reduce((acc, item) => (acc += item), 0);
+  const amounts = transactions.map((transaction) => transaction.labelCount);
+  const total = amounts.reduce((acc, item) => (acc += item), 0);
 
   useEffect(() => {
     if (currentUser) {
@@ -74,7 +70,6 @@ const Navbar = () => {
     <Fragment>
       <Menu
         borderless
-        // fixed='top'
         size='tiny'
         color='red'
         inverted
@@ -86,7 +81,7 @@ const Navbar = () => {
             <Image
               size='small'
               src='https://i.pinimg.com/originals/6a/27/ac/6a27ac5560df47ec8bb998051b74b1f0.png'
-            />
+            />{' '}
           </Menu.Item>
         </Responsive>
         <Responsive as={Fragment} {...Responsive.onlyMobile}>
@@ -194,7 +189,8 @@ const Navbar = () => {
             <Menu.Item as={Link} to='/cart'>
               <Icon name='cart' /> Carrinho
               <Label circular color='black'>
-                {transactions.length}
+                {total}
+                {/* {transactions.length} */}
               </Label>
             </Menu.Item>
           </Responsive>
