@@ -195,7 +195,8 @@ const Home = () => {
                     <Image
                       circular
                       size='big'
-                      src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fd149940ba70c191927875f0c68825c42.png?alt=media&token=70b10df5-4aca-40e9-a4a0-e630ab4083c2'
+                      style={{ minHeight: '250px', minWidth: '250px' }}
+                      src={info.img}
                     />{' '}
                     <Header textAlign='center' as='h2' icon>
                       {info.name}

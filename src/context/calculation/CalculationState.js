@@ -31,6 +31,13 @@ const CalculationState = ({ children }) => {
     });
   };
 
+  const updateIngredients = (id, ingredients) => {
+    dispatch({
+      type: 'UPDATE_INGREDIENTS',
+      payload: { id, ingredients },
+    });
+  };
+
   return (
     <CalculationContext.Provider
       value={{
@@ -38,6 +45,7 @@ const CalculationState = ({ children }) => {
         addTransaction,
         deleteTransaction,
         updateTransacation,
+        updateIngredients,
       }}
     >
       {children}

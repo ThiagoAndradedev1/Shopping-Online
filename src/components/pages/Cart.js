@@ -31,9 +31,12 @@ const Cart = () => {
   const [ingredientsCopy, setIngredientsCopy] = useState([]);
 
   const [modalState, setModalState] = useState(false);
-  const { transactions, deleteTransaction, updateTransacation } = useContext(
-    CalculationContext
-  );
+  const {
+    transactions,
+    deleteTransaction,
+    updateTransacation,
+    updateIngredients,
+  } = useContext(CalculationContext);
   const { currentUser } = useContext(AuthContext);
 
   const amounts = transactions.map((transaction) => transaction.price);
@@ -43,9 +46,12 @@ const Cart = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
 
   useEffect(() => {
-    // console.log(0)
     setCurrentDocs(transactions.slice(indexOfFirstPost, indexOfLastPost));
-    if (modalInfo && modalInfo.infoModal) {
+    if (
+      modalInfo &&
+      modalInfo.infoModal &&
+      modalInfo.ingredientesSelecionados
+    ) {
       const copiaIngredientes = modalInfo.infoModal.ingredientes.map(
         (ingrediente) => ({
           ...ingrediente,
@@ -120,6 +126,13 @@ const Cart = () => {
   };
 
   const closeModal = () => {
+    const ingredients = [];
+    ingredientsCopy.forEach((igrd) => {
+      if (igrd.checked) {
+        ingredients.push(igrd);
+      }
+    });
+    updateIngredients(modalInfo.id, ingredients);
     setModalState(false);
   };
 
@@ -238,7 +251,7 @@ const Cart = () => {
                                 inverted
                                 color='red'
                               >
-                                Pizza
+                                {modalInfo.infoModal?.modalHeader}
                               </Segment>
                               <ModalContent image>
                                 <Grid stackable>
@@ -257,14 +270,18 @@ const Cart = () => {
                                           size='medium'
                                           src={modalInfo.infoModal?.img}
                                         />
-                                        <Label
-                                          size='massive'
-                                          circular
-                                          color='red'
-                                          floating
+                                        <Responsive
+                                          {...Responsive.onlyComputer.minWidth}
                                         >
-                                          {modalInfo.labelCount}
-                                        </Label>
+                                          <Label
+                                            size='massive'
+                                            circular
+                                            color='red'
+                                            floating
+                                          >
+                                            {modalInfo.labelCount}
+                                          </Label>
+                                        </Responsive>
 
                                         <h3>{modalInfo.infoModal?.name}</h3>
 

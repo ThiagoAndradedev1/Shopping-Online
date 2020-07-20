@@ -22,8 +22,10 @@ const Navbar = () => {
   const { currentUser } = useContext(AuthContext);
   const { transactions } = useContext(CalculationContext);
 
-  const amounts = transactions.map((transaction) => transaction.labelCount);
-  const total = amounts.reduce((acc, item) => (acc += item), 0);
+  const total = transactions.reduce(
+    (prevVal, elem) => prevVal + elem.labelCount,
+    0
+  );
 
   useEffect(() => {
     if (currentUser) {

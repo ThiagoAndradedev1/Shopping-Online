@@ -152,8 +152,8 @@ const Cardapio = () => {
   };
 
   const closeModal = () => {
-    setModalState(false);
     setLabelCount(1);
+    setModalState(false);
   };
 
   const addOrRemoveProduct = (number) => {
@@ -196,6 +196,7 @@ const Cardapio = () => {
       };
       addTransaction(newTransaction);
     }
+    setLabelCount(1);
   };
 
   const square = { width: 175, height: 175 };
@@ -458,7 +459,7 @@ const Cardapio = () => {
                           inverted
                           color='red'
                         >
-                          Pizza
+                          {infoModal.modalHeader}
                         </Segment>
                         <Modal.Content image>
                           <Grid stackable>
