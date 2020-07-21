@@ -59,7 +59,7 @@ const Navbar = () => {
 
   const trigger = (
     <span>
-      <Image avatar src={userInfo.image} /> Olá, {userInfo.name}!
+      <Image avatar src={userInfo?.image} /> Olá, {userInfo?.name}!
     </span>
   );
 

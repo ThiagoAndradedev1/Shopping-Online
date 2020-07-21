@@ -17,7 +17,7 @@ import {
 import AuthContext from '../../context/authentication/authContext';
 import Pagination from '../../components/layout/Pagination';
 import { firestore } from '../../firebase';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import moment from 'moment';
 
 const Orders = () => {
@@ -63,9 +63,10 @@ const Orders = () => {
   };
 
   const setOrder = (order) => {
+    console.log(order);
     setOrderDetails(order);
     if (orderDetails) {
-      history.push('/ordersdetails');
+      history.push(`/ordersdetails/${order.id}`);
     }
   };
 

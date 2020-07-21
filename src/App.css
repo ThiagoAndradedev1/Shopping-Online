@@ -91,10 +91,24 @@
   color: black !important;
 } */
 
-@media (min-width: 700px) {
+@media (min-width: 723px) {
   .slick-prev:before,
   .slick-next:before {
     color: black !important;
+  }
+
+  .show-combo-mobile {
+    display: none !important;
+  }
+
+  /* .show-combo-large {
+    display: none !important;
+  } */
+}
+
+@media (max-width: 724px) {
+  .show-combo-large {
+    display: none !important;
   }
 }
 

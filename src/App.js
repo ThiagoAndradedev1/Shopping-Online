@@ -45,7 +45,7 @@ const App = () => {
               <PrivateRoute exact path='/orders' component={Orders} />
               <PrivateRoute
                 exact
-                path='/ordersdetails'
+                path='/ordersdetails/:id'
                 component={OrdersDetails}
               />
             </Switch>

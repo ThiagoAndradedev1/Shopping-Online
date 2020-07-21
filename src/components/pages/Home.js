@@ -195,7 +195,7 @@ const Home = () => {
                     <Image
                       circular
                       size='big'
-                      style={{ minHeight: '250px', minWidth: '250px' }}
+                      style={{ minHeight: '250px', maxWidth: '250px' }}
                       src={info.img}
                     />{' '}
                     <Header textAlign='center' as='h2' icon>
@@ -244,7 +244,32 @@ const Home = () => {
               marginTop: '1.5em',
             }}
           />
-          <Grid columns={3}>
+          <Grid only='computer' columns={3} className='show-combo-large'>
+            {infoFilter.map((info, index) => {
+              return (
+                <Grid.Column key={index}>
+                  <Image
+                    style={{ minHeight: '200px' }}
+                    size='big'
+                    src={info.img}
+                  />{' '}
+                  <Header inverted textAlign='center' as='h2' icon>
+                    {info.name}
+                    <Header.Subheader> {info.description}</Header.Subheader>
+                    <span>{info.price}</span>
+                  </Header>
+                  <Button
+                    onClick={() => buyProduct(info, info.price, labelCount)}
+                    color='black'
+                  >
+                    Comprar
+                  </Button>
+                </Grid.Column>
+              );
+            })}
+          </Grid>
+
+          <Grid only='mobile' columns={2} className='show-combo-mobile'>
             {infoFilter.map((info, index) => {
               return (
                 <Grid.Column key={index}>
