@@ -187,6 +187,11 @@ const Cart = () => {
                       >
                         <Image src={transaction.infoModal.img} />
                         <Divider />
+                        <Responsive as={Fragment} {...Responsive.onlyMobile}>
+                          <Label size='massive' circular color='red'>
+                            {transaction.labelCount}
+                          </Label>
+                        </Responsive>
                         <h3>Quantidade</h3>
                         <div>
                           <Button
@@ -207,9 +212,11 @@ const Cart = () => {
                           ></Button>
                         </div>
                       </Segment>
-                      <Label size='massive' circular color='red' floating>
-                        {transaction.labelCount}
-                      </Label>
+                      <div className='show-label-cart'>
+                        <Label size='massive' circular color='red' floating>
+                          {transaction.labelCount}
+                        </Label>
+                      </div>
                     </Grid.Column>
                     <Grid.Column computer={12}>
                       <Segment
@@ -224,6 +231,11 @@ const Cart = () => {
                           </Header.Subheader>
                           R${transaction.price.toFixed(2)}
                         </Header>
+                        {/* <Responsive as={Fragment} {...Responsive.onlyMobile}>
+                          <Label size='massive' circular color='red'>
+                            {transaction.labelCount}
+                          </Label>
+                        </Responsive> */}
                         <Divider horizontal>
                           <Header as='h4'>Opções</Header>
                         </Divider>

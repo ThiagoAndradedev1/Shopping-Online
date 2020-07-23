@@ -100,7 +100,6 @@
   .show-combo-mobile {
     display: none !important;
   }
-
   /* .show-combo-large {
     display: none !important;
   } */
@@ -182,6 +181,10 @@
   }
   .flex-item-step {
     margin-bottom: 8px;
+  }
+
+  .show-label-cart {
+    display: none !important;
   }
 }
 

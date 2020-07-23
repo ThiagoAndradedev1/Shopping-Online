@@ -249,7 +249,7 @@ const Home = () => {
               return (
                 <Grid.Column key={index}>
                   <Image
-                    style={{ minHeight: '200px' }}
+                    style={{ minHeight: '200px', maxWidth: '200px' }}
                     size='big'
                     src={info.img}
                   />{' '}
@@ -371,7 +371,11 @@ const Home = () => {
           </Slider>
         </Container>
       </div>
-      <Segment inverted vertical style={{ padding: '5em 0em' }}>
+      <Segment
+        inverted
+        vertical
+        style={{ padding: '5em 0em', marginTop: '30px' }}
+      >
         <Container>
           <Grid divided inverted stackable>
             <Grid.Row>

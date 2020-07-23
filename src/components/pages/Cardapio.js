@@ -156,7 +156,7 @@ const Cardapio = () => {
     setModalState(false);
   };
 
-  const addOrRemoveProduct = (number) => {
+  const addOrRemoveProduct = (number, price) => {
     let soma = labelCount;
     if (number === 0) {
       soma += 1;
