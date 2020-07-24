@@ -44,21 +44,6 @@ const Navbar = () => {
     await auth.signOut();
   };
 
-  const options = [
-    { key: 'user', text: 'Perfil', icon: 'user', as: Link, to: '/profile' },
-    {
-      key: 'settings',
-      text: 'Compras',
-      icon: 'settings',
-      as: Link,
-      to: '/orders',
-    },
-    { key: 'sign-out', as: Button, text: 'Sair', icon: 'sign out' },
-    <Button basic fluid>
-      hello
-    </Button>,
-  ];
-
   const trigger = (
     <span>
       <Image avatar src={userInfo?.image} /> Olá, {userInfo?.name}!
@@ -84,7 +69,7 @@ const Navbar = () => {
           <Menu.Item>
             <Image
               size='small'
-              src='https://i.pinimg.com/originals/6a/27/ac/6a27ac5560df47ec8bb998051b74b1f0.png'
+              src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fhamburger_logo.png?alt=media&token=95e68b2a-7996-4cfc-8e77-178073552746'
             />{' '}
           </Menu.Item>
         </Responsive>
@@ -177,7 +162,7 @@ const Navbar = () => {
             <Menu.Item>
               <Image
                 size='mini'
-                src='https://i.pinimg.com/originals/6a/27/ac/6a27ac5560df47ec8bb998051b74b1f0.png'
+                src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fhamburger_logo.png?alt=media&token=95e68b2a-7996-4cfc-8e77-178073552746'
               />
             </Menu.Item>
             <Menu.Item header>Hamburgeria</Menu.Item>
@@ -194,7 +179,6 @@ const Navbar = () => {
               <Icon name='cart' /> Carrinho
               <Label circular color='black'>
                 {total}
-                {/* {transactions.length} */}
               </Label>
             </Menu.Item>
           </Responsive>
@@ -216,21 +200,29 @@ const Navbar = () => {
                   </div>
                 )}
                 {currentUser && (
-                  <Dropdown
-                    trigger={trigger}
-                    options={options}
-                    pointing='top'
-                    icon={null}
-                  />
+                  <Dropdown trigger={trigger} pointing className='link item'>
+                    <Dropdown.Menu>
+                      <Dropdown.Item as={Link} to='/profile'>
+                        <Icon name='user' />
+                        Perfil
+                      </Dropdown.Item>
+                      <Dropdown.Item as={Link} to='/orders'>
+                        {' '}
+                        <Icon name='money bill alternate' />
+                        Compras
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={logOut}>
+                        <Icon name='sign out' /> Sair
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 )}
-                <Button onClick={logOut}>Sair</Button>
               </Menu.Item>
             </Menu.Menu>
           </Responsive>
         </Container>
 
         <Responsive className='flex-item-button' {...Responsive.onlyMobile}>
-          {/* <Button>Click me</Button> */}
           <Button onClick={() => setSideBarVisible(true)} color='red'>
             <Icon name='sidebar' size='large' />
           </Button>

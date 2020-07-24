@@ -6,18 +6,12 @@ import {
   GridColumn,
   Header,
   Image,
-  Divider,
-  Icon,
-  Form,
   Button,
-  Modal,
-  Step,
-  Label,
 } from 'semantic-ui-react';
 import AuthContext from '../../context/authentication/authContext';
 import Pagination from '../../components/layout/Pagination';
 import { firestore } from '../../firebase';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 
 const Orders = () => {
@@ -93,7 +87,7 @@ const Orders = () => {
                           <Header as='h2'>
                             <Image
                               circular
-                              src='https://support.ezlynx.com/support/wp-content/uploads/2018/10/02182034/checkmark.png'
+                              src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fcheck_mark.png?alt=media&token=fe970737-35e7-4220-80b8-3545b34d8d69'
                             />{' '}
                             Lanchonete Online
                           </Header>

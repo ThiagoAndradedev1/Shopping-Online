@@ -8,21 +8,14 @@ import {
   Image,
   Divider,
   Icon,
-  Form,
-  Button,
-  Modal,
-  Step,
-  Input,
 } from 'semantic-ui-react';
 import AuthContext from '../../context/authentication/authContext';
 import { useParams } from 'react-router-dom';
-import { firestore, firebase } from '../../firebase';
+import { firestore } from '../../firebase';
 import { useState } from 'react';
 
 const OrdersDetails = () => {
-  const { orderDetails, setOrderDetails, currentUser } = useContext(
-    AuthContext
-  );
+  const { orderDetails, currentUser } = useContext(AuthContext);
 
   let { id } = useParams();
 
@@ -166,10 +159,6 @@ const OrdersDetails = () => {
                     </GridColumn>
                     <GridColumn width={4}></GridColumn>
                   </Grid>
-                  {/* <Header as='h2'>
-                    Valor Total
-                    <div style={{ color: 'red' }}>{orderDetails.total}</div>
-                  </Header> */}
                 </Segment>
               </div>
             </GridColumn>

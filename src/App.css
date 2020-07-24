@@ -1,40 +1,19 @@
 .App {
   text-align: center;
 }
-/* body {
-  background-image: url('https://images4.alphacoders.com/871/thumb-1920-871251.jpg') !important;
-  background-size: cover;
-  background-repeat: no-repeat;
-} */
-
-/* body {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-} */
 
 .segment-border {
   border: 2px solid black !important;
 }
 
 .welcome-img {
-  background-image: url('https://images8.alphacoders.com/815/thumb-1920-815971.jpg') !important;
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fwelcome_img.jpg?alt=media&token=579ecb9e-bffa-4171-96cd-420762e54038') !important;
 }
 
 .combos-background-img {
-  background-image: url('https://wallpaperplay.com/walls/full/e/6/a/189632.jpg') !important;
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fcombos_background_img.jpg?alt=media&token=6ad2e198-d49b-4c42-9b3d-67c30e0579da') !important;
 }
 
-/* .segment-background3 {
-  background-image: url('https://wallpaperaccess.com/full/1091554.jpg') !important;
-} */
-
-/* .menu-background {
-  border-radius: 295px;
-} */
-/* body {
-  background-image: url('https://images2.alphacoders.com/922/thumb-1920-922691.jpg') !important;
-  background-size: cover;
-  background-repeat: no-repeat;
-} */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -86,11 +65,6 @@
   margin-top: 20px;
 }
 
-/* .slick-prev:before,
-.slick-next:before {
-  color: black !important;
-} */
-
 @media (min-width: 723px) {
   .slick-prev:before,
   .slick-next:before {
@@ -100,9 +74,6 @@
   .show-combo-mobile {
     display: none !important;
   }
-  /* .show-combo-large {
-    display: none !important;
-  } */
 }
 
 @media (max-width: 724px) {

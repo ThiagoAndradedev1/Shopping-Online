@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import CalculationContext from './calculationContext';
 import CalculationReducer from './CalculationReducer';
 
@@ -27,7 +27,6 @@ const CalculationState = ({ children }) => {
     dispatch({
       type: 'UPDATE_TRANSACTION_LABEL',
       payload: { newTransaction, index },
-      // payload: newTransaction,
     });
   };
 

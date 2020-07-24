@@ -1,4 +1,4 @@
-import React, { useState, useContext, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { auth, firestore } from '../../firebase';
 import {
   Button,
@@ -14,7 +14,6 @@ import {
   Loader,
 } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
-import { returnErrorFromFirebase } from '../../utils/utils';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -92,7 +91,10 @@ const Signup = () => {
               )}
               <Header as='h2' icon textAlign='center'>
                 {error && <Message color='red'>{error}</Message>}
-                <Image size='massive' src='https://i.gifer.com/ZF6F.gif' />
+                <Image
+                  size='massive'
+                  src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fsignup_img.png?alt=media&token=a5fe5991-1789-4d44-8db8-f85cdb57a3c5'
+                />
                 <Header.Content>Signup</Header.Content>
               </Header>
 

@@ -165,7 +165,6 @@ const Cart = () => {
           <GridColumn width={2}></GridColumn>
           <GridColumn mobile={12} computer={12}>
             <div style={{ marginTop: '20px', textAlign: 'center' }}>
-              {/* <Segment textAlign='center' raised color='black' placeholder> */}
               <Header as='h2' icon textAlign='center'>
                 {transactions.length > 0 && (
                   <Fragment>
@@ -178,13 +177,7 @@ const Cart = () => {
                 {currenteDocs.map((transaction, index) => (
                   <Fragment key={transaction.id}>
                     <Grid.Column computer={4}>
-                      <Segment
-                        // style={{ marginTop: '25px' }}
-                        size='mini'
-                        padded
-                        textAlign='center'
-                        raised
-                      >
+                      <Segment size='mini' padded textAlign='center' raised>
                         <Image src={transaction.infoModal.img} />
                         <Divider />
                         <Responsive as={Fragment} {...Responsive.onlyMobile}>
@@ -219,11 +212,7 @@ const Cart = () => {
                       </div>
                     </Grid.Column>
                     <Grid.Column computer={12}>
-                      <Segment
-                        // style={{ marginTop: '25px' }}
-                        textAlign='center'
-                        raised
-                      >
+                      <Segment textAlign='center' raised>
                         <Header as='h2' icon>
                           {transaction.infoModal.name}{' '}
                           <Header.Subheader>
@@ -231,11 +220,6 @@ const Cart = () => {
                           </Header.Subheader>
                           R${transaction.price.toFixed(2)}
                         </Header>
-                        {/* <Responsive as={Fragment} {...Responsive.onlyMobile}>
-                          <Label size='massive' circular color='red'>
-                            {transaction.labelCount}
-                          </Label>
-                        </Responsive> */}
                         <Divider horizontal>
                           <Header as='h4'>Opções</Header>
                         </Divider>
@@ -246,7 +230,7 @@ const Cart = () => {
                           transaction.infoModal.tag === 'porções' ||
                           transaction.infoModal.tag === 'condimentos' || (
                             <Modal
-                              dimmer={true}
+                              dimmer={'bluring'}
                               trigger={
                                 <Button
                                   onClick={() => openModal(transaction)}
@@ -297,7 +281,7 @@ const Cart = () => {
 
                                         <h3>{modalInfo.infoModal?.name}</h3>
 
-                                        <h3>${modalInfo.price}</h3>
+                                        <h3>${modalInfo?.price?.toFixed(2)}</h3>
                                         <h3>Quantidade</h3>
                                         <Button
                                           onClick={() =>
@@ -391,7 +375,7 @@ const Cart = () => {
                           <p style={{ fontSize: '1.43em' }}>Está com fome?</p>
                           <Image
                             size='massive'
-                            src='https://wtcks.com/images/emptycart.png'
+                            src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fcart_sad_img.png?alt=media&token=7c38d45c-78ce-44dc-86fd-ec6b6c328146'
                           />
                         </Header>
                         <h1 style={{ fontSize: '1.83em' }}>
@@ -443,7 +427,6 @@ const Cart = () => {
                   </Button>
                 </Fragment>
               )}
-              {/* </Segment> */}
             </div>
           </GridColumn>
           <GridColumn width={2}></GridColumn>

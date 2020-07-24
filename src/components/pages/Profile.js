@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
-import { firestore, auth } from '../../firebase';
+import { firestore } from '../../firebase';
 import AuthContext from '../../context/authentication/authContext';
 import {
   Segment,
@@ -18,9 +18,7 @@ import {
 } from 'semantic-ui-react';
 
 const Profile = () => {
-  const { currentUser, setPasswordContext, passwordContext } = useContext(
-    AuthContext
-  );
+  const { currentUser } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [emailChange, setEmailChange] = useState('');
@@ -76,8 +74,6 @@ const Profile = () => {
     try {
       setLoading(true);
       if (passwordChange !== '') {
-        // await setPasswordContext(passwordChange);
-        // await auth.signInWithEmailAndPassword(userInfo.email, passwordContext);
         await currentUser.updatePassword(passwordChange);
         setSuccessMsg('Você modificou com sucesso a sua conta!');
         setLoading(false);
@@ -106,7 +102,6 @@ const Profile = () => {
       setErrorMsg('');
       setLoading(true);
       if (emailChange !== '') {
-        // await auth.signInWithEmailAndPassword(userInfo.email, passwordContext);
         await currentUser.updateEmail(emailChange);
         await firestore.collection('userinfo').doc(currentUser.uid).update({
           email: emailChange,
@@ -147,11 +142,13 @@ const Profile = () => {
 
   const openPasswordModal = () => {
     setShowPasswordModal(true);
+    setPasswordChange('');
     setSuccessMsg('');
   };
 
   const openEmailModal = () => {
     setShowEmailModal(true);
+    setEmailChange('');
     setSuccessMsg('');
   };
 
@@ -294,14 +291,7 @@ const Profile = () => {
                   placeholder='Nome'
                 />
               </Form.Field>
-              {/* <Form.Field>
-                <label>Email</label>
-                <input
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                  placeholder='Email'
-                />
-              </Form.Field> */}
+
               <Form.Field>
                 <label>Número</label>
                 <input
@@ -360,7 +350,7 @@ const Profile = () => {
             </Header>
             <Form onSubmit={handleChangePassword} size='large'>
               <Form.Field>
-                <label>Email</label>
+                <label>Senha</label>
                 <input
                   onChange={(e) => setPasswordChange(e.target.value)}
                   value={passwordChange}

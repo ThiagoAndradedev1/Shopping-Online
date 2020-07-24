@@ -12,7 +12,6 @@ import {
   Modal,
   Checkbox,
   Label,
-  Icon,
   Responsive,
   Sidebar,
 } from 'semantic-ui-react';
@@ -138,18 +137,6 @@ const Cardapio = () => {
         );
 
         updateTransacation(upTransaction, resultado);
-
-        // transactions[resultado].labelCount = labelCount +=
-        //   transactions[resultado].labelCount;
-        // transactions[resultado].productPrice = transactions[
-        //   resultado
-        // ].productPrice += Number(price);
-
-        // transactions[resultado].labelCount = labelCount +=
-        //   transactions[resultado].labelCount;
-        // transactions[resultado].productPrice = transactions[
-        //   resultado
-        // ].productPrice += Number(price);
       } else {
         const newTransaction = {
           id: uuidv4(),
@@ -173,7 +160,7 @@ const Cardapio = () => {
     setModalState(false);
   };
 
-  const addOrRemoveProduct = (number, price) => {
+  const addOrRemoveProduct = (number) => {
     let soma = labelCount;
     if (number === 0) {
       soma += 1;
@@ -197,11 +184,6 @@ const Cardapio = () => {
       (transaction) => transaction.infoModal.name === infoModal.name
     );
     if (resultado !== -1) {
-      // transactions[resultado].labelCount = labelCount +=
-      //   transactions[resultado].labelCount;
-      // transactions[resultado].price = transactions[resultado].price += Number(
-      //   price
-      // );
       const upTransaction = { ...transactions[resultado] };
 
       upTransaction.labelCount = labelCount += upTransaction.labelCount;
@@ -285,7 +267,7 @@ const Cardapio = () => {
               <Header as='h2'>
                 <Image
                   size='massive'
-                  src='https://www.pngkit.com/png/full/408-4083688_hamburguer-em-png-imagens-de-hambrguer-png.png'
+                  src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fhamburger_cardapio_mobile.png?alt=media&token=41a1098d-fd56-44dc-bc86-c06b06c9c1b7'
                 />
                 Nosso Cardápio
                 <Header.Subheader as={Button}></Header.Subheader>
@@ -314,7 +296,7 @@ const Cardapio = () => {
               <Header as='h2' icon textAlign='center'>
                 <Image
                   size='massive'
-                  src='https://media.giphy.com/media/l1J9OJBbfEFY6YCK4/giphy.gif'
+                  src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Fcardapio_gif.gif?alt=media&token=d6347a90-fed4-4dc3-82ca-1a872f8a6b73'
                 />
                 <Header.Content>Nosso Cardápio</Header.Content>
               </Header>

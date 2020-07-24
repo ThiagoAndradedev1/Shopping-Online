@@ -15,7 +15,6 @@ import {
 } from 'semantic-ui-react';
 import { useHistory } from 'react-router-dom';
 import AuthContext from '../../context/authentication/authContext';
-import { returnErrorFromFirebase } from '../../utils/utils';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -86,7 +85,7 @@ const Login = () => {
                 {error && <Message color='red'>{error}</Message>}
                 <Image
                   size='massive'
-                  src='https://thumbs.gfycat.com/GloomyKeyImpala-size_restricted.gif'
+                  src='https://firebasestorage.googleapis.com/v0/b/shoppingonline-278e4.appspot.com/o/ImagesDeCardapio%2Flogin_img.gif?alt=media&token=3d7a7b02-1c67-4398-b1c6-6b6fd67f69a6'
                 />
                 <Header.Content>Login</Header.Content>
               </Header>
