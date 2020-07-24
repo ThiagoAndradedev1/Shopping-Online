@@ -72,7 +72,7 @@ const OrdersDetails = () => {
                       <div>
                         <i
                           aria-hidden='true'
-                          class='check huge icon'
+                          className='check huge icon'
                           style={{ fontSize: '2.5em', color: '#1fb332' }}
                         ></i>
                       </div>
@@ -110,7 +110,7 @@ const OrdersDetails = () => {
                       <div>
                         <i
                           aria-hidden='true'
-                          class='check huge icon'
+                          className='check huge icon'
                           style={{ fontSize: '2.5em', color: '#6bb16' }}
                         ></i>
                       </div>
@@ -197,7 +197,7 @@ const OrdersDetails = () => {
                       <div>
                         <i
                           aria-hidden='true'
-                          class='check huge icon'
+                          className='check huge icon'
                           style={{ fontSize: '2.5em', color: '#1fb332' }}
                         ></i>
                       </div>
@@ -216,7 +216,7 @@ const OrdersDetails = () => {
                       <div>
                         <i
                           aria-hidden='true'
-                          class='check huge icon'
+                          className='check huge icon'
                           style={{ fontSize: '2.5em', color: '#6bb16' }}
                         ></i>
                       </div>
@@ -235,7 +235,7 @@ const OrdersDetails = () => {
                       <div>
                         <i
                           aria-hidden='true'
-                          class='check huge icon'
+                          className='check huge icon'
                           style={{ fontSize: '2.5em', color: '#6bb16' }}
                         ></i>
                       </div>

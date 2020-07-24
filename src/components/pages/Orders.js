@@ -114,7 +114,9 @@ const Orders = () => {
               {showSpinner && <h1>Carregando...</h1>}
 
               {currenteDocs.length === 0 && !showSpinner && (
-                <h1>Não tem nada aqui</h1>
+                <div style={{ textAlign: 'center' }}>
+                  <h1>Nenhuma compra foi realizada até o momento...</h1>
+                </div>
               )}
               <Pagination
                 postsPerPage={postsPerPage}

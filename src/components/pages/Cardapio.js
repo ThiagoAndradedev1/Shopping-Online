@@ -32,7 +32,9 @@ const Cardapio = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [labelCount, setLabelCount] = useState(1);
   const [sideBarVisible, setSideBarVisible] = useState(false);
-  const { addTransaction, transactions } = useContext(calculationContext);
+  const { addTransaction, transactions, updateTransacation } = useContext(
+    calculationContext
+  );
 
   useEffect(() => {
     firestore
@@ -128,11 +130,26 @@ const Cardapio = () => {
         (transaction) => transaction.infoModal.name === infoItem.name
       );
       if (resultado !== -1) {
-        transactions[resultado].labelCount = labelCount +=
-          transactions[resultado].labelCount;
-        transactions[resultado].productPrice = transactions[
-          resultado
-        ].productPrice += Number(price);
+        const upTransaction = { ...transactions[resultado] };
+
+        upTransaction.labelCount = labelCount += upTransaction.labelCount;
+        upTransaction.productPrice = upTransaction.productPrice += Number(
+          price
+        );
+
+        updateTransacation(upTransaction, resultado);
+
+        // transactions[resultado].labelCount = labelCount +=
+        //   transactions[resultado].labelCount;
+        // transactions[resultado].productPrice = transactions[
+        //   resultado
+        // ].productPrice += Number(price);
+
+        // transactions[resultado].labelCount = labelCount +=
+        //   transactions[resultado].labelCount;
+        // transactions[resultado].productPrice = transactions[
+        //   resultado
+        // ].productPrice += Number(price);
       } else {
         const newTransaction = {
           id: uuidv4(),
@@ -180,11 +197,17 @@ const Cardapio = () => {
       (transaction) => transaction.infoModal.name === infoModal.name
     );
     if (resultado !== -1) {
-      transactions[resultado].labelCount = labelCount +=
-        transactions[resultado].labelCount;
-      transactions[resultado].price = transactions[resultado].price += Number(
-        price
-      );
+      // transactions[resultado].labelCount = labelCount +=
+      //   transactions[resultado].labelCount;
+      // transactions[resultado].price = transactions[resultado].price += Number(
+      //   price
+      // );
+      const upTransaction = { ...transactions[resultado] };
+
+      upTransaction.labelCount = labelCount += upTransaction.labelCount;
+      upTransaction.productPrice = upTransaction.productPrice += Number(price);
+
+      updateTransacation(upTransaction, resultado);
     } else {
       const newTransaction = {
         id: uuidv4(),

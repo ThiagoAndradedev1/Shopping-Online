@@ -22,10 +22,8 @@ const Navbar = () => {
   const { currentUser } = useContext(AuthContext);
   const { transactions } = useContext(CalculationContext);
 
-  const total = transactions.reduce(
-    (prevVal, elem) => prevVal + elem.labelCount,
-    0
-  );
+  const amounts = transactions.map((transaction) => transaction.labelCount);
+  const total = amounts.reduce((acc, item) => (acc += item), 0);
 
   useEffect(() => {
     if (currentUser) {
@@ -37,9 +35,10 @@ const Navbar = () => {
             setUserInfo(snapshot.data());
           });
       };
+      console.log(total);
       returnDocument();
     }
-  }, [currentUser]);
+  }, [currentUser, total]);
 
   const logOut = async () => {
     await auth.signOut();
@@ -54,7 +53,10 @@ const Navbar = () => {
       as: Link,
       to: '/orders',
     },
-    { key: 'sign-out', text: 'Sair', icon: 'sign out' },
+    { key: 'sign-out', as: Button, text: 'Sair', icon: 'sign out' },
+    <Button basic fluid>
+      hello
+    </Button>,
   ];
 
   const trigger = (

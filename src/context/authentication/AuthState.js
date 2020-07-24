@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { auth } from '../../firebase';
 import AuthContext from './authContext';
+import Spinner from '../../components/layout/Spinner';
 
 const AuthState = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -16,7 +17,7 @@ const AuthState = ({ children }) => {
   }, []);
 
   if (pending) {
-    return <h1>Loading...</h1>;
+    return <Spinner />;
   }
 
   return (
