@@ -434,7 +434,7 @@ const Cardapio = () => {
                         <Header.Subheader>
                           {infoItem.description}
                         </Header.Subheader>
-                        <span>${infoItem.price} </span>
+                        <span>R${infoItem.price} </span>
                       </Header>
                     </Segment>
                     <Segment

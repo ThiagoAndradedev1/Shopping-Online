@@ -95,7 +95,7 @@ const Orders = () => {
                         </GridColumn>
                         <GridColumn width={4}></GridColumn>
                         <GridColumn width={4}>
-                          <h2>{order.total}</h2>
+                          <h2>R${order.total}</h2>
                           <Button onClick={() => setOrder(order)} color='black'>
                             Ver Detalhes
                           </Button>

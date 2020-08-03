@@ -107,7 +107,6 @@ const Home = () => {
           ...doc.data(),
         }));
         setBestSeller(newInformation);
-        console.log(newInformation);
       });
   };
 
@@ -205,7 +204,7 @@ const Home = () => {
                       {info.name}
                       <Header.Subheader>{info.description}</Header.Subheader>
 
-                      <span>{info.price}</span>
+                      <span>R${info.price}</span>
                     </Header>
                     <Button
                       onClick={() => buyProduct(info, info.price, labelCount)}
@@ -259,7 +258,7 @@ const Home = () => {
                   <Header inverted textAlign='center' as='h2' icon>
                     {info.name}
                     <Header.Subheader> {info.description}</Header.Subheader>
-                    <span>{info.price}</span>
+                    <span>R${info.price}</span>
                   </Header>
                   <Button
                     onClick={() => buyProduct(info, info.price, labelCount)}

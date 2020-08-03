@@ -273,7 +273,7 @@ const OrdersDetails = () => {
                         <Header as='h2'>
                           Valor Total
                           <div style={{ color: 'red' }}>
-                            {retornaPedidoAtual().total}
+                            R${retornaPedidoAtual().total}
                           </div>
                         </Header>
                       </Segment>

@@ -79,7 +79,6 @@ const Cart = () => {
     const docId = transactions.findIndex(
       (transaction) => transaction.id === id
     );
-    console.log(transactions);
     const newTransaction = { ...transactions[docId] };
     if (number === 1) {
       newTransaction.labelCount += 1;
@@ -151,7 +150,6 @@ const Cart = () => {
       }
     });
     setIngredientsCopy(copy);
-    console.log(ingredientsCopy);
   };
 
   const thereIsIngredients = () => {
@@ -281,7 +279,9 @@ const Cart = () => {
 
                                         <h3>{modalInfo.infoModal?.name}</h3>
 
-                                        <h3>${modalInfo?.price?.toFixed(2)}</h3>
+                                        <h3>
+                                          R${modalInfo?.price?.toFixed(2)}
+                                        </h3>
                                         <h3>Quantidade</h3>
                                         <Button
                                           onClick={() =>
