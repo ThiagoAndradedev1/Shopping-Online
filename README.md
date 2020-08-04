@@ -11,7 +11,7 @@
     <br> 
 </p>
 
-## 🛒 Acesse o Website <a name = "acesse_website"></a>
+## 🍔 Acesse o Website <a name = "acesse_website"></a>
 
 <a href="https://shoppingonline-278e4.firebaseapp.com/home">Acesse aqui!</a>
 
