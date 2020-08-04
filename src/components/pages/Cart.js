@@ -166,7 +166,7 @@ const Cart = () => {
               <Header as='h2' icon textAlign='center'>
                 {transactions.length > 0 && (
                   <Fragment>
-                    <Icon name='users' circular />
+                    <Icon name='shopping cart' circular />
                     <Header.Content>Meu Pedido</Header.Content>
                   </Fragment>
                 )}
@@ -228,7 +228,7 @@ const Cart = () => {
                           transaction.infoModal.tag === 'porções' ||
                           transaction.infoModal.tag === 'condimentos' || (
                             <Modal
-                              dimmer={'bluring'}
+                              // dimmer={'bluring'}
                               trigger={
                                 <Button
                                   onClick={() => openModal(transaction)}

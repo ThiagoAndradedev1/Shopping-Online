@@ -139,7 +139,7 @@ const Navbar = () => {
               as={Link}
               to='/login'
             >
-              <Icon name='long arrow alternate right' />
+              <Icon name='arrow circle right' />
               Entrar
             </Menu.Item>
             <Menu.Item
@@ -147,7 +147,7 @@ const Navbar = () => {
               as={Link}
               to='/orders'
             >
-              <Icon name='long arrow alternate right' />
+              <Icon name='dollar' />
               Pedidos
             </Menu.Item>
             <Menu.Item onClick={() => mobileLogOut()} as={Link} to='/login'>
