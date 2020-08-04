@@ -24,7 +24,7 @@
 
 ## 🧐 Sobre <a name = "sobre"></a>
 
-O projeto tem como objetivo realizar a réplica de uma loja online com toda as ferramentas e fúncionalidas que caracterizam a grande maioria dos sites de venda na internet, as ferramentas do Firebase, React e Semantic UI foram utilizadas para auxiliar na construção dessa aplicação.
+O projeto tem como objetivo realizar a réplica de uma loja online com toda as ferramentas e funcionalidas que caracterizam a grande maioria dos sites de venda na internet, as ferramentas do Firebase, React e Semantic UI foram utilizadas para auxiliar na construção dessa aplicação.
 
 ## 🏁 Primeiros Passos <a name = "primeiros_passos"></a>
 
